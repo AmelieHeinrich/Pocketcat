@@ -1,3 +1,3 @@
-# Neural Ambient Occlusion
+# Neural Graphics
 
-This repository showcases ambient occlusion inferred via a neural network running on the GPU using the Metal 4 ML API.
+This repository showcases various neural graphics techniques implemented using Metal 4 ML API.
