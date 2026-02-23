@@ -9,12 +9,16 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        HSplitView {
+            // SwiftUI panel
+            VStack {
+                Spacer()
+            }
+            .frame(minWidth: 200, maxWidth: 300)
+
+            // Metal render view
+            MetalView()
+                .frame(minWidth: 400, maxWidth: .infinity)
         }
-        .padding()
     }
 }
