@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXFileReference section */
-		BA87BC202F4B95BD00AC823E /* NeuralGraphics.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NeuralGraphics.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		BA87BC202F4B95BD00AC823E /* Neural Graphics.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Neural Graphics.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -40,7 +40,7 @@
 		BA87BC212F4B95BD00AC823E /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				BA87BC202F4B95BD00AC823E /* NeuralGraphics.app */,
+				BA87BC202F4B95BD00AC823E /* Neural Graphics.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -48,9 +48,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		BA87BC1F2F4B95BD00AC823E /* NeuralGraphics */ = {
+		BA87BC1F2F4B95BD00AC823E /* Neural Graphics */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = BA87BC2B2F4B95BE00AC823E /* Build configuration list for PBXNativeTarget "NeuralGraphics" */;
+			buildConfigurationList = BA87BC2B2F4B95BE00AC823E /* Build configuration list for PBXNativeTarget "Neural Graphics" */;
 			buildPhases = (
 				BA87BC1C2F4B95BD00AC823E /* Sources */,
 				BA87BC1D2F4B95BD00AC823E /* Frameworks */,
@@ -63,11 +63,11 @@
 			fileSystemSynchronizedGroups = (
 				BA87BC222F4B95BD00AC823E /* NeuralGraphics */,
 			);
-			name = NeuralGraphics;
+			name = "Neural Graphics";
 			packageProductDependencies = (
 			);
 			productName = NeuralGraphics;
-			productReference = BA87BC202F4B95BD00AC823E /* NeuralGraphics.app */;
+			productReference = BA87BC202F4B95BD00AC823E /* Neural Graphics.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -99,7 +99,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				BA87BC1F2F4B95BD00AC823E /* NeuralGraphics */,
+				BA87BC1F2F4B95BD00AC823E /* Neural Graphics */,
 			);
 		};
 /* End PBXProject section */
@@ -260,6 +260,7 @@
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = "Neural Graphics";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.graphics-design";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -293,6 +294,7 @@
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = "Neural Graphics";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.graphics-design";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -323,7 +325,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		BA87BC2B2F4B95BE00AC823E /* Build configuration list for PBXNativeTarget "NeuralGraphics" */ = {
+		BA87BC2B2F4B95BE00AC823E /* Build configuration list for PBXNativeTarget "Neural Graphics" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				BA87BC2C2F4B95BE00AC823E /* Debug */,

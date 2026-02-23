@@ -8,6 +8,14 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State private var renderer: MetalViewDelegate = {
+            guard let metalDevice = MTLCreateSystemDefaultDevice() else {
+                fatalError("This sample requires a device that supports Metal")
+            }
+
+        return Renderer(device: metalDevice)
+    }()
+    
     var body: some View {
         HSplitView {
             // SwiftUI panel
@@ -17,7 +25,7 @@ struct ContentView: View {
             .frame(minWidth: 200, maxWidth: 300)
 
             // Metal render view
-            MetalView()
+            MetalView(delegate: renderer)
                 .frame(minWidth: 400, maxWidth: .infinity)
         }
     }
