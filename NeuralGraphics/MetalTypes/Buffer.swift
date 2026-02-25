@@ -33,7 +33,7 @@ class Buffer {
         self.buffer.label = name
     }
     
-    func getAddress() -> UInt64 {
+    func getAddress() -> MTLGPUAddress {
         return self.buffer.gpuAddress
     }
     

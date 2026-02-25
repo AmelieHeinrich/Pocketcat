@@ -75,10 +75,34 @@ class RenderPass {
         if pipeline.depthStencilState != nil {
             self.encoder.setDepthStencilState(pipeline.depthStencilState)
         }
+        self.encoder.setArgumentTable(RendererData.vertexTable, stages: .vertex)
+        self.encoder.setArgumentTable(RendererData.fragmentTable, stages: .fragment)
     }
     
     func draw(primitiveType: MTLPrimitiveType, vertexCount: Int, vertexOffset: Int) {
         self.encoder.drawPrimitives(primitiveType: primitiveType, vertexStart: vertexOffset, vertexCount: vertexCount)
+    }
+    
+    func drawIndexed(primitimeType: MTLPrimitiveType, buffer: Buffer, indexCount: Int, indexOffset: UInt64) {
+        self.encoder.drawIndexedPrimitives(primitiveType: primitimeType, indexCount: indexCount, indexType: .uint32, indexBuffer: buffer.getAddress() + indexOffset, indexBufferLength: indexCount * MemoryLayout<UInt32>.size)
+    }
+    
+    func setTexture(texture: Texture, index: Int, stages: MTLRenderStages) {
+        if stages.contains(.vertex) {
+            RendererData.vertexTable.setTexture(texture.texture.gpuResourceID, index: index)
+        }
+        if stages.contains(.fragment) {
+            RendererData.fragmentTable.setTexture(texture.texture.gpuResourceID, index: index)
+        }
+    }
+    
+    func setTexture(texture: MTLTexture, index: Int, stages: MTLRenderStages) {
+        if stages.contains(.vertex) {
+            RendererData.vertexTable.setTexture(texture.gpuResourceID, index: index)
+        }
+        if stages.contains(.fragment) {
+            RendererData.fragmentTable.setTexture(texture.gpuResourceID, index: index)
+        }
     }
     
     func pushMarker(name: String) {

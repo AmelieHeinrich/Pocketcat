@@ -22,9 +22,13 @@ class Renderer : NSObject, MetalViewDelegate {
     private let compiler: MTL4Compiler
     private let commandBuffers: [CommandBuffer]
     private let renderPipeline: RenderPipeline
+    private let resourceManager: ResourceManager
+    private let indexBuffer: Buffer
+    private let texture: MTLTexture
     
     init(device: MTLDevice) {
         self.device = device
+        self.resourceManager = ResourceManager(device: self.device)
         
         let cmdQueueDescriptor = MTL4CommandQueueDescriptor()
         cmdQueueDescriptor.label = "Main Graphics Queue"
@@ -52,6 +56,10 @@ class Renderer : NSObject, MetalViewDelegate {
         pipelineDescriptor.pixelFormats.append(.bgra8Unorm)
         
         self.renderPipeline = RenderPipeline(descriptor: pipelineDescriptor)
+        
+        let indices: [UInt32] = [0, 1, 3, 1, 2, 3]
+        self.indexBuffer = Buffer(bytes: indices, size: indices.count * MemoryLayout<UInt32>.size)
+        self.texture = try! self.resourceManager.texture(url: Bundle.main.url(forResource: "TestTexture", withExtension: "png")!, sRGB: true)
     }
     
     func configure(_ view: MTKView) {
@@ -70,17 +78,19 @@ class Renderer : NSObject, MetalViewDelegate {
         RendererData.gpuTimeline.wait(value: cmdBuffer.lastSignaledValue)
 
         let drawable = view.currentDrawable!
+
         var renderPassDescriptor = RenderPassDescriptor()
         renderPassDescriptor.addAttachment(texture: drawable.texture)
-        
+
         cmdBuffer.begin()
-    
+
         let renderPass = cmdBuffer.beginRenderPass(descriptor: renderPassDescriptor)
         renderPass.setPipeline(pipeline: self.renderPipeline)
-        renderPass.draw(primitiveType: .triangle, vertexCount: 3, vertexOffset: 0)
+        renderPass.setTexture(texture: self.texture, index: 0, stages: .fragment)
+        renderPass.drawIndexed(primitimeType: .triangle, buffer: self.indexBuffer, indexCount: 6, indexOffset: 0)
         renderPass.end()
         cmdBuffer.end()
-        
+
         commandQueue.waitForDrawable(drawable)
         cmdBuffer.commit()
         commandQueue.signalDrawable(drawable)

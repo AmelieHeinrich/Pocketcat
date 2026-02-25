@@ -6,8 +6,20 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		BA91F3682F4F2ED800BF334B /* TestTexture.png in Resources */ = {isa = PBXBuildFile; fileRef = BA91F3662F4F2ED800BF334B /* TestTexture.png */; };
+		BA91F3692F4F2ED800BF334B /* 2_input_neural_brdf.pth in Resources */ = {isa = PBXBuildFile; fileRef = BA91F3612F4F2ED800BF334B /* 2_input_neural_brdf.pth */; };
+		BA91F36A2F4F2ED800BF334B /* InferredTestTexture.png in Resources */ = {isa = PBXBuildFile; fileRef = BA91F3652F4F2ED800BF334B /* InferredTestTexture.png */; };
+		BA91F36B2F4F2ED800BF334B /* 2_input_neural_brdf.mlpackage in Sources */ = {isa = PBXBuildFile; fileRef = BA91F3602F4F2ED800BF334B /* 2_input_neural_brdf.mlpackage */; };
+		BA91F36E2F4F318C00BF334B /* GLTFKit2 in Frameworks */ = {isa = PBXBuildFile; productRef = BA91F36D2F4F318C00BF334B /* GLTFKit2 */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		BA87BC202F4B95BD00AC823E /* Neural Graphics.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Neural Graphics.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		BA91F3602F4F2ED800BF334B /* 2_input_neural_brdf.mlpackage */ = {isa = PBXFileReference; lastKnownFileType = folder.mlpackage; path = 2_input_neural_brdf.mlpackage; sourceTree = "<group>"; };
+		BA91F3612F4F2ED800BF334B /* 2_input_neural_brdf.pth */ = {isa = PBXFileReference; lastKnownFileType = file; path = 2_input_neural_brdf.pth; sourceTree = "<group>"; };
+		BA91F3652F4F2ED800BF334B /* InferredTestTexture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = InferredTestTexture.png; sourceTree = "<group>"; };
+		BA91F3662F4F2ED800BF334B /* TestTexture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TestTexture.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -23,6 +35,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BA91F36E2F4F318C00BF334B /* GLTFKit2 in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -32,6 +45,7 @@
 		BA87BC172F4B95BD00AC823E = {
 			isa = PBXGroup;
 			children = (
+				BA91F3672F4F2ED800BF334B /* Assets */,
 				BA87BC222F4B95BD00AC823E /* NeuralGraphics */,
 				BA87BC212F4B95BD00AC823E /* Products */,
 			);
@@ -43,6 +57,41 @@
 				BA87BC202F4B95BD00AC823E /* Neural Graphics.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		BA91F3622F4F2ED800BF334B /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				BA91F3602F4F2ED800BF334B /* 2_input_neural_brdf.mlpackage */,
+				BA91F3612F4F2ED800BF334B /* 2_input_neural_brdf.pth */,
+			);
+			path = Base;
+			sourceTree = "<group>";
+		};
+		BA91F3632F4F2ED800BF334B /* Metal */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Metal;
+			sourceTree = "<group>";
+		};
+		BA91F3642F4F2ED800BF334B /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				BA91F3622F4F2ED800BF334B /* Base */,
+				BA91F3632F4F2ED800BF334B /* Metal */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		BA91F3672F4F2ED800BF334B /* Assets */ = {
+			isa = PBXGroup;
+			children = (
+				BA91F3642F4F2ED800BF334B /* Models */,
+				BA91F3652F4F2ED800BF334B /* InferredTestTexture.png */,
+				BA91F3662F4F2ED800BF334B /* TestTexture.png */,
+			);
+			path = Assets;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -65,6 +114,7 @@
 			);
 			name = "Neural Graphics";
 			packageProductDependencies = (
+				BA91F36D2F4F318C00BF334B /* GLTFKit2 */,
 			);
 			productName = NeuralGraphics;
 			productReference = BA87BC202F4B95BD00AC823E /* Neural Graphics.app */;
@@ -94,6 +144,9 @@
 			);
 			mainGroup = BA87BC172F4B95BD00AC823E;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				BA91F36C2F4F318C00BF334B /* XCRemoteSwiftPackageReference "GLTFKit2" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = BA87BC212F4B95BD00AC823E /* Products */;
 			projectDirPath = "";
@@ -109,6 +162,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BA91F3682F4F2ED800BF334B /* TestTexture.png in Resources */,
+				BA91F3692F4F2ED800BF334B /* 2_input_neural_brdf.pth in Resources */,
+				BA91F36A2F4F2ED800BF334B /* InferredTestTexture.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -119,6 +175,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BA91F36B2F4F2ED800BF334B /* 2_input_neural_brdf.mlpackage in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -335,6 +392,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		BA91F36C2F4F318C00BF334B /* XCRemoteSwiftPackageReference "GLTFKit2" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/warrenm/GLTFKit2";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.5.15;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		BA91F36D2F4F318C00BF334B /* GLTFKit2 */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BA91F36C2F4F318C00BF334B /* XCRemoteSwiftPackageReference "GLTFKit2" */;
+			productName = GLTFKit2;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = BA87BC182F4B95BD00AC823E /* Project object */;
 }
