@@ -19,11 +19,9 @@ class Renderer : NSObject, MetalViewDelegate {
     
     private let commandQueue: MTL4CommandQueue
     private let residencySet: MTLResidencySet
-    private let commandBuffer: MTL4CommandBuffer
-    private let commandAllocators: [MTL4CommandAllocator]
-    private let frameCompletionEvent: MTLSharedEvent
-    
-    private var frameIndex: UInt64 = 0
+    private let compiler: MTL4Compiler
+    private let commandBuffers: [CommandBuffer]
+    private let renderPipeline: RenderPipeline
     
     init(device: MTLDevice) {
         self.device = device
@@ -33,18 +31,27 @@ class Renderer : NSObject, MetalViewDelegate {
         
         let residencySetDescriptor = MTLResidencySetDescriptor()
         residencySetDescriptor.initialCapacity = 16
+        residencySetDescriptor.label = "Residency Set"
+        
+        let compilerDescriptor = MTL4CompilerDescriptor()
+        compilerDescriptor.label = "Shader Compiler"
         
         self.commandQueue = try! device.makeMTL4CommandQueue(descriptor: cmdQueueDescriptor)
         self.residencySet = try! device.makeResidencySet(descriptor: residencySetDescriptor)
         self.commandQueue.addResidencySet(residencySet)
+        self.compiler = try! device.makeCompiler(descriptor: compilerDescriptor)
         
-        self.commandBuffer = device.makeCommandBuffer()!
-        self.commandAllocators = (0..<maxFramesInFlight).map { _ in
-            device.makeCommandAllocator()!
+        RendererData.initialize(device: self.device, cmdQueue: self.commandQueue, residencySet: self.residencySet, compiler: self.compiler)
+        self.commandBuffers = (0..<maxFramesInFlight).map { _ in
+            CommandBuffer()
         }
-        self.frameCompletionEvent = device.makeSharedEvent()!
         
-        RendererData.initialize(device: self.device, cmdQueue: self.commandQueue, residencySet: self.residencySet)
+        var pipelineDescriptor = RenderPipelineDescriptor()
+        pipelineDescriptor.vertexFunction = "triangle_vs"
+        pipelineDescriptor.fragmentFunction = "triangle_fs"
+        pipelineDescriptor.pixelFormats.append(.bgra8Unorm)
+        
+        self.renderPipeline = RenderPipeline(descriptor: pipelineDescriptor)
     }
     
     func configure(_ view: MTKView) {
@@ -58,32 +65,27 @@ class Renderer : NSObject, MetalViewDelegate {
     func mtkView(_ view: MTKView, drawableSizeWillChange size: CGSize) {}
     
     func draw(in view: MTKView) {
-        guard let renderPassDescriptor = view.currentMTL4RenderPassDescriptor else {
-            return
-        }
-        
-        if frameIndex >= maxFramesInFlight {
-            let valueToWait = frameIndex - maxFramesInFlight
-            frameCompletionEvent.wait(untilSignaledValue: valueToWait, timeoutMS: 8)
-        }
-        
-        frameIndex += 1
-        let allocator = commandAllocators[Int(frameIndex % maxFramesInFlight)]
-        allocator.reset()
-        
-        commandBuffer.beginCommandBuffer(allocator: allocator)
-        let commandEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: renderPassDescriptor)!
-        commandEncoder.endEncoding()
-        commandBuffer.endCommandBuffer()
-        
+        let frameIndex = Int(RendererData.gpuTimeline.currentValue % maxFramesInFlight)
+        let cmdBuffer = commandBuffers[frameIndex]
+        RendererData.gpuTimeline.wait(value: cmdBuffer.lastSignaledValue)
+
         let drawable = view.currentDrawable!
+        var renderPassDescriptor = RenderPassDescriptor()
+        renderPassDescriptor.addAttachment(texture: drawable.texture)
+        
+        cmdBuffer.begin()
+    
+        let renderPass = cmdBuffer.beginRenderPass(descriptor: renderPassDescriptor)
+        renderPass.setPipeline(pipeline: self.renderPipeline)
+        renderPass.draw(primitiveType: .triangle, vertexCount: 3, vertexOffset: 0)
+        renderPass.end()
+        cmdBuffer.end()
         
         commandQueue.waitForDrawable(drawable)
-        commandQueue.commit([commandBuffer])
+        cmdBuffer.commit()
         commandQueue.signalDrawable(drawable)
         drawable.present()
                 
-        let valueToSignal = frameIndex
-        commandQueue.signalEvent(frameCompletionEvent, value: valueToSignal)
+        cmdBuffer.lastSignaledValue = RendererData.gpuTimeline.signal()
     }
 }
