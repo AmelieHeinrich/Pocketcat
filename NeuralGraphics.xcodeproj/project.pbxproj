@@ -8,18 +8,20 @@
 
 /* Begin PBXBuildFile section */
 		BA91F3682F4F2ED800BF334B /* TestTexture.png in Resources */ = {isa = PBXBuildFile; fileRef = BA91F3662F4F2ED800BF334B /* TestTexture.png */; };
-		BA91F3692F4F2ED800BF334B /* 2_input_neural_brdf.pth in Resources */ = {isa = PBXBuildFile; fileRef = BA91F3612F4F2ED800BF334B /* 2_input_neural_brdf.pth */; };
 		BA91F36A2F4F2ED800BF334B /* InferredTestTexture.png in Resources */ = {isa = PBXBuildFile; fileRef = BA91F3652F4F2ED800BF334B /* InferredTestTexture.png */; };
-		BA91F36B2F4F2ED800BF334B /* 2_input_neural_brdf.mlpackage in Sources */ = {isa = PBXBuildFile; fileRef = BA91F3602F4F2ED800BF334B /* 2_input_neural_brdf.mlpackage */; };
 		BA91F36E2F4F318C00BF334B /* GLTFKit2 in Frameworks */ = {isa = PBXBuildFile; productRef = BA91F36D2F4F318C00BF334B /* GLTFKit2 */; };
+		BA91F3852F4F4BC900BF334B /* 2_input_neural_brdf.mlpackage in Sources */ = {isa = PBXBuildFile; fileRef = BA91F3812F4F4BC900BF334B /* 2_input_neural_brdf.mlpackage */; };
+		BA91F3862F4F4BC900BF334B /* 2_input_neural_brdf.pth in Resources */ = {isa = PBXBuildFile; fileRef = BA91F3832F4F4BC900BF334B /* 2_input_neural_brdf.pth */; };
+		BA91F3872F4F4BC900BF334B /* 2_input_neural_brdf.mtlpackage in Resources */ = {isa = PBXBuildFile; fileRef = BA91F3822F4F4BC900BF334B /* 2_input_neural_brdf.mtlpackage */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		BA87BC202F4B95BD00AC823E /* Neural Graphics.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Neural Graphics.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		BA91F3602F4F2ED800BF334B /* 2_input_neural_brdf.mlpackage */ = {isa = PBXFileReference; lastKnownFileType = folder.mlpackage; path = 2_input_neural_brdf.mlpackage; sourceTree = "<group>"; };
-		BA91F3612F4F2ED800BF334B /* 2_input_neural_brdf.pth */ = {isa = PBXFileReference; lastKnownFileType = file; path = 2_input_neural_brdf.pth; sourceTree = "<group>"; };
 		BA91F3652F4F2ED800BF334B /* InferredTestTexture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = InferredTestTexture.png; sourceTree = "<group>"; };
 		BA91F3662F4F2ED800BF334B /* TestTexture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TestTexture.png; sourceTree = "<group>"; };
+		BA91F3812F4F4BC900BF334B /* 2_input_neural_brdf.mlpackage */ = {isa = PBXFileReference; lastKnownFileType = folder.mlpackage; path = 2_input_neural_brdf.mlpackage; sourceTree = "<group>"; };
+		BA91F3822F4F4BC900BF334B /* 2_input_neural_brdf.mtlpackage */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = 2_input_neural_brdf.mtlpackage; sourceTree = "<group>"; };
+		BA91F3832F4F4BC900BF334B /* 2_input_neural_brdf.pth */ = {isa = PBXFileReference; lastKnownFileType = file; path = 2_input_neural_brdf.pth; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -59,39 +61,24 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		BA91F3622F4F2ED800BF334B /* Base */ = {
-			isa = PBXGroup;
-			children = (
-				BA91F3602F4F2ED800BF334B /* 2_input_neural_brdf.mlpackage */,
-				BA91F3612F4F2ED800BF334B /* 2_input_neural_brdf.pth */,
-			);
-			path = Base;
-			sourceTree = "<group>";
-		};
-		BA91F3632F4F2ED800BF334B /* Metal */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Metal;
-			sourceTree = "<group>";
-		};
-		BA91F3642F4F2ED800BF334B /* Models */ = {
-			isa = PBXGroup;
-			children = (
-				BA91F3622F4F2ED800BF334B /* Base */,
-				BA91F3632F4F2ED800BF334B /* Metal */,
-			);
-			path = Models;
-			sourceTree = "<group>";
-		};
 		BA91F3672F4F2ED800BF334B /* Assets */ = {
 			isa = PBXGroup;
 			children = (
-				BA91F3642F4F2ED800BF334B /* Models */,
+				BA91F3842F4F4BC900BF334B /* Models */,
 				BA91F3652F4F2ED800BF334B /* InferredTestTexture.png */,
 				BA91F3662F4F2ED800BF334B /* TestTexture.png */,
 			);
 			path = Assets;
+			sourceTree = "<group>";
+		};
+		BA91F3842F4F4BC900BF334B /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				BA91F3812F4F4BC900BF334B /* 2_input_neural_brdf.mlpackage */,
+				BA91F3822F4F4BC900BF334B /* 2_input_neural_brdf.mtlpackage */,
+				BA91F3832F4F4BC900BF334B /* 2_input_neural_brdf.pth */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -163,8 +150,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				BA91F3682F4F2ED800BF334B /* TestTexture.png in Resources */,
-				BA91F3692F4F2ED800BF334B /* 2_input_neural_brdf.pth in Resources */,
 				BA91F36A2F4F2ED800BF334B /* InferredTestTexture.png in Resources */,
+				BA91F3862F4F4BC900BF334B /* 2_input_neural_brdf.pth in Resources */,
+				BA91F3872F4F4BC900BF334B /* 2_input_neural_brdf.mtlpackage in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -175,7 +163,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BA91F36B2F4F2ED800BF334B /* 2_input_neural_brdf.mlpackage in Sources */,
+				BA91F3852F4F4BC900BF334B /* 2_input_neural_brdf.mlpackage in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

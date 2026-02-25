@@ -21,6 +21,7 @@ struct RendererData {
     static var objectTable: MTL4ArgumentTable!
     static var computeTable: MTL4ArgumentTable!
     static var tileTable: MTL4ArgumentTable!
+    static var mlTable: MTL4ArgumentTable!
     
     static func initialize(device: MTLDevice,
                            cmdQueue: MTL4CommandQueue,
@@ -37,12 +38,26 @@ struct RendererData {
         argumentTableDescriptor.maxBufferBindCount = 16
         argumentTableDescriptor.maxTextureBindCount = 16
         argumentTableDescriptor.maxSamplerStateBindCount = 16
+        argumentTableDescriptor.label = "Vertex Argument Table"
         
         self.vertexTable = try! self.device.makeArgumentTable(descriptor: argumentTableDescriptor)
+        
+        argumentTableDescriptor.label = "Fragment Argument Table"
         self.fragmentTable = try! self.device.makeArgumentTable(descriptor: argumentTableDescriptor)
+        
+        argumentTableDescriptor.label = "Mesh Argument Table"
         self.meshTable = try! self.device.makeArgumentTable(descriptor: argumentTableDescriptor)
+        
+        argumentTableDescriptor.label = "Object Argument Table"
         self.objectTable = try! self.device.makeArgumentTable(descriptor: argumentTableDescriptor)
+        
+        argumentTableDescriptor.label = "Compute Argument Table"
         self.computeTable = try! self.device.makeArgumentTable(descriptor: argumentTableDescriptor)
+        
+        argumentTableDescriptor.label = "Tile Argument Table"
         self.tileTable = try! self.device.makeArgumentTable(descriptor: argumentTableDescriptor)
+        
+        argumentTableDescriptor.label = "ML Argument Table"
+        self.mlTable = try! self.device.makeArgumentTable(descriptor: argumentTableDescriptor)
     }
 }

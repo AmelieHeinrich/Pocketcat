@@ -1,5 +1,6 @@
 import math
 import os
+import subprocess
 import threading
 import time
 import tkinter as tk
@@ -139,6 +140,12 @@ class App(tk.Tk):
         tk.Label(ctrl, text="Texture path:").pack(anchor="w")
         self.texture_path_var = tk.StringVar(value="Assets/TestTexture.png")
         tk.Entry(ctrl, textvariable=self.texture_path_var, width=30).pack(
+            anchor="w", pady=(0, 8)
+        )
+
+        tk.Label(ctrl, text="Export name:").pack(anchor="w")
+        self.export_name_var = tk.StringVar(value="2_input_neural_brdf")
+        tk.Entry(ctrl, textvariable=self.export_name_var, width=30).pack(
             anchor="w", pady=(0, 8)
         )
 
@@ -306,8 +313,9 @@ class App(tk.Tk):
         train_elapsed = time.time() - train_start
         epoch_speed = epochs / train_elapsed if train_elapsed > 0 else 0
 
+        export_name = self.export_name_var.get()
         os.makedirs("Assets/Models/Base", exist_ok=True)
-        self.model.save("Assets/Models/Base/2_input_neural_brdf.pth")
+        self.model.save(f"Assets/Models/Base/{export_name}.pth")
 
         infer_start = time.time()
         inferred_img = self.trainer.infer_tensor(self.model)
@@ -353,6 +361,9 @@ class App(tk.Tk):
         thread.start()
 
     def _export_coreml(self):
+        export_name = self.export_name_var.get()
+        mlpackage_path = f"Assets/Models/Base/{export_name}.mlpackage"
+        mtlpackage_path = f"Assets/Models/Metal/{export_name}.mtlpackage"
         try:
             self.model.eval()
             dummy_input = torch.zeros(1, 2)
@@ -364,11 +375,11 @@ class App(tk.Tk):
                 convert_to="mlprogram",
                 minimum_deployment_target=ct.target.macOS15,
             )
-            coremlmodel.save("Assets/Models/Base/2_input_neural_brdf.mlpackage")
+            coremlmodel.save(mlpackage_path)
             self.after(
                 0,
                 lambda: self.status_label.config(
-                    text="Saved .pth and .mlpackage.", fg="green"
+                    text="Saved .pth and .mlpackage. Running metal-package-builder...", fg="black"
                 ),
             )
         except Exception as e:
@@ -376,6 +387,37 @@ class App(tk.Tk):
                 0,
                 lambda: self.status_label.config(
                     text=f"CoreML export failed: {e}", fg="red"
+                ),
+            )
+            return
+
+        try:
+            os.makedirs("Assets/Models/Metal", exist_ok=True)
+            result = subprocess.run(
+                ["xcrun", "metal-package-builder", mlpackage_path, "-o", mtlpackage_path],
+                capture_output=True,
+                text=True,
+            )
+            if result.returncode == 0:
+                self.after(
+                    0,
+                    lambda: self.status_label.config(
+                        text=f"Saved .pth, .mlpackage, and .mtlpackage.", fg="green"
+                    ),
+                )
+            else:
+                err = result.stderr.strip() or result.stdout.strip()
+                self.after(
+                    0,
+                    lambda: self.status_label.config(
+                        text=f"metal-package-builder failed: {err}", fg="red"
+                    ),
+                )
+        except Exception as e:
+            self.after(
+                0,
+                lambda: self.status_label.config(
+                    text=f"metal-package-builder error: {e}", fg="red"
                 ),
             )
 
