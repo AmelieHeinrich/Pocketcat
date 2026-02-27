@@ -24,7 +24,6 @@ class CommandBuffer {
     func begin() {
         self.allocator.reset()
         self.commandBuffer.beginCommandBuffer(allocator: self.allocator)
-        self.commandBuffer.useResidencySet(RendererData.residencySet)
         RendererData.residencySet.commit()
     }
     
@@ -34,6 +33,10 @@ class CommandBuffer {
     
     func beginRenderPass(descriptor: RenderPassDescriptor) -> RenderPass {
         return RenderPass(descriptor: descriptor, cmdBuffer: self.commandBuffer)
+    }
+    
+    func beginMLPass(name: String) -> MLPass {
+        return MLPass(name: name, cmdBuffer: self.commandBuffer)
     }
     
     func commit() {

@@ -8,6 +8,8 @@
 import Metal
 
 struct RenderPipelineDescriptor {
+    var name: String = ""
+    
     var vertexFunction: String = ""
     var fragmentFunction: String? = nil
     
@@ -42,6 +44,7 @@ class RenderPipeline {
         }
         
         let pipelineDesc = MTL4RenderPipelineDescriptor()
+        pipelineDesc.label = descriptor.name
         pipelineDesc.vertexFunctionDescriptor = vertexFunctionDescriptor
         if descriptor.fragmentFunction != nil {
             pipelineDesc.fragmentFunctionDescriptor = fragmentFunctionDescriptor

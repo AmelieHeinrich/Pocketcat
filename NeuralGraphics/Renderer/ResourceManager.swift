@@ -63,8 +63,7 @@ class ResourceManager {
     private func listAvailableAssets() {
         print("[ResourceManager] Available assets:")
 
-        // Textures in asset catalog
-        let imageExtensions = ["png", "jpg", "jpeg", "tga", "bmp", "tiff", "hdr", "exr"]
+        let extensions = ["png", "jpg", "jpeg", "hdr", "astc", "gltf", "mtlpackage"]
         var found = false
 
         if let resourcePath = Bundle.main.resourcePath {
@@ -72,8 +71,8 @@ class ResourceManager {
             if let contents = try? fm.contentsOfDirectory(atPath: resourcePath) {
                 for file in contents.sorted() {
                     let ext = (file as NSString).pathExtension.lowercased()
-                    if imageExtensions.contains(ext) {
-                        print("  [texture] \(file)")
+                    if extensions.contains(ext) {
+                        print("  [asset] \(file)")
                         found = true
                     }
                 }

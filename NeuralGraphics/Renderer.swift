@@ -25,6 +25,9 @@ class Renderer : NSObject, MetalViewDelegate {
     private let resourceManager: ResourceManager
     private let indexBuffer: Buffer
     private let texture: MTLTexture
+    private let nn: NeuralNetwork
+    private let inputTensor: Tensor
+    private let outputTensor: Tensor
     
     init(device: MTLDevice) {
         self.device = device
@@ -47,10 +50,15 @@ class Renderer : NSObject, MetalViewDelegate {
         
         RendererData.initialize(device: self.device, cmdQueue: self.commandQueue, residencySet: self.residencySet, compiler: self.compiler)
         self.commandBuffers = (0..<maxFramesInFlight).map { _ in
-            CommandBuffer()
+            {
+                let cmdBuffer = CommandBuffer()
+                cmdBuffer.setName(name: "Command Buffer")
+                return cmdBuffer
+            }()
         }
         
         var pipelineDescriptor = RenderPipelineDescriptor()
+        pipelineDescriptor.name = "Triangle Pipeline"
         pipelineDescriptor.vertexFunction = "triangle_vs"
         pipelineDescriptor.fragmentFunction = "triangle_fs"
         pipelineDescriptor.pixelFormats.append(.bgra8Unorm)
@@ -59,7 +67,18 @@ class Renderer : NSObject, MetalViewDelegate {
         
         let indices: [UInt32] = [0, 1, 3, 1, 2, 3]
         self.indexBuffer = Buffer(bytes: indices, size: indices.count * MemoryLayout<UInt32>.size)
+        self.indexBuffer.setName(name: "Index Buffer")
+        
         self.texture = try! self.resourceManager.texture(url: Bundle.main.url(forResource: "TestTexture", withExtension: "png")!, sRGB: true)
+        self.texture.label = "TestTexture.png"
+        
+        self.nn = NeuralNetwork(path: Bundle.main.url(forResource: "2_input_neural_brdf", withExtension: ".mtlpackage")!, name: "2 Input Neural BRDF")
+        
+        self.inputTensor = Tensor(dimensions: [2, 1])
+        self.inputTensor.setName(name: "Input Tensor")
+        
+        self.outputTensor = Tensor(dimensions: [3, 1])
+        self.outputTensor.setName(name: "Output Tensor")
     }
     
     func configure(_ view: MTKView) {
@@ -81,8 +100,16 @@ class Renderer : NSObject, MetalViewDelegate {
 
         var renderPassDescriptor = RenderPassDescriptor()
         renderPassDescriptor.addAttachment(texture: drawable.texture)
+        renderPassDescriptor.name = "Draw Quads"
 
         cmdBuffer.begin()
+        
+        let mlPass = cmdBuffer.beginMLPass(name: "Infer BRDF")
+        mlPass.setNeuralNetwork(nn: self.nn)
+        mlPass.setTensor(tensor: inputTensor, index: 0)
+        mlPass.setTensor(tensor: outputTensor, index: 1)
+        mlPass.infer()
+        mlPass.end()
 
         let renderPass = cmdBuffer.beginRenderPass(descriptor: renderPassDescriptor)
         renderPass.setPipeline(pipeline: self.renderPipeline)
