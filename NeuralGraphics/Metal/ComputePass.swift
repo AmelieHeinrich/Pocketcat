@@ -45,7 +45,15 @@ class ComputePass {
     func dispatch(threads: MTLSize, threadsPerGroup: MTLSize) {
         self.encoder.dispatchThreadgroups(threadgroupsPerGrid: threads, threadsPerThreadgroup: threadsPerGroup)
     }
+    
+    func buildBLAS(blas: BLAS) {
+        self.encoder.build(destinationAccelerationStructure: blas.accelerationStructure, descriptor: blas.descriptor, scratchBuffer: MTL4BufferRangeMake(blas.scratchBuffer.getAddress(), UInt64(blas.scratchBuffer.size)))
+    }
 
+    func buildTLAS(tlas: TLAS) {
+        self.encoder.build(destinationAccelerationStructure: tlas.tlas, descriptor: tlas.descriptor, scratchBuffer: MTL4BufferRangeMake(tlas.scratchBuffer.getAddress(), UInt64(tlas.scratchBuffer.size)))
+    }
+    
     func pushMarker(name: String) {
         self.encoder.pushDebugGroup(name)
     }

@@ -51,6 +51,8 @@ class Mesh {
     var totalMeshletCount: Int = 0
     var totalVertexCount:  Int = 0
     var totalIndexCount:   Int = 0
+    
+    var blas: BLAS!
 }
 
 // ---- Sequential binary reader ----------------------------------------------
@@ -224,7 +226,7 @@ class MeshLoader {
         }
 
         // ---- Build GPU buffers ----
-        progress?(0.90, "Uploading to GPU…")
+        progress?(0.80, "Uploading to GPU…")
         let mesh                   = Mesh()
         mesh.instances             = swiftInstances
         mesh.materials             = swiftMaterials
@@ -261,6 +263,19 @@ class MeshLoader {
         mesh.meshletTrianglesBuffer.makeResident()
         mesh.meshletBoundsBuffer.makeResident()
         mesh.instanceBuffer.makeResident()
+        
+        if RendererData.device.supportsFamily(.apple9) {
+            progress?(0.90, "Building BLAS…")
+            mesh.blas = BLAS(model: mesh)
+        
+            let commandBuffer = CommandBuffer()
+            commandBuffer.begin()
+            let cp = commandBuffer.beginComputePass()
+            cp.buildBLAS(blas: mesh.blas)
+            cp.end()
+            commandBuffer.end()
+            commandBuffer.commit()
+        }
 
         progress?(1.00, "Done")
         print("[MeshLoader] \(name): \(instanceCount) instance(s), \(materialCount) material(s), \(vertexCount) verts, \(meshletCount) meshlets")
