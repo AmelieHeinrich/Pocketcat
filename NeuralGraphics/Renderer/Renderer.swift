@@ -33,6 +33,7 @@ class Renderer : NSObject, MetalViewDelegate {
     private let gpuAllocator: GPULinearAllocator
     private let model: Mesh
     private var depthTexture: Texture
+    private let defaultAlbedo: Texture
     private var lastFrameTime: CFAbsoluteTime = CFAbsoluteTimeGetCurrent()
 
     init(device: MTLDevice) {
@@ -85,8 +86,23 @@ class Renderer : NSObject, MetalViewDelegate {
         self.depthTexture = Texture(descriptor: depthDesc)
         self.depthTexture.setLabel(name: "Depth Buffer")
 
+        // 1×1 white fallback texture for materials with no albedo
+        let whiteDesc = MTLTextureDescriptor.texture2DDescriptor(
+            pixelFormat: .rgba8Unorm, width: 1, height: 1, mipmapped: false)
+        whiteDesc.storageMode = .shared
+        whiteDesc.usage       = .shaderRead
+        let defaultAlbedo = Texture(descriptor: whiteDesc)
+        defaultAlbedo.setLabel(name: "Default White Albedo")
+        var white: UInt32 = 0xFFFFFFFF
+        withUnsafePointer(to: &white) { ptr in
+            defaultAlbedo.uploadData(
+                region: MTLRegionMake2D(0, 0, 1, 1), mip: 0,
+                data: UnsafeRawPointer(ptr), bpp: 4)
+        }
+        self.defaultAlbedo = defaultAlbedo
+
         // Load model
-        self.model = MeshLoader.load(url: Bundle.main.url(forResource: "Sponza", withExtension: ".bin")!)!
+        self.model = MeshLoader.load(url: Bundle.main.url(forResource: "IntelSponza", withExtension: ".bin")!)!
     }
 
     func configure(_ view: MTKView) {
@@ -135,7 +151,8 @@ class Renderer : NSObject, MetalViewDelegate {
 
             renderPass.setBuffer(buf: gpuAllocator.buffer, index: 0, stages: .vertex, offset: offset)
             renderPass.setBuffer(buf: model.vertexBuffer, index: 1, stages: .vertex)
-            renderPass.setTexture(texture: model.materials[Int(instance.materialIndex)].albedo!, index: 0, stages: .fragment)
+            let albedo = model.materials[Int(instance.materialIndex)].albedo ?? defaultAlbedo
+            renderPass.setTexture(texture: albedo, index: 0, stages: .fragment)
             renderPass.drawIndexed(primitimeType: .triangle, buffer: model.indexBuffer, indexCount: Int(instance.indexCount), indexOffset: UInt64(instance.indexOffset))
         }
         renderPass.end()

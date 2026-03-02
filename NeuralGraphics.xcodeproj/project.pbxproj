@@ -86,6 +86,84 @@
 		BA91F3852F4F4BC900BF334B /* 2_input_neural_brdf.mlpackage in Sources */ = {isa = PBXBuildFile; fileRef = BA91F3812F4F4BC900BF334B /* 2_input_neural_brdf.mlpackage */; };
 		BA91F3862F4F4BC900BF334B /* 2_input_neural_brdf.pth in Resources */ = {isa = PBXBuildFile; fileRef = BA91F3832F4F4BC900BF334B /* 2_input_neural_brdf.pth */; };
 		BA91F3872F4F4BC900BF334B /* 2_input_neural_brdf.mtlpackage in Resources */ = {isa = PBXBuildFile; fileRef = BA91F3822F4F4BC900BF334B /* 2_input_neural_brdf.mtlpackage */; };
+		BAA3CC4B2F55A17F0096A85B /* door_stoneframe_02_Roughnessdoor_stoneframe_02_Metalness.tex in Resources */ = {isa = PBXBuildFile; fileRef = BAA3CC242F55A17E0096A85B /* door_stoneframe_02_Roughnessdoor_stoneframe_02_Metalness.tex */; };
+		BAA3CC4C2F55A17F0096A85B /* IntelSponza.bin in Resources */ = {isa = PBXBuildFile; fileRef = BAA3CC282F55A17E0096A85B /* IntelSponza.bin */; };
+		BAA3CC4D2F55A17F0096A85B /* lionhead_01_BaseColor.tex in Resources */ = {isa = PBXBuildFile; fileRef = BAA3CC292F55A17E0096A85B /* lionhead_01_BaseColor.tex */; };
+		BAA3CC4E2F55A17F0096A85B /* stone_trims_02_Roughnessstone_trims_02_Metalness.tex in Resources */ = {isa = PBXBuildFile; fileRef = BAA3CC3D2F55A17E0096A85B /* stone_trims_02_Roughnessstone_trims_02_Metalness.tex */; };
+		BAA3CC4F2F55A17F0096A85B /* col_1stfloor_BaseColor.tex in Resources */ = {isa = PBXBuildFile; fileRef = BAA3CC0A2F55A17E0096A85B /* col_1stfloor_BaseColor.tex */; };
+		BAA3CC502F55A17F0096A85B /* floor_tiles_01_Roughnessfloor_tiles_01_Metalness.tex in Resources */ = {isa = PBXBuildFile; fileRef = BAA3CC272F55A17E0096A85B /* floor_tiles_01_Roughnessfloor_tiles_01_Metalness.tex */; };
+		BAA3CC512F55A17F0096A85B /* window_frame_01_Normal.tex in Resources */ = {isa = PBXBuildFile; fileRef = BAA3CC422F55A17E0096A85B /* window_frame_01_Normal.tex */; };
+		BAA3CC522F55A17F0096A85B /* curtain_fabric_red_BaseColor.tex in Resources */ = {isa = PBXBuildFile; fileRef = BAA3CC1C2F55A17E0096A85B /* curtain_fabric_red_BaseColor.tex */; };
+		BAA3CC532F55A17F0096A85B /* brickwall_02_Roughnessbrickwall_02_Metalness.tex in Resources */ = {isa = PBXBuildFile; fileRef = BAA3CC042F55A17E0096A85B /* brickwall_02_Roughnessbrickwall_02_Metalness.tex */; };
+		BAA3CC542F55A17F0096A85B /* metal_door_01_BaseColor.tex in Resources */ = {isa = PBXBuildFile; fileRef = BAA3CC2C2F55A17E0096A85B /* metal_door_01_BaseColor.tex */; };
+		BAA3CC552F55A17F0096A85B /* ceiling_plaster_02_Roughnessceiling_plaster_01_Metalness.tex in Resources */ = {isa = PBXBuildFile; fileRef = BAA3CC092F55A17E0096A85B /* ceiling_plaster_02_Roughnessceiling_plaster_01_Metalness.tex */; };
+		BAA3CC562F55A17F0096A85B /* ceiling_plaster_02_BaseColor.tex in Resources */ = {isa = PBXBuildFile; fileRef = BAA3CC082F55A17E0096A85B /* ceiling_plaster_02_BaseColor.tex */; };
+		BAA3CC572F55A17F0096A85B /* door_stoneframe_02_Normal.tex in Resources */ = {isa = PBXBuildFile; fileRef = BAA3CC232F55A17E0096A85B /* door_stoneframe_02_Normal.tex */; };
+		BAA3CC582F55A17F0096A85B /* ornament_01_BaseColor.tex in Resources */ = {isa = PBXBuildFile; fileRef = BAA3CC2F2F55A17E0096A85B /* ornament_01_BaseColor.tex */; };
+		BAA3CC592F55A17F0096A85B /* ceiling_plaster_01_BaseColor.tex in Resources */ = {isa = PBXBuildFile; fileRef = BAA3CC052F55A17E0096A85B /* ceiling_plaster_01_BaseColor.tex */; };
+		BAA3CC5A2F55A17F0096A85B /* stone_trims_02_Normal.tex in Resources */ = {isa = PBXBuildFile; fileRef = BAA3CC3C2F55A17E0096A85B /* stone_trims_02_Normal.tex */; };
+		BAA3CC5B2F55A17F0096A85B /* ceiling_plaster_01_Normal.tex in Resources */ = {isa = PBXBuildFile; fileRef = BAA3CC062F55A17E0096A85B /* ceiling_plaster_01_Normal.tex */; };
+		BAA3CC5C2F55A17F0096A85B /* ceiling_plaster_01_Roughnessceiling_plaster_01_Metalness.tex in Resources */ = {isa = PBXBuildFile; fileRef = BAA3CC072F55A17E0096A85B /* ceiling_plaster_01_Roughnessceiling_plaster_01_Metalness.tex */; };
+		BAA3CC5D2F55A17F0096A85B /* col_brickwall_01_BaseColor.tex in Resources */ = {isa = PBXBuildFile; fileRef = BAA3CC0D2F55A17E0096A85B /* col_brickwall_01_BaseColor.tex */; };
+		BAA3CC5E2F55A17F0096A85B /* col_head_1stfloor_Roughnesscol_head_1stfloor_Metalness.tex in Resources */ = {isa = PBXBuildFile; fileRef = BAA3CC122F55A17E0096A85B /* col_head_1stfloor_Roughnesscol_head_1stfloor_Metalness.tex */; };
+		BAA3CC5F2F55A17F0096A85B /* curtain_fabric_green_BaseColor.tex in Resources */ = {isa = PBXBuildFile; fileRef = BAA3CC1A2F55A17E0096A85B /* curtain_fabric_green_BaseColor.tex */; };
+		BAA3CC602F55A17F0096A85B /* stone_trims_02_BaseColor.tex in Resources */ = {isa = PBXBuildFile; fileRef = BAA3CC3B2F55A17E0096A85B /* stone_trims_02_BaseColor.tex */; };
+		BAA3CC612F55A17F0096A85B /* door_stoneframe_01_BaseColor.tex in Resources */ = {isa = PBXBuildFile; fileRef = BAA3CC1F2F55A17E0096A85B /* door_stoneframe_01_BaseColor.tex */; };
+		BAA3CC622F55A17F0096A85B /* brickwall_01_Normal.tex in Resources */ = {isa = PBXBuildFile; fileRef = BAA3CC002F55A17E0096A85B /* brickwall_01_Normal.tex */; };
+		BAA3CC632F55A17F0096A85B /* wood_tile_01_Roughnesswood_tile_01_Metalness.tex in Resources */ = {isa = PBXBuildFile; fileRef = BAA3CC492F55A17E0096A85B /* wood_tile_01_Roughnesswood_tile_01_Metalness.tex */; };
+		BAA3CC642F55A17F0096A85B /* brickwall_02_Normal.tex in Resources */ = {isa = PBXBuildFile; fileRef = BAA3CC032F55A17E0096A85B /* brickwall_02_Normal.tex */; };
+		BAA3CC652F55A17F0096A85B /* wood_tile_01_BaseColor.tex in Resources */ = {isa = PBXBuildFile; fileRef = BAA3CC472F55A17E0096A85B /* wood_tile_01_BaseColor.tex */; };
+		BAA3CC662F55A17F0096A85B /* col_head_2ndfloor_02_BaseColor.tex in Resources */ = {isa = PBXBuildFile; fileRef = BAA3CC132F55A17E0096A85B /* col_head_2ndfloor_02_BaseColor.tex */; };
+		BAA3CC672F55A17F0096A85B /* col_brickwall_01_Normal.tex in Resources */ = {isa = PBXBuildFile; fileRef = BAA3CC0E2F55A17E0096A85B /* col_brickwall_01_Normal.tex */; };
+		BAA3CC682F55A17F0096A85B /* stone_01_tile_Roughnessstone_01_tile_Metalness.tex in Resources */ = {isa = PBXBuildFile; fileRef = BAA3CC372F55A17E0096A85B /* stone_01_tile_Roughnessstone_01_tile_Metalness.tex */; };
+		BAA3CC692F55A17F0096A85B /* metal_door_01_Normal.tex in Resources */ = {isa = PBXBuildFile; fileRef = BAA3CC2D2F55A17E0096A85B /* metal_door_01_Normal.tex */; };
+		BAA3CC6A2F55A17F0096A85B /* brickwall_01_Roughnessbrickwall_01_Metalness.tex in Resources */ = {isa = PBXBuildFile; fileRef = BAA3CC012F55A17E0096A85B /* brickwall_01_Roughnessbrickwall_01_Metalness.tex */; };
+		BAA3CC6B2F55A17F0096A85B /* stones_2ndfloor_01_Normal.tex in Resources */ = {isa = PBXBuildFile; fileRef = BAA3CC3F2F55A17E0096A85B /* stones_2ndfloor_01_Normal.tex */; };
+		BAA3CC6C2F55A17F0096A85B /* arch_stone_wall_01_BaseColor.tex in Resources */ = {isa = PBXBuildFile; fileRef = BAA3CBFC2F55A17E0096A85B /* arch_stone_wall_01_BaseColor.tex */; };
+		BAA3CC6D2F55A17F0096A85B /* ornament_01_Normal.tex in Resources */ = {isa = PBXBuildFile; fileRef = BAA3CC302F55A17E0096A85B /* ornament_01_Normal.tex */; };
+		BAA3CC6E2F55A17F0096A85B /* floor_tiles_01_BaseColor.tex in Resources */ = {isa = PBXBuildFile; fileRef = BAA3CC252F55A17E0096A85B /* floor_tiles_01_BaseColor.tex */; };
+		BAA3CC6F2F55A17F0096A85B /* brickwall_01_BaseColor.tex in Resources */ = {isa = PBXBuildFile; fileRef = BAA3CBFF2F55A17E0096A85B /* brickwall_01_BaseColor.tex */; };
+		BAA3CC702F55A17F0096A85B /* stone_01_tile_Normal.tex in Resources */ = {isa = PBXBuildFile; fileRef = BAA3CC362F55A17E0096A85B /* stone_01_tile_Normal.tex */; };
+		BAA3CC712F55A17F0096A85B /* col_head_2ndfloor_02_Normal.tex in Resources */ = {isa = PBXBuildFile; fileRef = BAA3CC142F55A17E0096A85B /* col_head_2ndfloor_02_Normal.tex */; };
+		BAA3CC722F55A17F0096A85B /* brickwall_02_BaseColor.tex in Resources */ = {isa = PBXBuildFile; fileRef = BAA3CC022F55A17E0096A85B /* brickwall_02_BaseColor.tex */; };
+		BAA3CC732F55A17F0096A85B /* col_head_2ndfloor_02_Roughnesscol_head_2ndfloor_02_Metalness.tex in Resources */ = {isa = PBXBuildFile; fileRef = BAA3CC152F55A17E0096A85B /* col_head_2ndfloor_02_Roughnesscol_head_2ndfloor_02_Metalness.tex */; };
+		BAA3CC742F55A17F0096A85B /* wood_tile_01_Normal.tex in Resources */ = {isa = PBXBuildFile; fileRef = BAA3CC482F55A17E0096A85B /* wood_tile_01_Normal.tex */; };
+		BAA3CC752F55A17F0096A85B /* stone_trims_01_Roughnessstone_trims_01_Metalness.tex in Resources */ = {isa = PBXBuildFile; fileRef = BAA3CC3A2F55A17E0096A85B /* stone_trims_01_Roughnessstone_trims_01_Metalness.tex */; };
+		BAA3CC762F55A17F0096A85B /* col_head_2ndfloor_03_Normal.tex in Resources */ = {isa = PBXBuildFile; fileRef = BAA3CC172F55A17E0096A85B /* col_head_2ndfloor_03_Normal.tex */; };
+		BAA3CC772F55A17F0096A85B /* roof_tiles_01_Roughnessroof_tiles_01_Metalness.tex in Resources */ = {isa = PBXBuildFile; fileRef = BAA3CC342F55A17E0096A85B /* roof_tiles_01_Roughnessroof_tiles_01_Metalness.tex */; };
+		BAA3CC782F55A17F0096A85B /* wood_door_01_BaseColor.tex in Resources */ = {isa = PBXBuildFile; fileRef = BAA3CC442F55A17E0096A85B /* wood_door_01_BaseColor.tex */; };
+		BAA3CC792F55A17F0096A85B /* dirt_decal_01_dirt_decal_01_mask_gltf_alpha_dirt_decal_Opacity.tex in Resources */ = {isa = PBXBuildFile; fileRef = BAA3CC1E2F55A17E0096A85B /* dirt_decal_01_dirt_decal_01_mask_gltf_alpha_dirt_decal_Opacity.tex */; };
+		BAA3CC7A2F55A17F0096A85B /* door_stoneframe_02_BaseColor.tex in Resources */ = {isa = PBXBuildFile; fileRef = BAA3CC222F55A17E0096A85B /* door_stoneframe_02_BaseColor.tex */; };
+		BAA3CC7B2F55A17F0096A85B /* window_frame_01_BaseColor.tex in Resources */ = {isa = PBXBuildFile; fileRef = BAA3CC412F55A17E0096A85B /* window_frame_01_BaseColor.tex */; };
+		BAA3CC7C2F55A17F0096A85B /* col_head_2ndfloor_03_BaseColor.tex in Resources */ = {isa = PBXBuildFile; fileRef = BAA3CC162F55A17E0096A85B /* col_head_2ndfloor_03_BaseColor.tex */; };
+		BAA3CC7D2F55A17F0096A85B /* curtain_fabric_blue_BaseColor.tex in Resources */ = {isa = PBXBuildFile; fileRef = BAA3CC192F55A17E0096A85B /* curtain_fabric_blue_BaseColor.tex */; };
+		BAA3CC7E2F55A17F0096A85B /* stones_2ndfloor_01_BaseColor.tex in Resources */ = {isa = PBXBuildFile; fileRef = BAA3CC3E2F55A17E0096A85B /* stones_2ndfloor_01_BaseColor.tex */; };
+		BAA3CC7F2F55A17F0096A85B /* arch_stone_wall_01_Normal.tex in Resources */ = {isa = PBXBuildFile; fileRef = BAA3CBFD2F55A17E0096A85B /* arch_stone_wall_01_Normal.tex */; };
+		BAA3CC802F55A17F0096A85B /* door_stoneframe_01_Roughnessdoor_stoneframe_01_Metalness.tex in Resources */ = {isa = PBXBuildFile; fileRef = BAA3CC212F55A17E0096A85B /* door_stoneframe_01_Roughnessdoor_stoneframe_01_Metalness.tex */; };
+		BAA3CC812F55A17F0096A85B /* stone_trims_01_BaseColor.tex in Resources */ = {isa = PBXBuildFile; fileRef = BAA3CC382F55A17E0096A85B /* stone_trims_01_BaseColor.tex */; };
+		BAA3CC822F55A17F0096A85B /* wood_door_01_Roughnesswood_door_01_Metalness.tex in Resources */ = {isa = PBXBuildFile; fileRef = BAA3CC462F55A17E0096A85B /* wood_door_01_Roughnesswood_door_01_Metalness.tex */; };
+		BAA3CC832F55A17F0096A85B /* col_brickwall_01_Roughnesscol_brickwall_01_Metalness.tex in Resources */ = {isa = PBXBuildFile; fileRef = BAA3CC0F2F55A17E0096A85B /* col_brickwall_01_Roughnesscol_brickwall_01_Metalness.tex */; };
+		BAA3CC842F55A17F0096A85B /* col_head_1stfloor_BaseColor.tex in Resources */ = {isa = PBXBuildFile; fileRef = BAA3CC102F55A17E0096A85B /* col_head_1stfloor_BaseColor.tex */; };
+		BAA3CC852F55A17F0096A85B /* stone_trims_01_Normal.tex in Resources */ = {isa = PBXBuildFile; fileRef = BAA3CC392F55A17E0096A85B /* stone_trims_01_Normal.tex */; };
+		BAA3CC862F55A17F0096A85B /* floor_tiles_01_Normal.tex in Resources */ = {isa = PBXBuildFile; fileRef = BAA3CC262F55A17E0096A85B /* floor_tiles_01_Normal.tex */; };
+		BAA3CC872F55A17F0096A85B /* window_frame_01_Roughnesswindow_frame_01_Metalness.tex in Resources */ = {isa = PBXBuildFile; fileRef = BAA3CC432F55A17E0096A85B /* window_frame_01_Roughnesswindow_frame_01_Metalness.tex */; };
+		BAA3CC882F55A17F0096A85B /* col_head_1stfloor_Normal.tex in Resources */ = {isa = PBXBuildFile; fileRef = BAA3CC112F55A17E0096A85B /* col_head_1stfloor_Normal.tex */; };
+		BAA3CC892F55A17F0096A85B /* roof_tiles_01_Normal.tex in Resources */ = {isa = PBXBuildFile; fileRef = BAA3CC332F55A17E0096A85B /* roof_tiles_01_Normal.tex */; };
+		BAA3CC8A2F55A17F0096A85B /* col_1stfloor_Normal.tex in Resources */ = {isa = PBXBuildFile; fileRef = BAA3CC0B2F55A17E0096A85B /* col_1stfloor_Normal.tex */; };
+		BAA3CC8B2F55A17F0096A85B /* arch_stone_wall_01_Roughnessarch_stone_wall_01_Metalness.tex in Resources */ = {isa = PBXBuildFile; fileRef = BAA3CBFE2F55A17E0096A85B /* arch_stone_wall_01_Roughnessarch_stone_wall_01_Metalness.tex */; };
+		BAA3CC8C2F55A17F0096A85B /* lionhead_01_Normal.tex in Resources */ = {isa = PBXBuildFile; fileRef = BAA3CC2A2F55A17E0096A85B /* lionhead_01_Normal.tex */; };
+		BAA3CC8D2F55A17F0096A85B /* roof_tiles_01_BaseColor.tex in Resources */ = {isa = PBXBuildFile; fileRef = BAA3CC322F55A17E0096A85B /* roof_tiles_01_BaseColor.tex */; };
+		BAA3CC8E2F55A17F0096A85B /* lionhead_01_Roughnesslionhead_01_Metalness.tex in Resources */ = {isa = PBXBuildFile; fileRef = BAA3CC2B2F55A17E0096A85B /* lionhead_01_Roughnesslionhead_01_Metalness.tex */; };
+		BAA3CC8F2F55A17F0096A85B /* door_stoneframe_01_Normal.tex in Resources */ = {isa = PBXBuildFile; fileRef = BAA3CC202F55A17E0096A85B /* door_stoneframe_01_Normal.tex */; };
+		BAA3CC902F55A17F0096A85B /* col_head_2ndfloor_03_Roughnesscol_head_2ndfloor_03_Metalness.tex in Resources */ = {isa = PBXBuildFile; fileRef = BAA3CC182F55A17E0096A85B /* col_head_2ndfloor_03_Roughnesscol_head_2ndfloor_03_Metalness.tex */; };
+		BAA3CC912F55A17F0096A85B /* stones_2ndfloor_01_Roughnessstones_2ndfloor_01_Metalness.tex in Resources */ = {isa = PBXBuildFile; fileRef = BAA3CC402F55A17E0096A85B /* stones_2ndfloor_01_Roughnessstones_2ndfloor_01_Metalness.tex */; };
+		BAA3CC922F55A17F0096A85B /* col_1stfloor_Roughnesscol_1stfloor_Metalness.tex in Resources */ = {isa = PBXBuildFile; fileRef = BAA3CC0C2F55A17E0096A85B /* col_1stfloor_Roughnesscol_1stfloor_Metalness.tex */; };
+		BAA3CC932F55A17F0096A85B /* metal_door_01_Roughnessmetal_door_01_Metalness.tex in Resources */ = {isa = PBXBuildFile; fileRef = BAA3CC2E2F55A17E0096A85B /* metal_door_01_Roughnessmetal_door_01_Metalness.tex */; };
+		BAA3CC942F55A17F0096A85B /* curtain_fabric_Roughnesscurtain_fabric_Metalness.tex in Resources */ = {isa = PBXBuildFile; fileRef = BAA3CC1D2F55A17E0096A85B /* curtain_fabric_Roughnesscurtain_fabric_Metalness.tex */; };
+		BAA3CC952F55A17F0096A85B /* curtain_fabric_Normal.tex in Resources */ = {isa = PBXBuildFile; fileRef = BAA3CC1B2F55A17E0096A85B /* curtain_fabric_Normal.tex */; };
+		BAA3CC962F55A17F0096A85B /* ornament_01_Roughnessornament_01_Metalness.tex in Resources */ = {isa = PBXBuildFile; fileRef = BAA3CC312F55A17E0096A85B /* ornament_01_Roughnessornament_01_Metalness.tex */; };
+		BAA3CC972F55A17F0096A85B /* wood_door_01_Normal.tex in Resources */ = {isa = PBXBuildFile; fileRef = BAA3CC452F55A17E0096A85B /* wood_door_01_Normal.tex */; };
+		BAA3CC982F55A17F0096A85B /* stone_01_tile_BaseColor.tex in Resources */ = {isa = PBXBuildFile; fileRef = BAA3CC352F55A17E0096A85B /* stone_01_tile_BaseColor.tex */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -182,6 +260,84 @@
 		BA91F3812F4F4BC900BF334B /* 2_input_neural_brdf.mlpackage */ = {isa = PBXFileReference; lastKnownFileType = folder.mlpackage; path = 2_input_neural_brdf.mlpackage; sourceTree = "<group>"; };
 		BA91F3822F4F4BC900BF334B /* 2_input_neural_brdf.mtlpackage */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = 2_input_neural_brdf.mtlpackage; sourceTree = "<group>"; };
 		BA91F3832F4F4BC900BF334B /* 2_input_neural_brdf.pth */ = {isa = PBXFileReference; lastKnownFileType = file; path = 2_input_neural_brdf.pth; sourceTree = "<group>"; };
+		BAA3CBFC2F55A17E0096A85B /* arch_stone_wall_01_BaseColor.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = arch_stone_wall_01_BaseColor.tex; sourceTree = "<group>"; };
+		BAA3CBFD2F55A17E0096A85B /* arch_stone_wall_01_Normal.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = arch_stone_wall_01_Normal.tex; sourceTree = "<group>"; };
+		BAA3CBFE2F55A17E0096A85B /* arch_stone_wall_01_Roughnessarch_stone_wall_01_Metalness.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = arch_stone_wall_01_Roughnessarch_stone_wall_01_Metalness.tex; sourceTree = "<group>"; };
+		BAA3CBFF2F55A17E0096A85B /* brickwall_01_BaseColor.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = brickwall_01_BaseColor.tex; sourceTree = "<group>"; };
+		BAA3CC002F55A17E0096A85B /* brickwall_01_Normal.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = brickwall_01_Normal.tex; sourceTree = "<group>"; };
+		BAA3CC012F55A17E0096A85B /* brickwall_01_Roughnessbrickwall_01_Metalness.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = brickwall_01_Roughnessbrickwall_01_Metalness.tex; sourceTree = "<group>"; };
+		BAA3CC022F55A17E0096A85B /* brickwall_02_BaseColor.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = brickwall_02_BaseColor.tex; sourceTree = "<group>"; };
+		BAA3CC032F55A17E0096A85B /* brickwall_02_Normal.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = brickwall_02_Normal.tex; sourceTree = "<group>"; };
+		BAA3CC042F55A17E0096A85B /* brickwall_02_Roughnessbrickwall_02_Metalness.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = brickwall_02_Roughnessbrickwall_02_Metalness.tex; sourceTree = "<group>"; };
+		BAA3CC052F55A17E0096A85B /* ceiling_plaster_01_BaseColor.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = ceiling_plaster_01_BaseColor.tex; sourceTree = "<group>"; };
+		BAA3CC062F55A17E0096A85B /* ceiling_plaster_01_Normal.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = ceiling_plaster_01_Normal.tex; sourceTree = "<group>"; };
+		BAA3CC072F55A17E0096A85B /* ceiling_plaster_01_Roughnessceiling_plaster_01_Metalness.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = ceiling_plaster_01_Roughnessceiling_plaster_01_Metalness.tex; sourceTree = "<group>"; };
+		BAA3CC082F55A17E0096A85B /* ceiling_plaster_02_BaseColor.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = ceiling_plaster_02_BaseColor.tex; sourceTree = "<group>"; };
+		BAA3CC092F55A17E0096A85B /* ceiling_plaster_02_Roughnessceiling_plaster_01_Metalness.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = ceiling_plaster_02_Roughnessceiling_plaster_01_Metalness.tex; sourceTree = "<group>"; };
+		BAA3CC0A2F55A17E0096A85B /* col_1stfloor_BaseColor.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = col_1stfloor_BaseColor.tex; sourceTree = "<group>"; };
+		BAA3CC0B2F55A17E0096A85B /* col_1stfloor_Normal.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = col_1stfloor_Normal.tex; sourceTree = "<group>"; };
+		BAA3CC0C2F55A17E0096A85B /* col_1stfloor_Roughnesscol_1stfloor_Metalness.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = col_1stfloor_Roughnesscol_1stfloor_Metalness.tex; sourceTree = "<group>"; };
+		BAA3CC0D2F55A17E0096A85B /* col_brickwall_01_BaseColor.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = col_brickwall_01_BaseColor.tex; sourceTree = "<group>"; };
+		BAA3CC0E2F55A17E0096A85B /* col_brickwall_01_Normal.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = col_brickwall_01_Normal.tex; sourceTree = "<group>"; };
+		BAA3CC0F2F55A17E0096A85B /* col_brickwall_01_Roughnesscol_brickwall_01_Metalness.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = col_brickwall_01_Roughnesscol_brickwall_01_Metalness.tex; sourceTree = "<group>"; };
+		BAA3CC102F55A17E0096A85B /* col_head_1stfloor_BaseColor.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = col_head_1stfloor_BaseColor.tex; sourceTree = "<group>"; };
+		BAA3CC112F55A17E0096A85B /* col_head_1stfloor_Normal.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = col_head_1stfloor_Normal.tex; sourceTree = "<group>"; };
+		BAA3CC122F55A17E0096A85B /* col_head_1stfloor_Roughnesscol_head_1stfloor_Metalness.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = col_head_1stfloor_Roughnesscol_head_1stfloor_Metalness.tex; sourceTree = "<group>"; };
+		BAA3CC132F55A17E0096A85B /* col_head_2ndfloor_02_BaseColor.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = col_head_2ndfloor_02_BaseColor.tex; sourceTree = "<group>"; };
+		BAA3CC142F55A17E0096A85B /* col_head_2ndfloor_02_Normal.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = col_head_2ndfloor_02_Normal.tex; sourceTree = "<group>"; };
+		BAA3CC152F55A17E0096A85B /* col_head_2ndfloor_02_Roughnesscol_head_2ndfloor_02_Metalness.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = col_head_2ndfloor_02_Roughnesscol_head_2ndfloor_02_Metalness.tex; sourceTree = "<group>"; };
+		BAA3CC162F55A17E0096A85B /* col_head_2ndfloor_03_BaseColor.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = col_head_2ndfloor_03_BaseColor.tex; sourceTree = "<group>"; };
+		BAA3CC172F55A17E0096A85B /* col_head_2ndfloor_03_Normal.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = col_head_2ndfloor_03_Normal.tex; sourceTree = "<group>"; };
+		BAA3CC182F55A17E0096A85B /* col_head_2ndfloor_03_Roughnesscol_head_2ndfloor_03_Metalness.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = col_head_2ndfloor_03_Roughnesscol_head_2ndfloor_03_Metalness.tex; sourceTree = "<group>"; };
+		BAA3CC192F55A17E0096A85B /* curtain_fabric_blue_BaseColor.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = curtain_fabric_blue_BaseColor.tex; sourceTree = "<group>"; };
+		BAA3CC1A2F55A17E0096A85B /* curtain_fabric_green_BaseColor.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = curtain_fabric_green_BaseColor.tex; sourceTree = "<group>"; };
+		BAA3CC1B2F55A17E0096A85B /* curtain_fabric_Normal.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = curtain_fabric_Normal.tex; sourceTree = "<group>"; };
+		BAA3CC1C2F55A17E0096A85B /* curtain_fabric_red_BaseColor.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = curtain_fabric_red_BaseColor.tex; sourceTree = "<group>"; };
+		BAA3CC1D2F55A17E0096A85B /* curtain_fabric_Roughnesscurtain_fabric_Metalness.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = curtain_fabric_Roughnesscurtain_fabric_Metalness.tex; sourceTree = "<group>"; };
+		BAA3CC1E2F55A17E0096A85B /* dirt_decal_01_dirt_decal_01_mask_gltf_alpha_dirt_decal_Opacity.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = dirt_decal_01_dirt_decal_01_mask_gltf_alpha_dirt_decal_Opacity.tex; sourceTree = "<group>"; };
+		BAA3CC1F2F55A17E0096A85B /* door_stoneframe_01_BaseColor.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = door_stoneframe_01_BaseColor.tex; sourceTree = "<group>"; };
+		BAA3CC202F55A17E0096A85B /* door_stoneframe_01_Normal.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = door_stoneframe_01_Normal.tex; sourceTree = "<group>"; };
+		BAA3CC212F55A17E0096A85B /* door_stoneframe_01_Roughnessdoor_stoneframe_01_Metalness.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = door_stoneframe_01_Roughnessdoor_stoneframe_01_Metalness.tex; sourceTree = "<group>"; };
+		BAA3CC222F55A17E0096A85B /* door_stoneframe_02_BaseColor.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = door_stoneframe_02_BaseColor.tex; sourceTree = "<group>"; };
+		BAA3CC232F55A17E0096A85B /* door_stoneframe_02_Normal.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = door_stoneframe_02_Normal.tex; sourceTree = "<group>"; };
+		BAA3CC242F55A17E0096A85B /* door_stoneframe_02_Roughnessdoor_stoneframe_02_Metalness.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = door_stoneframe_02_Roughnessdoor_stoneframe_02_Metalness.tex; sourceTree = "<group>"; };
+		BAA3CC252F55A17E0096A85B /* floor_tiles_01_BaseColor.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = floor_tiles_01_BaseColor.tex; sourceTree = "<group>"; };
+		BAA3CC262F55A17E0096A85B /* floor_tiles_01_Normal.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = floor_tiles_01_Normal.tex; sourceTree = "<group>"; };
+		BAA3CC272F55A17E0096A85B /* floor_tiles_01_Roughnessfloor_tiles_01_Metalness.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = floor_tiles_01_Roughnessfloor_tiles_01_Metalness.tex; sourceTree = "<group>"; };
+		BAA3CC282F55A17E0096A85B /* IntelSponza.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = IntelSponza.bin; sourceTree = "<group>"; };
+		BAA3CC292F55A17E0096A85B /* lionhead_01_BaseColor.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = lionhead_01_BaseColor.tex; sourceTree = "<group>"; };
+		BAA3CC2A2F55A17E0096A85B /* lionhead_01_Normal.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = lionhead_01_Normal.tex; sourceTree = "<group>"; };
+		BAA3CC2B2F55A17E0096A85B /* lionhead_01_Roughnesslionhead_01_Metalness.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = lionhead_01_Roughnesslionhead_01_Metalness.tex; sourceTree = "<group>"; };
+		BAA3CC2C2F55A17E0096A85B /* metal_door_01_BaseColor.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = metal_door_01_BaseColor.tex; sourceTree = "<group>"; };
+		BAA3CC2D2F55A17E0096A85B /* metal_door_01_Normal.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = metal_door_01_Normal.tex; sourceTree = "<group>"; };
+		BAA3CC2E2F55A17E0096A85B /* metal_door_01_Roughnessmetal_door_01_Metalness.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = metal_door_01_Roughnessmetal_door_01_Metalness.tex; sourceTree = "<group>"; };
+		BAA3CC2F2F55A17E0096A85B /* ornament_01_BaseColor.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = ornament_01_BaseColor.tex; sourceTree = "<group>"; };
+		BAA3CC302F55A17E0096A85B /* ornament_01_Normal.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = ornament_01_Normal.tex; sourceTree = "<group>"; };
+		BAA3CC312F55A17E0096A85B /* ornament_01_Roughnessornament_01_Metalness.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = ornament_01_Roughnessornament_01_Metalness.tex; sourceTree = "<group>"; };
+		BAA3CC322F55A17E0096A85B /* roof_tiles_01_BaseColor.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = roof_tiles_01_BaseColor.tex; sourceTree = "<group>"; };
+		BAA3CC332F55A17E0096A85B /* roof_tiles_01_Normal.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = roof_tiles_01_Normal.tex; sourceTree = "<group>"; };
+		BAA3CC342F55A17E0096A85B /* roof_tiles_01_Roughnessroof_tiles_01_Metalness.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = roof_tiles_01_Roughnessroof_tiles_01_Metalness.tex; sourceTree = "<group>"; };
+		BAA3CC352F55A17E0096A85B /* stone_01_tile_BaseColor.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = stone_01_tile_BaseColor.tex; sourceTree = "<group>"; };
+		BAA3CC362F55A17E0096A85B /* stone_01_tile_Normal.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = stone_01_tile_Normal.tex; sourceTree = "<group>"; };
+		BAA3CC372F55A17E0096A85B /* stone_01_tile_Roughnessstone_01_tile_Metalness.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = stone_01_tile_Roughnessstone_01_tile_Metalness.tex; sourceTree = "<group>"; };
+		BAA3CC382F55A17E0096A85B /* stone_trims_01_BaseColor.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = stone_trims_01_BaseColor.tex; sourceTree = "<group>"; };
+		BAA3CC392F55A17E0096A85B /* stone_trims_01_Normal.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = stone_trims_01_Normal.tex; sourceTree = "<group>"; };
+		BAA3CC3A2F55A17E0096A85B /* stone_trims_01_Roughnessstone_trims_01_Metalness.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = stone_trims_01_Roughnessstone_trims_01_Metalness.tex; sourceTree = "<group>"; };
+		BAA3CC3B2F55A17E0096A85B /* stone_trims_02_BaseColor.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = stone_trims_02_BaseColor.tex; sourceTree = "<group>"; };
+		BAA3CC3C2F55A17E0096A85B /* stone_trims_02_Normal.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = stone_trims_02_Normal.tex; sourceTree = "<group>"; };
+		BAA3CC3D2F55A17E0096A85B /* stone_trims_02_Roughnessstone_trims_02_Metalness.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = stone_trims_02_Roughnessstone_trims_02_Metalness.tex; sourceTree = "<group>"; };
+		BAA3CC3E2F55A17E0096A85B /* stones_2ndfloor_01_BaseColor.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = stones_2ndfloor_01_BaseColor.tex; sourceTree = "<group>"; };
+		BAA3CC3F2F55A17E0096A85B /* stones_2ndfloor_01_Normal.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = stones_2ndfloor_01_Normal.tex; sourceTree = "<group>"; };
+		BAA3CC402F55A17E0096A85B /* stones_2ndfloor_01_Roughnessstones_2ndfloor_01_Metalness.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = stones_2ndfloor_01_Roughnessstones_2ndfloor_01_Metalness.tex; sourceTree = "<group>"; };
+		BAA3CC412F55A17E0096A85B /* window_frame_01_BaseColor.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = window_frame_01_BaseColor.tex; sourceTree = "<group>"; };
+		BAA3CC422F55A17E0096A85B /* window_frame_01_Normal.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = window_frame_01_Normal.tex; sourceTree = "<group>"; };
+		BAA3CC432F55A17E0096A85B /* window_frame_01_Roughnesswindow_frame_01_Metalness.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = window_frame_01_Roughnesswindow_frame_01_Metalness.tex; sourceTree = "<group>"; };
+		BAA3CC442F55A17E0096A85B /* wood_door_01_BaseColor.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = wood_door_01_BaseColor.tex; sourceTree = "<group>"; };
+		BAA3CC452F55A17E0096A85B /* wood_door_01_Normal.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = wood_door_01_Normal.tex; sourceTree = "<group>"; };
+		BAA3CC462F55A17E0096A85B /* wood_door_01_Roughnesswood_door_01_Metalness.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = wood_door_01_Roughnesswood_door_01_Metalness.tex; sourceTree = "<group>"; };
+		BAA3CC472F55A17E0096A85B /* wood_tile_01_BaseColor.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = wood_tile_01_BaseColor.tex; sourceTree = "<group>"; };
+		BAA3CC482F55A17E0096A85B /* wood_tile_01_Normal.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = wood_tile_01_Normal.tex; sourceTree = "<group>"; };
+		BAA3CC492F55A17E0096A85B /* wood_tile_01_Roughnesswood_tile_01_Metalness.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = wood_tile_01_Roughnesswood_tile_01_Metalness.tex; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -304,6 +460,7 @@
 		BA02D9F22F558F09009EBF35 /* BakedAssets */ = {
 			isa = PBXGroup;
 			children = (
+				BAA3CC4A2F55A17E0096A85B /* IntelSponza */,
 				BA02DA3C2F559466009EBF35 /* Cube */,
 				BA02D9F12F558F09009EBF35 /* Sponza */,
 			);
@@ -359,6 +516,91 @@
 				BA91F3832F4F4BC900BF334B /* 2_input_neural_brdf.pth */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		BAA3CC4A2F55A17E0096A85B /* IntelSponza */ = {
+			isa = PBXGroup;
+			children = (
+				BAA3CBFC2F55A17E0096A85B /* arch_stone_wall_01_BaseColor.tex */,
+				BAA3CBFD2F55A17E0096A85B /* arch_stone_wall_01_Normal.tex */,
+				BAA3CBFE2F55A17E0096A85B /* arch_stone_wall_01_Roughnessarch_stone_wall_01_Metalness.tex */,
+				BAA3CBFF2F55A17E0096A85B /* brickwall_01_BaseColor.tex */,
+				BAA3CC002F55A17E0096A85B /* brickwall_01_Normal.tex */,
+				BAA3CC012F55A17E0096A85B /* brickwall_01_Roughnessbrickwall_01_Metalness.tex */,
+				BAA3CC022F55A17E0096A85B /* brickwall_02_BaseColor.tex */,
+				BAA3CC032F55A17E0096A85B /* brickwall_02_Normal.tex */,
+				BAA3CC042F55A17E0096A85B /* brickwall_02_Roughnessbrickwall_02_Metalness.tex */,
+				BAA3CC052F55A17E0096A85B /* ceiling_plaster_01_BaseColor.tex */,
+				BAA3CC062F55A17E0096A85B /* ceiling_plaster_01_Normal.tex */,
+				BAA3CC072F55A17E0096A85B /* ceiling_plaster_01_Roughnessceiling_plaster_01_Metalness.tex */,
+				BAA3CC082F55A17E0096A85B /* ceiling_plaster_02_BaseColor.tex */,
+				BAA3CC092F55A17E0096A85B /* ceiling_plaster_02_Roughnessceiling_plaster_01_Metalness.tex */,
+				BAA3CC0A2F55A17E0096A85B /* col_1stfloor_BaseColor.tex */,
+				BAA3CC0B2F55A17E0096A85B /* col_1stfloor_Normal.tex */,
+				BAA3CC0C2F55A17E0096A85B /* col_1stfloor_Roughnesscol_1stfloor_Metalness.tex */,
+				BAA3CC0D2F55A17E0096A85B /* col_brickwall_01_BaseColor.tex */,
+				BAA3CC0E2F55A17E0096A85B /* col_brickwall_01_Normal.tex */,
+				BAA3CC0F2F55A17E0096A85B /* col_brickwall_01_Roughnesscol_brickwall_01_Metalness.tex */,
+				BAA3CC102F55A17E0096A85B /* col_head_1stfloor_BaseColor.tex */,
+				BAA3CC112F55A17E0096A85B /* col_head_1stfloor_Normal.tex */,
+				BAA3CC122F55A17E0096A85B /* col_head_1stfloor_Roughnesscol_head_1stfloor_Metalness.tex */,
+				BAA3CC132F55A17E0096A85B /* col_head_2ndfloor_02_BaseColor.tex */,
+				BAA3CC142F55A17E0096A85B /* col_head_2ndfloor_02_Normal.tex */,
+				BAA3CC152F55A17E0096A85B /* col_head_2ndfloor_02_Roughnesscol_head_2ndfloor_02_Metalness.tex */,
+				BAA3CC162F55A17E0096A85B /* col_head_2ndfloor_03_BaseColor.tex */,
+				BAA3CC172F55A17E0096A85B /* col_head_2ndfloor_03_Normal.tex */,
+				BAA3CC182F55A17E0096A85B /* col_head_2ndfloor_03_Roughnesscol_head_2ndfloor_03_Metalness.tex */,
+				BAA3CC192F55A17E0096A85B /* curtain_fabric_blue_BaseColor.tex */,
+				BAA3CC1A2F55A17E0096A85B /* curtain_fabric_green_BaseColor.tex */,
+				BAA3CC1B2F55A17E0096A85B /* curtain_fabric_Normal.tex */,
+				BAA3CC1C2F55A17E0096A85B /* curtain_fabric_red_BaseColor.tex */,
+				BAA3CC1D2F55A17E0096A85B /* curtain_fabric_Roughnesscurtain_fabric_Metalness.tex */,
+				BAA3CC1E2F55A17E0096A85B /* dirt_decal_01_dirt_decal_01_mask_gltf_alpha_dirt_decal_Opacity.tex */,
+				BAA3CC1F2F55A17E0096A85B /* door_stoneframe_01_BaseColor.tex */,
+				BAA3CC202F55A17E0096A85B /* door_stoneframe_01_Normal.tex */,
+				BAA3CC212F55A17E0096A85B /* door_stoneframe_01_Roughnessdoor_stoneframe_01_Metalness.tex */,
+				BAA3CC222F55A17E0096A85B /* door_stoneframe_02_BaseColor.tex */,
+				BAA3CC232F55A17E0096A85B /* door_stoneframe_02_Normal.tex */,
+				BAA3CC242F55A17E0096A85B /* door_stoneframe_02_Roughnessdoor_stoneframe_02_Metalness.tex */,
+				BAA3CC252F55A17E0096A85B /* floor_tiles_01_BaseColor.tex */,
+				BAA3CC262F55A17E0096A85B /* floor_tiles_01_Normal.tex */,
+				BAA3CC272F55A17E0096A85B /* floor_tiles_01_Roughnessfloor_tiles_01_Metalness.tex */,
+				BAA3CC282F55A17E0096A85B /* IntelSponza.bin */,
+				BAA3CC292F55A17E0096A85B /* lionhead_01_BaseColor.tex */,
+				BAA3CC2A2F55A17E0096A85B /* lionhead_01_Normal.tex */,
+				BAA3CC2B2F55A17E0096A85B /* lionhead_01_Roughnesslionhead_01_Metalness.tex */,
+				BAA3CC2C2F55A17E0096A85B /* metal_door_01_BaseColor.tex */,
+				BAA3CC2D2F55A17E0096A85B /* metal_door_01_Normal.tex */,
+				BAA3CC2E2F55A17E0096A85B /* metal_door_01_Roughnessmetal_door_01_Metalness.tex */,
+				BAA3CC2F2F55A17E0096A85B /* ornament_01_BaseColor.tex */,
+				BAA3CC302F55A17E0096A85B /* ornament_01_Normal.tex */,
+				BAA3CC312F55A17E0096A85B /* ornament_01_Roughnessornament_01_Metalness.tex */,
+				BAA3CC322F55A17E0096A85B /* roof_tiles_01_BaseColor.tex */,
+				BAA3CC332F55A17E0096A85B /* roof_tiles_01_Normal.tex */,
+				BAA3CC342F55A17E0096A85B /* roof_tiles_01_Roughnessroof_tiles_01_Metalness.tex */,
+				BAA3CC352F55A17E0096A85B /* stone_01_tile_BaseColor.tex */,
+				BAA3CC362F55A17E0096A85B /* stone_01_tile_Normal.tex */,
+				BAA3CC372F55A17E0096A85B /* stone_01_tile_Roughnessstone_01_tile_Metalness.tex */,
+				BAA3CC382F55A17E0096A85B /* stone_trims_01_BaseColor.tex */,
+				BAA3CC392F55A17E0096A85B /* stone_trims_01_Normal.tex */,
+				BAA3CC3A2F55A17E0096A85B /* stone_trims_01_Roughnessstone_trims_01_Metalness.tex */,
+				BAA3CC3B2F55A17E0096A85B /* stone_trims_02_BaseColor.tex */,
+				BAA3CC3C2F55A17E0096A85B /* stone_trims_02_Normal.tex */,
+				BAA3CC3D2F55A17E0096A85B /* stone_trims_02_Roughnessstone_trims_02_Metalness.tex */,
+				BAA3CC3E2F55A17E0096A85B /* stones_2ndfloor_01_BaseColor.tex */,
+				BAA3CC3F2F55A17E0096A85B /* stones_2ndfloor_01_Normal.tex */,
+				BAA3CC402F55A17E0096A85B /* stones_2ndfloor_01_Roughnessstones_2ndfloor_01_Metalness.tex */,
+				BAA3CC412F55A17E0096A85B /* window_frame_01_BaseColor.tex */,
+				BAA3CC422F55A17E0096A85B /* window_frame_01_Normal.tex */,
+				BAA3CC432F55A17E0096A85B /* window_frame_01_Roughnesswindow_frame_01_Metalness.tex */,
+				BAA3CC442F55A17E0096A85B /* wood_door_01_BaseColor.tex */,
+				BAA3CC452F55A17E0096A85B /* wood_door_01_Normal.tex */,
+				BAA3CC462F55A17E0096A85B /* wood_door_01_Roughnesswood_door_01_Metalness.tex */,
+				BAA3CC472F55A17E0096A85B /* wood_tile_01_BaseColor.tex */,
+				BAA3CC482F55A17E0096A85B /* wood_tile_01_Normal.tex */,
+				BAA3CC492F55A17E0096A85B /* wood_tile_01_Roughnesswood_tile_01_Metalness.tex */,
+			);
+			path = IntelSponza;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -527,6 +769,84 @@
 				BA02DA322F558F09009EBF35 /* 3455394979645218238.tex in Resources */,
 				BA02DA332F558F09009EBF35 /* 466164707995436622.tex in Resources */,
 				BA02DA342F558F09009EBF35 /* 11872827283454512094.tex in Resources */,
+				BAA3CC4B2F55A17F0096A85B /* door_stoneframe_02_Roughnessdoor_stoneframe_02_Metalness.tex in Resources */,
+				BAA3CC4C2F55A17F0096A85B /* IntelSponza.bin in Resources */,
+				BAA3CC4D2F55A17F0096A85B /* lionhead_01_BaseColor.tex in Resources */,
+				BAA3CC4E2F55A17F0096A85B /* stone_trims_02_Roughnessstone_trims_02_Metalness.tex in Resources */,
+				BAA3CC4F2F55A17F0096A85B /* col_1stfloor_BaseColor.tex in Resources */,
+				BAA3CC502F55A17F0096A85B /* floor_tiles_01_Roughnessfloor_tiles_01_Metalness.tex in Resources */,
+				BAA3CC512F55A17F0096A85B /* window_frame_01_Normal.tex in Resources */,
+				BAA3CC522F55A17F0096A85B /* curtain_fabric_red_BaseColor.tex in Resources */,
+				BAA3CC532F55A17F0096A85B /* brickwall_02_Roughnessbrickwall_02_Metalness.tex in Resources */,
+				BAA3CC542F55A17F0096A85B /* metal_door_01_BaseColor.tex in Resources */,
+				BAA3CC552F55A17F0096A85B /* ceiling_plaster_02_Roughnessceiling_plaster_01_Metalness.tex in Resources */,
+				BAA3CC562F55A17F0096A85B /* ceiling_plaster_02_BaseColor.tex in Resources */,
+				BAA3CC572F55A17F0096A85B /* door_stoneframe_02_Normal.tex in Resources */,
+				BAA3CC582F55A17F0096A85B /* ornament_01_BaseColor.tex in Resources */,
+				BAA3CC592F55A17F0096A85B /* ceiling_plaster_01_BaseColor.tex in Resources */,
+				BAA3CC5A2F55A17F0096A85B /* stone_trims_02_Normal.tex in Resources */,
+				BAA3CC5B2F55A17F0096A85B /* ceiling_plaster_01_Normal.tex in Resources */,
+				BAA3CC5C2F55A17F0096A85B /* ceiling_plaster_01_Roughnessceiling_plaster_01_Metalness.tex in Resources */,
+				BAA3CC5D2F55A17F0096A85B /* col_brickwall_01_BaseColor.tex in Resources */,
+				BAA3CC5E2F55A17F0096A85B /* col_head_1stfloor_Roughnesscol_head_1stfloor_Metalness.tex in Resources */,
+				BAA3CC5F2F55A17F0096A85B /* curtain_fabric_green_BaseColor.tex in Resources */,
+				BAA3CC602F55A17F0096A85B /* stone_trims_02_BaseColor.tex in Resources */,
+				BAA3CC612F55A17F0096A85B /* door_stoneframe_01_BaseColor.tex in Resources */,
+				BAA3CC622F55A17F0096A85B /* brickwall_01_Normal.tex in Resources */,
+				BAA3CC632F55A17F0096A85B /* wood_tile_01_Roughnesswood_tile_01_Metalness.tex in Resources */,
+				BAA3CC642F55A17F0096A85B /* brickwall_02_Normal.tex in Resources */,
+				BAA3CC652F55A17F0096A85B /* wood_tile_01_BaseColor.tex in Resources */,
+				BAA3CC662F55A17F0096A85B /* col_head_2ndfloor_02_BaseColor.tex in Resources */,
+				BAA3CC672F55A17F0096A85B /* col_brickwall_01_Normal.tex in Resources */,
+				BAA3CC682F55A17F0096A85B /* stone_01_tile_Roughnessstone_01_tile_Metalness.tex in Resources */,
+				BAA3CC692F55A17F0096A85B /* metal_door_01_Normal.tex in Resources */,
+				BAA3CC6A2F55A17F0096A85B /* brickwall_01_Roughnessbrickwall_01_Metalness.tex in Resources */,
+				BAA3CC6B2F55A17F0096A85B /* stones_2ndfloor_01_Normal.tex in Resources */,
+				BAA3CC6C2F55A17F0096A85B /* arch_stone_wall_01_BaseColor.tex in Resources */,
+				BAA3CC6D2F55A17F0096A85B /* ornament_01_Normal.tex in Resources */,
+				BAA3CC6E2F55A17F0096A85B /* floor_tiles_01_BaseColor.tex in Resources */,
+				BAA3CC6F2F55A17F0096A85B /* brickwall_01_BaseColor.tex in Resources */,
+				BAA3CC702F55A17F0096A85B /* stone_01_tile_Normal.tex in Resources */,
+				BAA3CC712F55A17F0096A85B /* col_head_2ndfloor_02_Normal.tex in Resources */,
+				BAA3CC722F55A17F0096A85B /* brickwall_02_BaseColor.tex in Resources */,
+				BAA3CC732F55A17F0096A85B /* col_head_2ndfloor_02_Roughnesscol_head_2ndfloor_02_Metalness.tex in Resources */,
+				BAA3CC742F55A17F0096A85B /* wood_tile_01_Normal.tex in Resources */,
+				BAA3CC752F55A17F0096A85B /* stone_trims_01_Roughnessstone_trims_01_Metalness.tex in Resources */,
+				BAA3CC762F55A17F0096A85B /* col_head_2ndfloor_03_Normal.tex in Resources */,
+				BAA3CC772F55A17F0096A85B /* roof_tiles_01_Roughnessroof_tiles_01_Metalness.tex in Resources */,
+				BAA3CC782F55A17F0096A85B /* wood_door_01_BaseColor.tex in Resources */,
+				BAA3CC792F55A17F0096A85B /* dirt_decal_01_dirt_decal_01_mask_gltf_alpha_dirt_decal_Opacity.tex in Resources */,
+				BAA3CC7A2F55A17F0096A85B /* door_stoneframe_02_BaseColor.tex in Resources */,
+				BAA3CC7B2F55A17F0096A85B /* window_frame_01_BaseColor.tex in Resources */,
+				BAA3CC7C2F55A17F0096A85B /* col_head_2ndfloor_03_BaseColor.tex in Resources */,
+				BAA3CC7D2F55A17F0096A85B /* curtain_fabric_blue_BaseColor.tex in Resources */,
+				BAA3CC7E2F55A17F0096A85B /* stones_2ndfloor_01_BaseColor.tex in Resources */,
+				BAA3CC7F2F55A17F0096A85B /* arch_stone_wall_01_Normal.tex in Resources */,
+				BAA3CC802F55A17F0096A85B /* door_stoneframe_01_Roughnessdoor_stoneframe_01_Metalness.tex in Resources */,
+				BAA3CC812F55A17F0096A85B /* stone_trims_01_BaseColor.tex in Resources */,
+				BAA3CC822F55A17F0096A85B /* wood_door_01_Roughnesswood_door_01_Metalness.tex in Resources */,
+				BAA3CC832F55A17F0096A85B /* col_brickwall_01_Roughnesscol_brickwall_01_Metalness.tex in Resources */,
+				BAA3CC842F55A17F0096A85B /* col_head_1stfloor_BaseColor.tex in Resources */,
+				BAA3CC852F55A17F0096A85B /* stone_trims_01_Normal.tex in Resources */,
+				BAA3CC862F55A17F0096A85B /* floor_tiles_01_Normal.tex in Resources */,
+				BAA3CC872F55A17F0096A85B /* window_frame_01_Roughnesswindow_frame_01_Metalness.tex in Resources */,
+				BAA3CC882F55A17F0096A85B /* col_head_1stfloor_Normal.tex in Resources */,
+				BAA3CC892F55A17F0096A85B /* roof_tiles_01_Normal.tex in Resources */,
+				BAA3CC8A2F55A17F0096A85B /* col_1stfloor_Normal.tex in Resources */,
+				BAA3CC8B2F55A17F0096A85B /* arch_stone_wall_01_Roughnessarch_stone_wall_01_Metalness.tex in Resources */,
+				BAA3CC8C2F55A17F0096A85B /* lionhead_01_Normal.tex in Resources */,
+				BAA3CC8D2F55A17F0096A85B /* roof_tiles_01_BaseColor.tex in Resources */,
+				BAA3CC8E2F55A17F0096A85B /* lionhead_01_Roughnesslionhead_01_Metalness.tex in Resources */,
+				BAA3CC8F2F55A17F0096A85B /* door_stoneframe_01_Normal.tex in Resources */,
+				BAA3CC902F55A17F0096A85B /* col_head_2ndfloor_03_Roughnesscol_head_2ndfloor_03_Metalness.tex in Resources */,
+				BAA3CC912F55A17F0096A85B /* stones_2ndfloor_01_Roughnessstones_2ndfloor_01_Metalness.tex in Resources */,
+				BAA3CC922F55A17F0096A85B /* col_1stfloor_Roughnesscol_1stfloor_Metalness.tex in Resources */,
+				BAA3CC932F55A17F0096A85B /* metal_door_01_Roughnessmetal_door_01_Metalness.tex in Resources */,
+				BAA3CC942F55A17F0096A85B /* curtain_fabric_Roughnesscurtain_fabric_Metalness.tex in Resources */,
+				BAA3CC952F55A17F0096A85B /* curtain_fabric_Normal.tex in Resources */,
+				BAA3CC962F55A17F0096A85B /* ornament_01_Roughnessornament_01_Metalness.tex in Resources */,
+				BAA3CC972F55A17F0096A85B /* wood_door_01_Normal.tex in Resources */,
+				BAA3CC982F55A17F0096A85B /* stone_01_tile_BaseColor.tex in Resources */,
 				BA02DA352F558F09009EBF35 /* 16299174074766089871.tex in Resources */,
 				BA02DA362F558F09009EBF35 /* 17876391417123941155.tex in Resources */,
 				BA02DA372F558F09009EBF35 /* 14118779221266351425.tex in Resources */,

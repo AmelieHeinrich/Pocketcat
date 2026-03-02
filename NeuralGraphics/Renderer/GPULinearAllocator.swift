@@ -14,6 +14,7 @@ class GPULinearAllocator {
         self.currOffset = 0
         self.size = size
         self.buffer = Buffer(size: size)
+        self.buffer.setName(name: "GPU Linear Allocator Buffer")
     }
     
     func allocate(size: Int) -> Int {
