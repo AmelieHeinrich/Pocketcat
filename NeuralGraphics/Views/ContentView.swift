@@ -321,19 +321,22 @@ private struct SideColumn: View {
 
 struct ContentView: View {
 
-    @State private var renderer: MetalViewDelegate = {
+    @State private var renderer: Renderer = {
         guard let device = MTLCreateSystemDefaultDevice() else {
             fatalError("This device does not support Metal.")
         }
         return Renderer(device: device)
     }()
 
+    @StateObject private var sceneLoader = SceneLoader()
+
     @State private var isHUDExpanded: Bool = false
     @State private var activePanels: Set<String> = []
 
     var body: some View {
         ZStack {
-            // Full-screen Metal render view
+            // Full-screen Metal render view (always present; renders a clear
+            // colour until the mesh is ready)
             MetalView(delegate: renderer)
                 .ignoresSafeArea()
 
@@ -376,6 +379,26 @@ struct ContentView: View {
                 }
             }
             .padding(.bottom, 18)
+
+            // Startup loading overlay — fades out once the mesh is ready
+            if !sceneLoader.isLoaded {
+                LoadingView(progress: sceneLoader.progress, status: sceneLoader.status)
+                    .transition(.opacity.animation(.easeOut(duration: 0.6)))
+                    .zIndex(10)
+            }
+        }
+        .onAppear {
+            guard let url = Bundle.main.url(forResource: "bistro_ext", withExtension: ".bin") else {
+                fatalError("IntelSponza.bin not found in bundle")
+            }
+            sceneLoader.beginLoading(url: url)
+        }
+        .onChange(of: sceneLoader.isLoaded) { loaded in
+            if loaded, let mesh = sceneLoader.mesh {
+                withAnimation(.easeOut(duration: 0.6)) {
+                    renderer.setModel(mesh)
+                }
+            }
         }
     }
 }

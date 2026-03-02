@@ -30,7 +30,7 @@ struct AboutView: View {
             Text("Version \(version) (build \(build))")
                 .font(.caption)
                 .foregroundStyle(.secondary)
-            Text("February 2026")
+            Text("March 2026")
                 .font(.caption)
                 .foregroundStyle(.secondary)
                 .padding(.bottom, 16)

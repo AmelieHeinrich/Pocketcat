@@ -13,12 +13,22 @@ class Texture {
     var allocated: Bool = false
     var label: String = ""
     
-    init(descriptor: MTLTextureDescriptor) {
+    init(descriptor: MTLTextureDescriptor, makeResident: Bool = true) {
         self.descriptor = descriptor
         self.texture = RendererData.device.makeTexture(descriptor: descriptor)!
-        self.allocated = true
-        
+
+        if makeResident {
+            RendererData.residencySet.addAllocation(self.texture)
+            self.allocated = true
+        }
+    }
+
+    /// Adds this texture to the residency set. Must be called on the main thread
+    /// (or whichever thread owns the residency set) after background loading finishes.
+    func makeResident() {
+        guard !allocated else { return }
         RendererData.residencySet.addAllocation(self.texture)
+        allocated = true
     }
     
     init(texture: MTLTexture, descriptor: MTLTextureDescriptor) {

@@ -70,7 +70,10 @@ class TextureLoader {
         desc.storageMode = .shared
         desc.usage = .shaderRead
 
-        let texture = Texture(descriptor: desc)
+        // Don't add to the residency set here — TextureLoader may be called
+        // from a background thread. The caller is responsible for calling
+        // makeResident() once back on the main thread.
+        let texture = Texture(descriptor: desc, makeResident: false)
         if !label.isEmpty { texture.setLabel(name: label) }
 
         var offset = headerSize

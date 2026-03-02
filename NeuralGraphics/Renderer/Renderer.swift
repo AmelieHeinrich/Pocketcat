@@ -31,7 +31,7 @@ class Renderer : NSObject, MetalViewDelegate {
     private let renderPipeline: RenderPipeline
     private let resourceManager: ResourceManager
     private let gpuAllocator: GPULinearAllocator
-    private let model: Mesh
+    private var model: Mesh? = nil
     private var depthTexture: Texture
     private let defaultAlbedo: Texture
     private var lastFrameTime: CFAbsoluteTime = CFAbsoluteTimeGetCurrent()
@@ -100,9 +100,12 @@ class Renderer : NSObject, MetalViewDelegate {
                 data: UnsafeRawPointer(ptr), bpp: 4)
         }
         self.defaultAlbedo = defaultAlbedo
+    }
 
-        // Load model
-        self.model = MeshLoader.load(url: Bundle.main.url(forResource: "IntelSponza", withExtension: ".bin")!)!
+    /// Hands an already-loaded mesh to the renderer. Called on the main thread
+    /// by ContentView once the background scene loader finishes.
+    func setModel(_ mesh: Mesh) {
+        self.model = mesh
     }
 
     func configure(_ view: MTKView) {
@@ -140,20 +143,22 @@ class Renderer : NSObject, MetalViewDelegate {
         cmdBuffer.begin()
 
         let renderPass = cmdBuffer.beginRenderPass(descriptor: renderPassDescriptor)
-        renderPass.setPipeline(pipeline: self.renderPipeline)
-        for instance in model.instances {
-            let offset = gpuAllocator.allocate(size: MemoryLayout<ModelData>.size)
-            var modelData = ModelData(camera: camera.projectionMatrix * camera.viewMatrix, vertexOffset: instance.vertexOffset)
-            withUnsafePointer(to: &modelData) { ptr in
-                let ptr = UnsafeRawPointer(ptr)
-                gpuAllocator.writeData(data: ptr, offset: offset, size: MemoryLayout<ModelData>.size)
-            }
+        if let model = model {
+            renderPass.setPipeline(pipeline: self.renderPipeline)
+            for instance in model.instances {
+                let offset = gpuAllocator.allocate(size: MemoryLayout<ModelData>.size)
+                var modelData = ModelData(camera: camera.projectionMatrix * camera.viewMatrix, vertexOffset: instance.vertexOffset)
+                withUnsafePointer(to: &modelData) { ptr in
+                    let ptr = UnsafeRawPointer(ptr)
+                    gpuAllocator.writeData(data: ptr, offset: offset, size: MemoryLayout<ModelData>.size)
+                }
 
-            renderPass.setBuffer(buf: gpuAllocator.buffer, index: 0, stages: .vertex, offset: offset)
-            renderPass.setBuffer(buf: model.vertexBuffer, index: 1, stages: .vertex)
-            let albedo = model.materials[Int(instance.materialIndex)].albedo ?? defaultAlbedo
-            renderPass.setTexture(texture: albedo, index: 0, stages: .fragment)
-            renderPass.drawIndexed(primitimeType: .triangle, buffer: model.indexBuffer, indexCount: Int(instance.indexCount), indexOffset: UInt64(instance.indexOffset))
+                renderPass.setBuffer(buf: gpuAllocator.buffer, index: 0, stages: .vertex, offset: offset)
+                renderPass.setBuffer(buf: model.vertexBuffer, index: 1, stages: .vertex)
+                let albedo = model.materials[Int(instance.materialIndex)].albedo ?? defaultAlbedo
+                renderPass.setTexture(texture: albedo, index: 0, stages: .fragment)
+                renderPass.drawIndexed(primitimeType: .triangle, buffer: model.indexBuffer, indexCount: Int(instance.indexCount), indexOffset: UInt64(instance.indexOffset))
+            }
         }
         renderPass.end()
         cmdBuffer.end()

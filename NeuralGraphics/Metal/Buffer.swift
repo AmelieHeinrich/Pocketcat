@@ -10,37 +10,54 @@ import Metal
 class Buffer {
     var buffer: MTLBuffer
     var size: Int
-    
-    init(size: Int) {
+    var allocated: Bool = false
+
+    init(size: Int, makeResidentNow: Bool = true) {
         self.buffer = RendererData.device.makeBuffer(length: size, options: .storageModeShared)!
         self.size = size
-        
-        RendererData.residencySet.addAllocation(self.buffer)
+
+        if makeResidentNow {
+            RendererData.residencySet.addAllocation(self.buffer)
+            self.allocated = true
+        }
     }
-    
-    init(bytes: UnsafeRawPointer, size: Int) {
+
+    init(bytes: UnsafeRawPointer, size: Int, makeResidentNow: Bool = true) {
         self.buffer = RendererData.device.makeBuffer(bytes: bytes, length: size, options: .storageModeShared)!
         self.size = size
-        
-        RendererData.residencySet.addAllocation(self.buffer)
+
+        if makeResidentNow {
+            RendererData.residencySet.addAllocation(self.buffer)
+            self.allocated = true
+        }
     }
-    
+
     deinit {
-        RendererData.residencySet.removeAllocation(self.buffer)
+        if self.allocated {
+            RendererData.residencySet.removeAllocation(self.buffer)
+        }
     }
-    
+
+    /// Adds this buffer to the residency set. Must be called on the main thread
+    /// (or whichever thread owns the residency set) after background loading finishes.
+    func makeResident() {
+        guard !allocated else { return }
+        RendererData.residencySet.addAllocation(self.buffer)
+        allocated = true
+    }
+
     func setName(name: String) {
         self.buffer.label = name
     }
-    
+
     func getAddress() -> MTLGPUAddress {
         return self.buffer.gpuAddress
     }
-    
+
     func contents() -> UnsafeMutableRawPointer {
         return self.buffer.contents()
     }
-    
+
     func write(bytes: UnsafeRawPointer, size: Int, offset: Int = 0) {
         memcpy(self.contents() + offset, bytes, size)
     }

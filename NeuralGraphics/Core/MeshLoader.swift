@@ -91,7 +91,12 @@ class MeshLoader {
     private static let materialStride      = 1024
     private static let boundsStride        = 48
 
-    static func load(url: URL) -> Mesh? {
+    /// - Parameters:
+    ///   - url: Location of the `.bin` scene file.
+    ///   - progress: Optional callback invoked from the calling thread with
+    ///     a value in [0, 1] and a human-readable status string.
+    static func load(url: URL, progress: ((Double, String) -> Void)? = nil) -> Mesh? {
+        progress?(0.00, "Reading scene file…")
         guard let data = try? Data(contentsOf: url, options: .mappedIfSafe) else {
             print("[MeshLoader] Failed to read: \(url.path)")
             return nil
@@ -100,6 +105,7 @@ class MeshLoader {
         let r = BinaryReader(data)
 
         // ---- Header ----
+        progress?(0.02, "Parsing scene header…")
         let instanceCount = Int(r.read(UInt32.self))
         let materialCount = Int(r.read(UInt32.self))
 
@@ -151,12 +157,17 @@ class MeshLoader {
         //   256: NormalPath   char[256]
         //   512: ORMPath      char[256]
         //   768: EmissivePath char[256]
+        //
+        // Texture loading is the bottleneck: progress 5 % → 85 %.
         var swiftMaterials = [MeshMaterial]()
         swiftMaterials.reserveCapacity(materialCount)
 
         rawMaterials.withUnsafeBytes { ptr in
             for i in 0 ..< materialCount {
                 let base = i * materialStride
+
+                let pct = 0.05 + 0.80 * Double(i) / Double(max(materialCount, 1))
+                progress?(pct, "Loading material \(i + 1) of \(materialCount)…")
 
                 func path(off: Int) -> String? {
                     let raw = Data(bytes: ptr.baseAddress!.advanced(by: base + off), count: 256)
@@ -185,6 +196,7 @@ class MeshLoader {
         }
 
         // ---- Geometry arrays ----
+        progress?(0.85, "Parsing geometry…")
         let vertexCount  = Int(r.read(UInt32.self))
         let vertexData   = r.readSlice(count: vertexCount * vertexStride)
 
@@ -212,6 +224,7 @@ class MeshLoader {
         }
 
         // ---- Build GPU buffers ----
+        progress?(0.90, "Uploading to GPU…")
         let mesh                   = Mesh()
         mesh.instances             = swiftInstances
         mesh.materials             = swiftMaterials
@@ -221,13 +234,13 @@ class MeshLoader {
 
         let name = url.deletingPathExtension().lastPathComponent
 
-        vertexData.withUnsafeBytes   { mesh.vertexBuffer           = Buffer(bytes: $0.baseAddress!, size: vertexData.count)   }
-        indexData.withUnsafeBytes    { mesh.indexBuffer            = Buffer(bytes: $0.baseAddress!, size: indexData.count)    }
-        meshletData.withUnsafeBytes  { mesh.meshletBuffer          = Buffer(bytes: $0.baseAddress!, size: meshletData.count)  }
-        mvData.withUnsafeBytes       { mesh.meshletVerticesBuffer  = Buffer(bytes: $0.baseAddress!, size: mvData.count)       }
-        mtData.withUnsafeBytes       { mesh.meshletTrianglesBuffer = Buffer(bytes: $0.baseAddress!, size: mtData.count)       }
-        boundsData.withUnsafeBytes   { mesh.meshletBoundsBuffer    = Buffer(bytes: $0.baseAddress!, size: boundsData.count)   }
-        rawInstances.withUnsafeBytes { mesh.instanceBuffer         = Buffer(bytes: $0.baseAddress!, size: rawInstances.count) }
+        vertexData.withUnsafeBytes   { mesh.vertexBuffer           = Buffer(bytes: $0.baseAddress!, size: vertexData.count,   makeResidentNow: false) }
+        indexData.withUnsafeBytes    { mesh.indexBuffer            = Buffer(bytes: $0.baseAddress!, size: indexData.count,    makeResidentNow: false) }
+        meshletData.withUnsafeBytes  { mesh.meshletBuffer          = Buffer(bytes: $0.baseAddress!, size: meshletData.count,  makeResidentNow: false) }
+        mvData.withUnsafeBytes       { mesh.meshletVerticesBuffer  = Buffer(bytes: $0.baseAddress!, size: mvData.count,       makeResidentNow: false) }
+        mtData.withUnsafeBytes       { mesh.meshletTrianglesBuffer = Buffer(bytes: $0.baseAddress!, size: mtData.count,       makeResidentNow: false) }
+        boundsData.withUnsafeBytes   { mesh.meshletBoundsBuffer    = Buffer(bytes: $0.baseAddress!, size: boundsData.count,   makeResidentNow: false) }
+        rawInstances.withUnsafeBytes { mesh.instanceBuffer         = Buffer(bytes: $0.baseAddress!, size: rawInstances.count, makeResidentNow: false) }
 
         mesh.vertexBuffer.setName(name:           "\(name) Vertices")
         mesh.indexBuffer.setName(name:            "\(name) Indices")
@@ -237,6 +250,19 @@ class MeshLoader {
         mesh.meshletBoundsBuffer.setName(name:    "\(name) Meshlet Bounds")
         mesh.instanceBuffer.setName(name:         "\(name) Instances")
 
+        // ---- Commit residency atomically on the calling thread ----
+        // All seven buffers are added to the residency set in one go, avoiding
+        // any race if load() is called from a background thread while the main
+        // thread is already committing a prior residency set update.
+        mesh.vertexBuffer.makeResident()
+        mesh.indexBuffer.makeResident()
+        mesh.meshletBuffer.makeResident()
+        mesh.meshletVerticesBuffer.makeResident()
+        mesh.meshletTrianglesBuffer.makeResident()
+        mesh.meshletBoundsBuffer.makeResident()
+        mesh.instanceBuffer.makeResident()
+
+        progress?(1.00, "Done")
         print("[MeshLoader] \(name): \(instanceCount) instance(s), \(materialCount) material(s), \(vertexCount) verts, \(meshletCount) meshlets")
         return mesh
     }
