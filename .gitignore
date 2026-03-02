@@ -2,6 +2,7 @@
 
 .DS_Store
 xcuserdata
+NeuralGraphics.xcodeproj/project.xcworkspace/xcuserdata
 Tools/metal-package-builder
 Assets/SourceAssets
 Assets/BakedAssets/IntelSponza

@@ -51,5 +51,9 @@ float4 triangle_fs(VSOut in [[stage_in]],
         lod_clamp(0.0f, MAXFLOAT)
     );
 
-    return albedo.sample(textureSampler, in.UV);
+    float4 color = albedo.sample(textureSampler, in.UV);
+    if (color.a < 0.25)
+        discard_fragment();
+    
+    return color;
 }
