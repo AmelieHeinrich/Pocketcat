@@ -131,4 +131,16 @@ class RenderPass {
     func popMarker() {
         self.encoder.popDebugGroup()
     }
+    
+    func signalFenceAfterStage(stage: MTLStages) {
+        self.encoder.updateFence(RendererData.gpuTimeline.fence, afterEncoderStages: stage)
+    }
+    
+    func waitFenceBeforeStage(stage: MTLStages) {
+        self.encoder.waitForFence(RendererData.gpuTimeline.fence, beforeEncoderStages: stage)
+    }
+    
+    func barrier(before: MTLStages, after: MTLStages) {
+        self.encoder.barrier(afterEncoderStages: after, beforeEncoderStages: before, visibilityOptions: .device)
+    }
 }

@@ -8,9 +8,6 @@
 #include <metal_stdlib>
 using namespace metal;
 
-// MeshVertex on the CPU is tightly packed (float[3] = 12 bytes each).
-// Metal's float3 has implicit 4-byte padding making sizeof = 16, which breaks
-// the stride. packed_float3 matches the C++ layout: 12 bytes, no padding.
 struct VSIn {
     packed_float3 Position;
     packed_float3 Normal;

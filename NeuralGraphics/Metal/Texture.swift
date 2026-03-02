@@ -23,8 +23,6 @@ class Texture {
         }
     }
 
-    /// Adds this texture to the residency set. Must be called on the main thread
-    /// (or whichever thread owns the residency set) after background loading finishes.
     func makeResident() {
         guard !allocated else { return }
         RendererData.residencySet.addAllocation(self.texture)
