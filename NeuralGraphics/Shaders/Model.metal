@@ -26,9 +26,9 @@ struct ModelData {
 };
 
 [[vertex]]
-VSOut triangle_vs(uint id [[vertex_id]],
-                  const device ModelData& modelData [[buffer(0)]],
-                  const device VSIn* vertices [[buffer(1)]]) {
+VSOut forward_vs(uint id [[vertex_id]],
+                 const device ModelData& modelData [[buffer(0)]],
+                 const device VSIn* vertices [[buffer(1)]]) {
     uint index = modelData.VertexOffset + id;
 
     VSOut out;
@@ -38,8 +38,8 @@ VSOut triangle_vs(uint id [[vertex_id]],
 }
 
 [[fragment]]
-float4 triangle_fs(VSOut in [[stage_in]],
-                   texture2d<float> albedo [[texture(0)]]) {
+float4 forward_vsfs(VSOut in [[stage_in]],
+                    texture2d<float> albedo [[texture(0)]]) {
     constexpr sampler textureSampler(
         mag_filter::linear,
         min_filter::linear,
@@ -51,6 +51,6 @@ float4 triangle_fs(VSOut in [[stage_in]],
     float4 color = albedo.sample(textureSampler, in.UV);
     if (color.a < 0.25)
         discard_fragment();
-    
+
     return color;
 }

@@ -54,6 +54,10 @@ class ComputePass {
         self.encoder.build(destinationAccelerationStructure: tlas.tlas, descriptor: tlas.descriptor, scratchBuffer: MTL4BufferRangeMake(tlas.scratchBuffer.getAddress(), UInt64(tlas.scratchBuffer.size)))
     }
     
+    func copyTexture(src: Texture, dst: Texture) {
+        self.encoder.copy(sourceTexture: src.texture, destinationTexture: dst.texture)
+    }
+    
     func pushMarker(name: String) {
         self.encoder.pushDebugGroup(name)
     }

@@ -10,7 +10,7 @@ import Metal
 struct MeshPipelineDescriptor {
     var name: String = ""
     
-    var objectFunction: String? = ""
+    var objectFunction: String? = nil
     var meshFunction: String = ""
     var fragmentFunction: String? = nil
     
@@ -39,14 +39,14 @@ class MeshPipeline {
         meshFunctionDescriptor.name = descriptor.meshFunction
         
         let fragmentFunctionDescriptor = MTL4LibraryFunctionDescriptor()
-        fragmentFunctionDescriptor.library = RendererData.library
         if descriptor.fragmentFunction != nil {
+            fragmentFunctionDescriptor.library = RendererData.library
             fragmentFunctionDescriptor.name = descriptor.fragmentFunction
         }
         
         let objectFunctionDescriptor = MTL4LibraryFunctionDescriptor()
-        objectFunctionDescriptor.library = RendererData.library
         if descriptor.fragmentFunction != nil {
+            objectFunctionDescriptor.library = RendererData.library
             objectFunctionDescriptor.name = descriptor.objectFunction
         }
         

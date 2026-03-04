@@ -24,15 +24,39 @@ float3 Tonemap(float3 x) {
     return saturate((x*(a*x+b))/(x*(c*x+d)+e));
 }
 
-kernel void tonemap_cs(
-    texture2d<float, access::read> input [[texture(0)]],
-    texture2d<float, access::write> output [[texture(1)]],
-    uint2 gid [[thread_position_in_grid]],
+struct TonemapVSOut {
+    float4 position [[position]];
+    float2 uv;
+};
+
+[[vertex]]
+TonemapVSOut tonemap_vs(uint vid [[vertex_id]]) {
+    float2 positions[3] = {
+        float2(-1.0,  1.0),
+        float2( 3.0,  1.0),
+        float2(-1.0, -3.0)
+    };
+    float2 uvs[3] = {
+        float2(0.0, 0.0),
+        float2(2.0, 0.0),
+        float2(0.0, 2.0)
+    };
+    TonemapVSOut out;
+    out.position = float4(positions[vid], 0.0, 1.0);
+    out.uv = uvs[vid];
+    return out;
+}
+
+[[fragment]]
+float4 tonemap_fs(
+    TonemapVSOut in [[stage_in]],
+    texture2d<float> input [[texture(0)]],
     constant Parameters& params [[buffer(0)]]
 ) {
-    float3 color = input.read(gid).xyz;
+    constexpr sampler s(filter::linear, address::clamp_to_edge);
+    float3 color = input.sample(s, in.uv).xyz;
     float3 mappedColor = Tonemap(color);
     mappedColor = pow(mappedColor, 1.0 / params.Gamma);
-    output.write(float4(mappedColor, 1.0), gid);
+    return float4(mappedColor, 1.0);
 }
 

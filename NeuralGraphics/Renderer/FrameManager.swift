@@ -105,7 +105,7 @@ class FrameManager {
     
     func setupTimelines(settings: RendererSettings) {
         // Initialize passes
-        let forward = ForwardPass()
+        let forward = ForwardPass(settings: settings)
         let tonemap = TonemapPass(settings: settings)
         let debug   = DebugPass.shared
         debug.settings = settings

@@ -35,6 +35,23 @@ struct SettingsView: View {
                     }
                 }
                 
+                // Forward Pass section
+                VStack(alignment: .leading, spacing: 12) {
+                    Text("Forward Pass")
+                        .font(.system(size: 11, weight: .semibold))
+                        .foregroundStyle(.secondary)
+                        .textCase(.uppercase)
+
+                    HStack {
+                        Text("Mesh Shaders")
+                            .font(.system(size: 12, weight: .medium))
+                        Spacer()
+                        Toggle("", isOn: $settings.useMeshShader)
+                            .toggleStyle(.switch)
+                            .labelsHidden()
+                    }
+                }
+
                 // Debug Draw section
                 VStack(alignment: .leading, spacing: 12) {
                     Text("Debug Draw")
