@@ -18,6 +18,7 @@ struct VSIn {
 struct VSOut {
     float4 Position [[position]];
     float2 UV;
+    float3 Normal;
 };
 
 struct ModelData {
@@ -34,6 +35,7 @@ VSOut forward_vs(uint id [[vertex_id]],
     VSOut out;
     out.Position = modelData.Camera * float4(vertices[index].Position, 1.0f);
     out.UV = vertices[index].UV;
+    out.Normal = vertices[index].Normal;
     return out;
 }
 

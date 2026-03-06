@@ -7,6 +7,292 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		136A17882F5B811700BE5330 /* LivingRoom.bin in Resources */ = {isa = PBXBuildFile; fileRef = 136A17842F5B811700BE5330 /* LivingRoom.bin */; };
+		136A17892F5B811700BE5330 /* SanMiguel.bin in Resources */ = {isa = PBXBuildFile; fileRef = 136A17862F5B811700BE5330 /* SanMiguel.bin */; };
+		136A178A2F5B811700BE5330 /* Buddha.bin in Resources */ = {isa = PBXBuildFile; fileRef = 136A17822F5B811700BE5330 /* Buddha.bin */; };
+		136A1E382F5B835E00BE5330 /* shade-stripes.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1E362F5B835E00BE5330 /* shade-stripes.tex */; };
+		136A1E392F5B835E00BE5330 /* photo4.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1E322F5B835E00BE5330 /* photo4.tex */; };
+		136A1E3A2F5B835E00BE5330 /* cushion-purple-yellow-stripe.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1E2C2F5B835E00BE5330 /* cushion-purple-yellow-stripe.tex */; };
+		136A1E3B2F5B835E00BE5330 /* magazine.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1E2E2F5B835E00BE5330 /* magazine.tex */; };
+		136A1E3C2F5B835E00BE5330 /* book-spines.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1E292F5B835E00BE5330 /* book-spines.tex */; };
+		136A1E3D2F5B835E00BE5330 /* photo2.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1E302F5B835E00BE5330 /* photo2.tex */; };
+		136A1E3E2F5B835E00BE5330 /* apple.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1E282F5B835E00BE5330 /* apple.tex */; };
+		136A1E3F2F5B835E00BE5330 /* picture11-vert.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1E342F5B835E00BE5330 /* picture11-vert.tex */; };
+		136A1E402F5B835E00BE5330 /* Shade-paper.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1E352F5B835E00BE5330 /* Shade-paper.tex */; };
+		136A1E412F5B835E00BE5330 /* carpet-text3b.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1E2A2F5B835E00BE5330 /* carpet-text3b.tex */; };
+		136A1E422F5B835E00BE5330 /* cushion-stripe-purple.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1E2D2F5B835E00BE5330 /* cushion-stripe-purple.tex */; };
+		136A1E432F5B835E00BE5330 /* pic5wide.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1E332F5B835E00BE5330 /* pic5wide.tex */; };
+		136A1E442F5B835E00BE5330 /* wood4.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1E372F5B835E00BE5330 /* wood4.tex */; };
+		136A1E452F5B835E00BE5330 /* photo3.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1E312F5B835E00BE5330 /* photo3.tex */; };
+		136A1E462F5B835E00BE5330 /* photo1.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1E2F2F5B835E00BE5330 /* photo1.tex */; };
+		136A1E472F5B835E00BE5330 /* cushion-green-circles.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1E2B2F5B835E00BE5330 /* cushion-green-circles.tex */; };
+		136A1E702F5B836900BE5330 /* detmoldura_01_color.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1E6B2F5B836900BE5330 /* detmoldura_01_color.tex */; };
+		136A1E712F5B836900BE5330 /* D30_Smiguel_2003_7833.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1E692F5B836900BE5330 /* D30_Smiguel_2003_7833.tex */; };
+		136A1E722F5B836900BE5330 /* 0001_carros.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1E482F5B836900BE5330 /* 0001_carros.tex */; };
+		136A1E732F5B836900BE5330 /* 052terresable.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1E4A2F5B836900BE5330 /* 052terresable.tex */; };
+		136A1E742F5B836900BE5330 /* arcos_lisos_3_color_1.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1E502F5B836900BE5330 /* arcos_lisos_3_color_1.tex */; };
+		136A1E752F5B836900BE5330 /* arco_frente.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1E4E2F5B836900BE5330 /* arco_frente.tex */; };
+		136A1E762F5B836900BE5330 /* D30_Smiguel_2003_7843.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1E6A2F5B836900BE5330 /* D30_Smiguel_2003_7843.tex */; };
+		136A1E772F5B836900BE5330 /* arcos_lisos_2_color.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1E4F2F5B836900BE5330 /* arcos_lisos_2_color.tex */; };
+		136A1E782F5B836900BE5330 /* BS04brk.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1E582F5B836900BE5330 /* BS04brk.tex */; };
+		136A1E792F5B836900BE5330 /* candil_madera.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1E5C2F5B836900BE5330 /* candil_madera.tex */; };
+		136A1E7A2F5B836900BE5330 /* ceramic_tile.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1E5F2F5B836900BE5330 /* ceramic_tile.tex */; };
+		136A1E7B2F5B836900BE5330 /* 027_Cola_Caballo_06-30-1997.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1E492F5B836900BE5330 /* 027_Cola_Caballo_06-30-1997.tex */; };
+		136A1E7C2F5B836900BE5330 /* D30_Smiguel_2003_7768.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1E652F5B836900BE5330 /* D30_Smiguel_2003_7768.tex */; };
+		136A1E7D2F5B836900BE5330 /* cantera_naranja_liso.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1E5D2F5B836900BE5330 /* cantera_naranja_liso.tex */; };
+		136A1E7E2F5B836900BE5330 /* detmoldura_04_color.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1E6E2F5B836900BE5330 /* detmoldura_04_color.tex */; };
+		136A1E7F2F5B836900BE5330 /* D30_Smiguel_2003_7785.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1E662F5B836900BE5330 /* D30_Smiguel_2003_7785.tex */; };
+		136A1E802F5B836900BE5330 /* BS01flo2.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1E562F5B836900BE5330 /* BS01flo2.tex */; };
+		136A1E812F5B836900BE5330 /* citrus_limon_leaf.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1E602F5B836900BE5330 /* citrus_limon_leaf.tex */; };
+		136A1E822F5B836900BE5330 /* BS01flo1.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1E552F5B836900BE5330 /* BS01flo1.tex */; };
+		136A1E832F5B836900BE5330 /* aglaonema_bark.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1E4B2F5B836900BE5330 /* aglaonema_bark.tex */; };
+		136A1E842F5B836900BE5330 /* D30_Smiguel_2003_7758.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1E642F5B836900BE5330 /* D30_Smiguel_2003_7758.tex */; };
+		136A1E852F5B836900BE5330 /* Barro_2.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1E522F5B836900BE5330 /* Barro_2.tex */; };
+		136A1E862F5B836900BE5330 /* concreto_02.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1E632F5B836900BE5330 /* concreto_02.tex */; };
+		136A1E872F5B836900BE5330 /* D30_Smiguel_2003_7815.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1E682F5B836900BE5330 /* D30_Smiguel_2003_7815.tex */; };
+		136A1E882F5B836900BE5330 /* ampelopsis_brevipedunculata_bark.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1E4D2F5B836900BE5330 /* ampelopsis_brevipedunculata_bark.tex */; };
+		136A1E892F5B836900BE5330 /* BS01brk.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1E542F5B836900BE5330 /* BS01brk.tex */; };
+		136A1E8A2F5B836900BE5330 /* BS01lef.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1E572F5B836900BE5330 /* BS01lef.tex */; };
+		136A1E8B2F5B836900BE5330 /* BS04flo.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1E592F5B836900BE5330 /* BS04flo.tex */; };
+		136A1E8C2F5B836900BE5330 /* BS04lef.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1E5A2F5B836900BE5330 /* BS04lef.tex */; };
+		136A1E8D2F5B836900BE5330 /* detmoldura_02_color.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1E6C2F5B836900BE5330 /* detmoldura_02_color.tex */; };
+		136A1E8E2F5B836900BE5330 /* detmoldura_03_color.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1E6D2F5B836900BE5330 /* detmoldura_03_color.tex */; };
+		136A1E8F2F5B836900BE5330 /* detmoldura_05_color.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1E6F2F5B836900BE5330 /* detmoldura_05_color.tex */; };
+		136A1E902F5B836900BE5330 /* aglaonema_leaf.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1E4C2F5B836900BE5330 /* aglaonema_leaf.tex */; };
+		136A1E912F5B836900BE5330 /* concreto_01.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1E622F5B836900BE5330 /* concreto_01.tex */; };
+		136A1E922F5B836900BE5330 /* BWK_1024.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1E5B2F5B836900BE5330 /* BWK_1024.tex */; };
+		136A1E932F5B836900BE5330 /* BL05lef2.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1E532F5B836900BE5330 /* BL05lef2.tex */; };
+		136A1E942F5B836900BE5330 /* cenicero.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1E5E2F5B836900BE5330 /* cenicero.tex */; };
+		136A1E952F5B836900BE5330 /* bark06mi.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1E512F5B836900BE5330 /* bark06mi.tex */; };
+		136A1E962F5B836900BE5330 /* columna_b_color.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1E612F5B836900BE5330 /* columna_b_color.tex */; };
+		136A1E972F5B836900BE5330 /* D30_Smiguel_2003_7812.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1E672F5B836900BE5330 /* D30_Smiguel_2003_7812.tex */; };
+		136A1F7B2F5B83A600BE5330 /* HP04lef2.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1EEB2F5B83A600BE5330 /* HP04lef2.tex */; };
+		136A1F7C2F5B83A600BE5330 /* FL12stm.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1EB62F5B83A600BE5330 /* FL12stm.tex */; };
+		136A1F7D2F5B83A600BE5330 /* rust_a1.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F632F5B83A600BE5330 /* rust_a1.tex */; };
+		136A1F7E2F5B83A600BE5330 /* madera_triplay_01.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F0F2F5B83A600BE5330 /* madera_triplay_01.tex */; };
+		136A1F7F2F5B83A600BE5330 /* escalera_color.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1E9B2F5B83A600BE5330 /* escalera_color.tex */; };
+		136A1F802F5B83A600BE5330 /* puerta.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F612F5B83A600BE5330 /* puerta.tex */; };
+		136A1F812F5B83A600BE5330 /* N_piso_patio_exterior_displace_inv.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F4E2F5B83A600BE5330 /* N_piso_patio_exterior_displace_inv.tex */; };
+		136A1F822F5B83A600BE5330 /* N_tela_blanca.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F572F5B83A600BE5330 /* N_tela_blanca.tex */; };
+		136A1F832F5B83A600BE5330 /* metal_viejo_2.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F112F5B83A600BE5330 /* metal_viejo_2.tex */; };
+		136A1F842F5B83A600BE5330 /* N_Maceta_D_Bump_0.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F452F5B83A600BE5330 /* N_Maceta_D_Bump_0.tex */; };
+		136A1F852F5B83A600BE5330 /* FL16stm.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1EC72F5B83A600BE5330 /* FL16stm.tex */; };
+		136A1F862F5B83A600BE5330 /* FL15lef2.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1EC12F5B83A600BE5330 /* FL15lef2.tex */; };
+		136A1F872F5B83A600BE5330 /* wood.3.Bubinga.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F782F5B83A600BE5330 /* wood.3.Bubinga.tex */; };
+		136A1F882F5B83A600BE5330 /* HP01stm1.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1EE92F5B83A600BE5330 /* HP01stm1.tex */; };
+		136A1F892F5B83A600BE5330 /* muros_k.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F222F5B83A600BE5330 /* muros_k.tex */; };
+		136A1F8A2F5B83A600BE5330 /* N_marco_puerta_1_bump.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F472F5B83A600BE5330 /* N_marco_puerta_1_bump.tex */; };
+		136A1F8B2F5B83A600BE5330 /* FL11pet1.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1EAB2F5B83A600BE5330 /* FL11pet1.tex */; };
+		136A1F8C2F5B83A600BE5330 /* N_detmoldura_01_bump.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F312F5B83A600BE5330 /* N_detmoldura_01_bump.tex */; };
+		136A1F8D2F5B83A600BE5330 /* HP01pet3.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1EE82F5B83A600BE5330 /* HP01pet3.tex */; };
+		136A1F8E2F5B83A600BE5330 /* HP13stm2.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1EF42F5B83A600BE5330 /* HP13stm2.tex */; };
+		136A1F8F2F5B83A600BE5330 /* FL03lef1.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1EA22F5B83A600BE5330 /* FL03lef1.tex */; };
+		136A1F902F5B83A600BE5330 /* FL29twg.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1EE12F5B83A600BE5330 /* FL29twg.tex */; };
+		136A1F912F5B83A600BE5330 /* madera_marcos.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F0D2F5B83A600BE5330 /* madera_marcos.tex */; };
+		136A1F922F5B83A600BE5330 /* N_escurridera_bump.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F382F5B83A600BE5330 /* N_escurridera_bump.tex */; };
+		136A1F932F5B83A600BE5330 /* piso_patio_exterior2.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F5D2F5B83A600BE5330 /* piso_patio_exterior2.tex */; };
+		136A1F942F5B83A600BE5330 /* HP01lef1.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1EE62F5B83A600BE5330 /* HP01lef1.tex */; };
+		136A1F952F5B83A600BE5330 /* HP13lef2.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1EF22F5B83A600BE5330 /* HP13lef2.tex */; };
+		136A1F962F5B83A600BE5330 /* Maceta_C_Color.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F082F5B83A600BE5330 /* Maceta_C_Color.tex */; };
+		136A1F972F5B83A600BE5330 /* N_piso_rustico_displace2.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F4F2F5B83A600BE5330 /* N_piso_rustico_displace2.tex */; };
+		136A1F982F5B83A600BE5330 /* N_Fierro_A_Bump.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F392F5B83A600BE5330 /* N_Fierro_A_Bump.tex */; };
+		136A1F992F5B83A600BE5330 /* HP17stm.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1EF72F5B83A600BE5330 /* HP17stm.tex */; };
+		136A1F9A2F5B83A600BE5330 /* N_detmoldura_02_bump.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F322F5B83A600BE5330 /* N_detmoldura_02_bump.tex */; };
+		136A1F9B2F5B83A600BE5330 /* moldura2piso_color.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F152F5B83A600BE5330 /* moldura2piso_color.tex */; };
+		136A1F9C2F5B83A600BE5330 /* N_rust_detalle_bump.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F532F5B83A600BE5330 /* N_rust_detalle_bump.tex */; };
+		136A1F9D2F5B83A600BE5330 /* escurridera_color.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1E9C2F5B83A600BE5330 /* escurridera_color.tex */; };
+		136A1F9E2F5B83A600BE5330 /* FL15pet2.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1EC22F5B83A600BE5330 /* FL15pet2.tex */; };
+		136A1F9F2F5B83A600BE5330 /* l04-upper.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F002F5B83A600BE5330 /* l04-upper.tex */; };
+		136A1FA02F5B83A600BE5330 /* FL11sta.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1EAF2F5B83A600BE5330 /* FL11sta.tex */; };
+		136A1FA12F5B83A600BE5330 /* sm_hoja_c_seca.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F662F5B83A600BE5330 /* sm_hoja_c_seca.tex */; };
+		136A1FA22F5B83A600BE5330 /* FL29cnt2.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1EDB2F5B83A600BE5330 /* FL29cnt2.tex */; };
+		136A1FA32F5B83A600BE5330 /* Maceta_B2_Color.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F072F5B83A600BE5330 /* Maceta_B2_Color.tex */; };
+		136A1FA42F5B83A600BE5330 /* N_HP11stm.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F3C2F5B83A600BE5330 /* N_HP11stm.tex */; };
+		136A1FA52F5B83A600BE5330 /* fuente_piedra_02.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1EE52F5B83A600BE5330 /* fuente_piedra_02.tex */; };
+		136A1FA62F5B83A600BE5330 /* mold_arco_01_color.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F122F5B83A600BE5330 /* mold_arco_01_color.tex */; };
+		136A1FA72F5B83A600BE5330 /* N_l37-upper.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F412F5B83A600BE5330 /* N_l37-upper.tex */; };
+		136A1FA82F5B83A600BE5330 /* EU15lef.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1E9D2F5B83A600BE5330 /* EU15lef.tex */; };
+		136A1FA92F5B83A600BE5330 /* N_detmoldura_06_bump.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F362F5B83A600BE5330 /* N_detmoldura_06_bump.tex */; };
+		136A1FAA2F5B83A600BE5330 /* tapa_talabera.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F6D2F5B83A600BE5330 /* tapa_talabera.tex */; };
+		136A1FAB2F5B83A600BE5330 /* HP13lef3.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1EF32F5B83A600BE5330 /* HP13lef3.tex */; };
+		136A1FAC2F5B83A600BE5330 /* l33-upper.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F012F5B83A600BE5330 /* l33-upper.tex */; };
+		136A1FAD2F5B83A600BE5330 /* tela_silla_b.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F732F5B83A600BE5330 /* tela_silla_b.tex */; };
+		136A1FAE2F5B83A600BE5330 /* dracaena_fragrans_leaf.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1E992F5B83A600BE5330 /* dracaena_fragrans_leaf.tex */; };
+		136A1FAF2F5B83A600BE5330 /* TR02lef5.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F742F5B83A600BE5330 /* TR02lef5.tex */; };
+		136A1FB02F5B83A600BE5330 /* Maceta_D_Bump_0.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F0A2F5B83A600BE5330 /* Maceta_D_Bump_0.tex */; };
+		136A1FB12F5B83A600BE5330 /* FL11lef1.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1EA92F5B83A600BE5330 /* FL11lef1.tex */; };
+		136A1FB22F5B83A600BE5330 /* FL19pe15.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1ED72F5B83A600BE5330 /* FL19pe15.tex */; };
+		136A1FB32F5B83A600BE5330 /* muros_b.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F182F5B83A600BE5330 /* muros_b.tex */; };
+		136A1FB42F5B83A600BE5330 /* N_detmoldura_04_bump.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F342F5B83A600BE5330 /* N_detmoldura_04_bump.tex */; };
+		136A1FB52F5B83A600BE5330 /* TR14lef1.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F752F5B83A600BE5330 /* TR14lef1.tex */; };
+		136A1FB62F5B83A600BE5330 /* N_Maceta_C_Bump.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F442F5B83A600BE5330 /* N_Maceta_C_Bump.tex */; };
+		136A1FB72F5B83A600BE5330 /* FL19pe14.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1ED62F5B83A600BE5330 /* FL19pe14.tex */; };
+		136A1FB82F5B83A600BE5330 /* FL12pet2.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1EB32F5B83A600BE5330 /* FL12pet2.tex */; };
+		136A1FB92F5B83A600BE5330 /* FL17pet1.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1ECE2F5B83A600BE5330 /* FL17pet1.tex */; };
+		136A1FBA2F5B83A600BE5330 /* muros_q.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F272F5B83A600BE5330 /* muros_q.tex */; };
+		136A1FBB2F5B83A600BE5330 /* FL29stm1.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1EDF2F5B83A600BE5330 /* FL29stm1.tex */; };
+		136A1FBC2F5B83A600BE5330 /* piso_rustico.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F5E2F5B83A600BE5330 /* piso_rustico.tex */; };
+		136A1FBD2F5B83A600BE5330 /* postes_barandal_color.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F602F5B83A600BE5330 /* postes_barandal_color.tex */; };
+		136A1FBE2F5B83A600BE5330 /* N_arco_frente_displace_inv.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F2B2F5B83A600BE5330 /* N_arco_frente_displace_inv.tex */; };
+		136A1FBF2F5B83A600BE5330 /* tela_blanca.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F702F5B83A600BE5330 /* tela_blanca.tex */; };
+		136A1FC02F5B83A600BE5330 /* HP01lef2.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1EE72F5B83A600BE5330 /* HP01lef2.tex */; };
+		136A1FC12F5B83A600BE5330 /* madera_barandal_esc_2.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F0C2F5B83A600BE5330 /* madera_barandal_esc_2.tex */; };
+		136A1FC22F5B83A600BE5330 /* HP19lef2.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1EF82F5B83A600BE5330 /* HP19lef2.tex */; };
+		136A1FC32F5B83A600BE5330 /* techo_01.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F6F2F5B83A600BE5330 /* techo_01.tex */; };
+		136A1FC42F5B83A600BE5330 /* FL19lef2.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1ED22F5B83A600BE5330 /* FL19lef2.tex */; };
+		136A1FC52F5B83A600BE5330 /* HP07stm1.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1EEE2F5B83A600BE5330 /* HP07stm1.tex */; };
+		136A1FC62F5B83A600BE5330 /* N_vigas_a2_bump.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F582F5B83A600BE5330 /* N_vigas_a2_bump.tex */; };
+		136A1FC72F5B83A600BE5330 /* fierro_b.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1E9F2F5B83A600BE5330 /* fierro_b.tex */; };
+		136A1FC82F5B83A600BE5330 /* N_Maceta_A_Bump.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F422F5B83A600BE5330 /* N_Maceta_A_Bump.tex */; };
+		136A1FC92F5B83A600BE5330 /* FL17lef6.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1ECD2F5B83A600BE5330 /* FL17lef6.tex */; };
+		136A1FCA2F5B83A600BE5330 /* FL17lef3.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1ECB2F5B83A600BE5330 /* FL17lef3.tex */; };
+		136A1FCB2F5B83A600BE5330 /* FL17lef5.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1ECC2F5B83A600BE5330 /* FL17lef5.tex */; };
+		136A1FCC2F5B83A600BE5330 /* FL11stm.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1EB02F5B83A600BE5330 /* FL11stm.tex */; };
+		136A1FCD2F5B83A600BE5330 /* madera_rustica_2.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F0E2F5B83A600BE5330 /* madera_rustica_2.tex */; };
+		136A1FCE2F5B83A600BE5330 /* muros_f.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F1E2F5B83A600BE5330 /* muros_f.tex */; };
+		136A1FCF2F5B83A600BE5330 /* FL12pet1.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1EB22F5B83A600BE5330 /* FL12pet1.tex */; };
+		136A1FD02F5B83A600BE5330 /* N_l04-upper.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F3F2F5B83A600BE5330 /* N_l04-upper.tex */; };
+		136A1FD12F5B83A600BE5330 /* N_arcos_lisos_3_bump_1.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F2D2F5B83A600BE5330 /* N_arcos_lisos_3_bump_1.tex */; };
+		136A1FD22F5B83A600BE5330 /* moldura_techo.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F132F5B83A600BE5330 /* moldura_techo.tex */; };
+		136A1FD32F5B83A600BE5330 /* FL15cnt2.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1EBF2F5B83A600BE5330 /* FL15cnt2.tex */; };
+		136A1FD42F5B83A600BE5330 /* HP07stm2.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1EEF2F5B83A600BE5330 /* HP07stm2.tex */; };
+		136A1FD52F5B83A600BE5330 /* hypoestes_phyllostachya_bark.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1EFC2F5B83A600BE5330 /* hypoestes_phyllostachya_bark.tex */; };
+		136A1FD62F5B83A600BE5330 /* N_columna_b_displacement_3_inv.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F302F5B83A600BE5330 /* N_columna_b_displacement_3_inv.tex */; };
+		136A1FD72F5B83A600BE5330 /* HP19lef3.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1EF92F5B83A600BE5330 /* HP19lef3.tex */; };
+		136A1FD82F5B83A600BE5330 /* FL29pet2.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1EDE2F5B83A600BE5330 /* FL29pet2.tex */; };
+		136A1FD92F5B83A600BE5330 /* FL17pet2.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1ECF2F5B83A600BE5330 /* FL17pet2.tex */; };
+		136A1FDA2F5B83A600BE5330 /* muros_h.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F202F5B83A600BE5330 /* muros_h.tex */; };
+		136A1FDB2F5B83A600BE5330 /* Finishes.Flooring.Carpet.Loop.5.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1EA02F5B83A600BE5330 /* Finishes.Flooring.Carpet.Loop.5.tex */; };
+		136A1FDC2F5B83A600BE5330 /* FL17lef1.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1EC92F5B83A600BE5330 /* FL17lef1.tex */; };
+		136A1FDD2F5B83A600BE5330 /* individual_b.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1EFE2F5B83A600BE5330 /* individual_b.tex */; };
+		136A1FDE2F5B83A600BE5330 /* FL29stm2.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1EE02F5B83A600BE5330 /* FL29stm2.tex */; };
+		136A1FDF2F5B83A600BE5330 /* N_hp13lef1_bump.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F3D2F5B83A600BE5330 /* N_hp13lef1_bump.tex */; };
+		136A1FE02F5B83A600BE5330 /* FL17stm.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1ED12F5B83A600BE5330 /* FL17stm.tex */; };
+		136A1FE12F5B83A600BE5330 /* muros_c2.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F1B2F5B83A600BE5330 /* muros_c2.tex */; };
+		136A1FE22F5B83A600BE5330 /* HP19stm1.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1EFA2F5B83A600BE5330 /* HP19stm1.tex */; };
+		136A1FE32F5B83A600BE5330 /* N_bwk_1024_Bump.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F2F2F5B83A600BE5330 /* N_bwk_1024_Bump.tex */; };
+		136A1FE42F5B83A600BE5330 /* FL11lef2.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1EAA2F5B83A600BE5330 /* FL11lef2.tex */; };
+		136A1FE52F5B83A600BE5330 /* HP17lef2.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1EF62F5B83A600BE5330 /* HP17lef2.tex */; };
+		136A1FE62F5B83A600BE5330 /* FL12lef1.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1EB12F5B83A600BE5330 /* FL12lef1.tex */; };
+		136A1FE72F5B83A600BE5330 /* FL29lef.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1EDC2F5B83A600BE5330 /* FL29lef.tex */; };
+		136A1FE82F5B83A600BE5330 /* muros_j.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F212F5B83A600BE5330 /* muros_j.tex */; };
+		136A1FE92F5B83A600BE5330 /* muros_q_patio2.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F282F5B83A600BE5330 /* muros_q_patio2.tex */; };
+		136A1FEA2F5B83A600BE5330 /* N_Forja_Macetas_bump.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F3B2F5B83A600BE5330 /* N_Forja_Macetas_bump.tex */; };
+		136A1FEB2F5B83A600BE5330 /* FL17pet5.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1ED02F5B83A600BE5330 /* FL17pet5.tex */; };
+		136A1FEC2F5B83A600BE5330 /* fuente_piedra_01.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1EE42F5B83A600BE5330 /* fuente_piedra_01.tex */; };
+		136A1FED2F5B83A600BE5330 /* FL13lef4.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1EB82F5B83A600BE5330 /* FL13lef4.tex */; };
+		136A1FEE2F5B83A600BE5330 /* FL13pet3.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1EBC2F5B83A600BE5330 /* FL13pet3.tex */; };
+		136A1FEF2F5B83A600BE5330 /* FL04cnt2.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1EA42F5B83A600BE5330 /* FL04cnt2.tex */; };
+		136A1FF02F5B83A600BE5330 /* N_escalera_bump.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F372F5B83A600BE5330 /* N_escalera_bump.tex */; };
+		136A1FF12F5B83A600BE5330 /* tela_mesa_b.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F712F5B83A600BE5330 /* tela_mesa_b.tex */; };
+		136A1FF22F5B83A600BE5330 /* zebrina_pendula_bark.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F7A2F5B83A600BE5330 /* zebrina_pendula_bark.tex */; };
+		136A1FF32F5B83A600BE5330 /* muros_q3.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F292F5B83A600BE5330 /* muros_q3.tex */; };
+		136A1FF42F5B83A600BE5330 /* N_moldura_techo_bump.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F4A2F5B83A600BE5330 /* N_moldura_techo_bump.tex */; };
+		136A1FF52F5B83A600BE5330 /* N_sm_tronco_bump.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F562F5B83A600BE5330 /* N_sm_tronco_bump.tex */; };
+		136A1FF62F5B83A600BE5330 /* FL29pet1.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1EDD2F5B83A600BE5330 /* FL29pet1.tex */; };
+		136A1FF72F5B83A600BE5330 /* muros_n.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F252F5B83A600BE5330 /* muros_n.tex */; };
+		136A1FF82F5B83A600BE5330 /* HP17lef1.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1EF52F5B83A600BE5330 /* HP17lef1.tex */; };
+		136A1FF92F5B83A600BE5330 /* l37-upper.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F022F5B83A600BE5330 /* l37-upper.tex */; };
+		136A1FFA2F5B83A600BE5330 /* N_PITTED.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F502F5B83A600BE5330 /* N_PITTED.tex */; };
+		136A1FFB2F5B83A600BE5330 /* FL13pet2.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1EBB2F5B83A600BE5330 /* FL13pet2.tex */; };
+		136A1FFC2F5B83A600BE5330 /* FL13stm.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1EBD2F5B83A600BE5330 /* FL13stm.tex */; };
+		136A1FFD2F5B83A600BE5330 /* FL16lef1.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1EC42F5B83A600BE5330 /* FL16lef1.tex */; };
+		136A1FFE2F5B83A600BE5330 /* N_detmoldura_03_bump.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F332F5B83A600BE5330 /* N_detmoldura_03_bump.tex */; };
+		136A1FFF2F5B83A600BE5330 /* muros_g.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F1F2F5B83A600BE5330 /* muros_g.tex */; };
+		136A20002F5B83A600BE5330 /* N_moldura2piso_bump.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F4B2F5B83A600BE5330 /* N_moldura2piso_bump.tex */; };
+		136A20012F5B83A600BE5330 /* WOOD08.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F792F5B83A600BE5330 /* WOOD08.tex */; };
+		136A20022F5B83A600BE5330 /* FL04lef1.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1EA52F5B83A600BE5330 /* FL04lef1.tex */; };
+		136A20032F5B83A600BE5330 /* FL17cnt.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1EC82F5B83A600BE5330 /* FL17cnt.tex */; };
+		136A20042F5B83A600BE5330 /* muros_q4.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F2A2F5B83A600BE5330 /* muros_q4.tex */; };
+		136A20052F5B83A600BE5330 /* N_molduraterraza_bump.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F4C2F5B83A600BE5330 /* N_molduraterraza_bump.tex */; };
+		136A20062F5B83A600BE5330 /* Maceta_A2_Color.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F052F5B83A600BE5330 /* Maceta_A2_Color.tex */; };
+		136A20072F5B83A600BE5330 /* N_detmoldura_05_bump.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F352F5B83A600BE5330 /* N_detmoldura_05_bump.tex */; };
+		136A20082F5B83A600BE5330 /* piso_patio_exterior.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F5C2F5B83A600BE5330 /* piso_patio_exterior.tex */; };
+		136A20092F5B83A600BE5330 /* muros_p_.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F262F5B83A600BE5330 /* muros_p_.tex */; };
+		136A200A2F5B83A600BE5330 /* plato_a.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F5F2F5B83A600BE5330 /* plato_a.tex */; };
+		136A200B2F5B83A600BE5330 /* Maceta_D2_Color_0.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F0B2F5B83A600BE5330 /* Maceta_D2_Color_0.tex */; };
+		136A200C2F5B83A600BE5330 /* sm_leaf_seca_02b.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F6A2F5B83A600BE5330 /* sm_leaf_seca_02b.tex */; };
+		136A200D2F5B83A600BE5330 /* FL04stm.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1EA82F5B83A600BE5330 /* FL04stm.tex */; };
+		136A200E2F5B83A600BE5330 /* Maceta_B_Color.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F062F5B83A600BE5330 /* Maceta_B_Color.tex */; };
+		136A200F2F5B83A600BE5330 /* HP11lef2.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1EF02F5B83A600BE5330 /* HP11lef2.tex */; };
+		136A20102F5B83A600BE5330 /* N_puerta_bump.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F522F5B83A600BE5330 /* N_puerta_bump.tex */; };
+		136A20112F5B83A600BE5330 /* pared_calle.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F5B2F5B83A600BE5330 /* pared_calle.tex */; };
+		136A20122F5B83A600BE5330 /* FL19lef3.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1ED32F5B83A600BE5330 /* FL19lef3.tex */; };
+		136A20132F5B83A600BE5330 /* N_mold_arco_01_bump.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F492F5B83A600BE5330 /* N_mold_arco_01_bump.tex */; };
+		136A20142F5B83A600BE5330 /* FL12pis1.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1EB42F5B83A600BE5330 /* FL12pis1.tex */; };
+		136A20152F5B83A600BE5330 /* HP11stm.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1EF12F5B83A600BE5330 /* HP11stm.tex */; };
+		136A20162F5B83A600BE5330 /* sm_leaf_02a.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F672F5B83A600BE5330 /* sm_leaf_02a.tex */; };
+		136A20172F5B83A600BE5330 /* sm_leaf_03a.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F692F5B83A600BE5330 /* sm_leaf_03a.tex */; };
+		136A20182F5B83A600BE5330 /* FL15lef1.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1EC02F5B83A600BE5330 /* FL15lef1.tex */; };
+		136A20192F5B83A600BE5330 /* FL19pe13.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1ED52F5B83A600BE5330 /* FL19pe13.tex */; };
+		136A201A2F5B83A600BE5330 /* N_arcos_lisos_2_bump.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F2C2F5B83A600BE5330 /* N_arcos_lisos_2_bump.tex */; };
+		136A201B2F5B83A600BE5330 /* N_silla_d_piel_bump.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F542F5B83A600BE5330 /* N_silla_d_piel_bump.tex */; };
+		136A201C2F5B83A600BE5330 /* molduraterraza__color.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F162F5B83A600BE5330 /* molduraterraza__color.tex */; };
+		136A201D2F5B83A600BE5330 /* FL15cnt1.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1EBE2F5B83A600BE5330 /* FL15cnt1.tex */; };
+		136A201E2F5B83A600BE5330 /* Forja_Macetas.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1EE22F5B83A600BE5330 /* Forja_Macetas.tex */; };
+		136A201F2F5B83A600BE5330 /* N_l33-upper.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F402F5B83A600BE5330 /* N_l33-upper.tex */; };
+		136A20202F5B83A600BE5330 /* N_bark06mi.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F2E2F5B83A600BE5330 /* N_bark06mi.tex */; };
+		136A20212F5B83A600BE5330 /* Vigas_A2.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F762F5B83A600BE5330 /* Vigas_A2.tex */; };
+		136A20222F5B83A600BE5330 /* HP19stm2.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1EFB2F5B83A600BE5330 /* HP19stm2.tex */; };
+		136A20232F5B83A600BE5330 /* moldura_volado.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F142F5B83A600BE5330 /* moldura_volado.tex */; };
+		136A20242F5B83A600BE5330 /* N_postes_barandal_bump.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F512F5B83A600BE5330 /* N_postes_barandal_bump.tex */; };
+		136A20252F5B83A600BE5330 /* sm_leaf_02b.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F682F5B83A600BE5330 /* sm_leaf_02b.tex */; };
+		136A20262F5B83A600BE5330 /* FL13lef5.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1EB92F5B83A600BE5330 /* FL13lef5.tex */; };
+		136A20272F5B83A600BE5330 /* FL12sta1.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1EB52F5B83A600BE5330 /* FL12sta1.tex */; };
+		136A20282F5B83A600BE5330 /* marco_puerta_1.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F102F5B83A600BE5330 /* marco_puerta_1.tex */; };
+		136A20292F5B83A600BE5330 /* fuente_azulejo.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1EE32F5B83A600BE5330 /* fuente_azulejo.tex */; };
+		136A202A2F5B83A600BE5330 /* FL16pet1.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1EC62F5B83A600BE5330 /* FL16pet1.tex */; };
+		136A202B2F5B83A600BE5330 /* quercus_rubra_bark.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F622F5B83A600BE5330 /* quercus_rubra_bark.tex */; };
+		136A202C2F5B83A600BE5330 /* techo.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F6E2F5B83A600BE5330 /* techo.tex */; };
+		136A202D2F5B83A600BE5330 /* muros_b1.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F192F5B83A600BE5330 /* muros_b1.tex */; };
+		136A202E2F5B83A600BE5330 /* N_Finishes.Flooring.Carpet.Loop.5.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F3A2F5B83A600BE5330 /* N_Finishes.Flooring.Carpet.Loop.5.tex */; };
+		136A202F2F5B83A600BE5330 /* FL17lef2.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1ECA2F5B83A600BE5330 /* FL17lef2.tex */; };
+		136A20302F5B83A600BE5330 /* muros_b2.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F1A2F5B83A600BE5330 /* muros_b2.tex */; };
+		136A20312F5B83A600BE5330 /* muros_a.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F172F5B83A600BE5330 /* muros_a.tex */; };
+		136A20322F5B83A600BE5330 /* FL19stm.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1ED92F5B83A600BE5330 /* FL19stm.tex */; };
+		136A20332F5B83A600BE5330 /* N_sm_leaf_02_bump.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F552F5B83A600BE5330 /* N_sm_leaf_02_bump.tex */; };
+		136A20342F5B83A600BE5330 /* FL04cnt1.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1EA32F5B83A600BE5330 /* FL04cnt1.tex */; };
+		136A20352F5B83A600BE5330 /* losa.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F032F5B83A600BE5330 /* losa.tex */; };
+		136A20362F5B83A600BE5330 /* tela_mesa_d.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F722F5B83A600BE5330 /* tela_mesa_d.tex */; };
+		136A20372F5B83A600BE5330 /* N_muros_b1.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F4D2F5B83A600BE5330 /* N_muros_b1.tex */; };
+		136A20382F5B83A600BE5330 /* FL04lef2.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1EA62F5B83A600BE5330 /* FL04lef2.tex */; };
+		136A20392F5B83A600BE5330 /* jardinera_1_color.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1EFF2F5B83A600BE5330 /* jardinera_1_color.tex */; };
+		136A203A2F5B83A600BE5330 /* Vigas_B.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F772F5B83A600BE5330 /* Vigas_B.tex */; };
+		136A203B2F5B83A600BE5330 /* FL29cnt1.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1EDA2F5B83A600BE5330 /* FL29cnt1.tex */; };
+		136A203C2F5B83A600BE5330 /* sm_leaf_seca_03b.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F6B2F5B83A600BE5330 /* sm_leaf_seca_03b.tex */; };
+		136A203D2F5B83A600BE5330 /* HP01stm2.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1EEA2F5B83A600BE5330 /* HP01stm2.tex */; };
+		136A203E2F5B83A600BE5330 /* pared_barro_afinado.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F5A2F5B83A600BE5330 /* pared_barro_afinado.tex */; };
+		136A203F2F5B83A600BE5330 /* FL19lef4.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1ED42F5B83A600BE5330 /* FL19lef4.tex */; };
+		136A20402F5B83A600BE5330 /* muros_d.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F1C2F5B83A600BE5330 /* muros_d.tex */; };
+		136A20412F5B83A600BE5330 /* N_metal_viejo_2.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F482F5B83A600BE5330 /* N_metal_viejo_2.tex */; };
+		136A20422F5B83A600BE5330 /* silla_d_piel.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F652F5B83A600BE5330 /* silla_d_piel.tex */; };
+		136A20432F5B83A600BE5330 /* detmoldura_06_color.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1E982F5B83A600BE5330 /* detmoldura_06_color.tex */; };
+		136A20442F5B83A600BE5330 /* FL11pet4.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1EAE2F5B83A600BE5330 /* FL11pet4.tex */; };
+		136A20452F5B83A600BE5330 /* FL19pe16.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1ED82F5B83A600BE5330 /* FL19pe16.tex */; };
+		136A20462F5B83A600BE5330 /* muros_e.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F1D2F5B83A600BE5330 /* muros_e.tex */; };
+		136A20472F5B83A600BE5330 /* FL13pet1.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1EBA2F5B83A600BE5330 /* FL13pet1.tex */; };
+		136A20482F5B83A600BE5330 /* FL15stm.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1EC32F5B83A600BE5330 /* FL15stm.tex */; };
+		136A20492F5B83A600BE5330 /* HP07lef1.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1EEC2F5B83A600BE5330 /* HP07lef1.tex */; };
+		136A204A2F5B83A600BE5330 /* Maceta_A_Color.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F042F5B83A600BE5330 /* Maceta_A_Color.tex */; };
+		136A204B2F5B83A600BE5330 /* HP07lef2.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1EED2F5B83A600BE5330 /* HP07lef2.tex */; };
+		136A204C2F5B83A600BE5330 /* Fierro_A.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1E9E2F5B83A600BE5330 /* Fierro_A.tex */; };
+		136A204D2F5B83A600BE5330 /* N_jardinera_1_displacement_2.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F3E2F5B83A600BE5330 /* N_jardinera_1_displacement_2.tex */; };
+		136A204E2F5B83A600BE5330 /* N_WOOD08_Bump.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F592F5B83A600BE5330 /* N_WOOD08_Bump.tex */; };
+		136A204F2F5B83A600BE5330 /* rust_detalle.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F642F5B83A600BE5330 /* rust_detalle.tex */; };
+		136A20502F5B83A600BE5330 /* elaeagnus_umbellate_bark.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1E9A2F5B83A600BE5330 /* elaeagnus_umbellate_bark.tex */; };
+		136A20512F5B83A600BE5330 /* FL11pet2.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1EAC2F5B83A600BE5330 /* FL11pet2.tex */; };
+		136A20522F5B83A600BE5330 /* N_Maceta_B_Bump.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F432F5B83A600BE5330 /* N_Maceta_B_Bump.tex */; };
+		136A20532F5B83A600BE5330 /* FL13lef1.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1EB72F5B83A600BE5330 /* FL13lef1.tex */; };
+		136A20542F5B83A600BE5330 /* sm_tronco.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F6C2F5B83A600BE5330 /* sm_tronco.tex */; };
+		136A20552F5B83A600BE5330 /* FL11pet3.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1EAD2F5B83A600BE5330 /* FL11pet3.tex */; };
+		136A20562F5B83A600BE5330 /* impatiens_newguinea_hybrids_petal.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1EFD2F5B83A600BE5330 /* impatiens_newguinea_hybrids_petal.tex */; };
+		136A20572F5B83A600BE5330 /* muros_l.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F232F5B83A600BE5330 /* muros_l.tex */; };
+		136A20582F5B83A600BE5330 /* Maceta_C2_Color.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F092F5B83A600BE5330 /* Maceta_C2_Color.tex */; };
+		136A20592F5B83A600BE5330 /* FL04pet1.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1EA72F5B83A600BE5330 /* FL04pet1.tex */; };
+		136A205A2F5B83A600BE5330 /* fittonia_verschaffeltii_bark.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1EA12F5B83A600BE5330 /* fittonia_verschaffeltii_bark.tex */; };
+		136A205B2F5B83A600BE5330 /* N_madera_barandal_esc_2_bump.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F462F5B83A600BE5330 /* N_madera_barandal_esc_2_bump.tex */; };
+		136A205C2F5B83A600BE5330 /* muros_m.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1F242F5B83A600BE5330 /* muros_m.tex */; };
+		136A205D2F5B83A600BE5330 /* FL16lef3.tex in Resources */ = {isa = PBXBuildFile; fileRef = 136A1EC52F5B83A600BE5330 /* FL16lef3.tex */; };
 		BA02D9F32F558F09009EBF35 /* 8006627369776289000.tex in Resources */ = {isa = PBXBuildFile; fileRef = BA02D9CF2F558F09009EBF35 /* 8006627369776289000.tex */; };
 		BA02D9F42F558F09009EBF35 /* 3628158980083700836.tex in Resources */ = {isa = PBXBuildFile; fileRef = BA02D9BA2F558F09009EBF35 /* 3628158980083700836.tex */; };
 		BA02D9F52F558F09009EBF35 /* 7815564343179553343.tex in Resources */ = {isa = PBXBuildFile; fileRef = BA02D9CE2F558F09009EBF35 /* 7815564343179553343.tex */; };
@@ -591,6 +877,292 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		136A17822F5B811700BE5330 /* Buddha.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = Buddha.bin; sourceTree = "<group>"; };
+		136A17842F5B811700BE5330 /* LivingRoom.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = LivingRoom.bin; sourceTree = "<group>"; };
+		136A17862F5B811700BE5330 /* SanMiguel.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = SanMiguel.bin; sourceTree = "<group>"; };
+		136A1E282F5B835E00BE5330 /* apple.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = apple.tex; sourceTree = "<group>"; };
+		136A1E292F5B835E00BE5330 /* book-spines.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = "book-spines.tex"; sourceTree = "<group>"; };
+		136A1E2A2F5B835E00BE5330 /* carpet-text3b.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = "carpet-text3b.tex"; sourceTree = "<group>"; };
+		136A1E2B2F5B835E00BE5330 /* cushion-green-circles.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = "cushion-green-circles.tex"; sourceTree = "<group>"; };
+		136A1E2C2F5B835E00BE5330 /* cushion-purple-yellow-stripe.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = "cushion-purple-yellow-stripe.tex"; sourceTree = "<group>"; };
+		136A1E2D2F5B835E00BE5330 /* cushion-stripe-purple.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = "cushion-stripe-purple.tex"; sourceTree = "<group>"; };
+		136A1E2E2F5B835E00BE5330 /* magazine.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = magazine.tex; sourceTree = "<group>"; };
+		136A1E2F2F5B835E00BE5330 /* photo1.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = photo1.tex; sourceTree = "<group>"; };
+		136A1E302F5B835E00BE5330 /* photo2.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = photo2.tex; sourceTree = "<group>"; };
+		136A1E312F5B835E00BE5330 /* photo3.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = photo3.tex; sourceTree = "<group>"; };
+		136A1E322F5B835E00BE5330 /* photo4.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = photo4.tex; sourceTree = "<group>"; };
+		136A1E332F5B835E00BE5330 /* pic5wide.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = pic5wide.tex; sourceTree = "<group>"; };
+		136A1E342F5B835E00BE5330 /* picture11-vert.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = "picture11-vert.tex"; sourceTree = "<group>"; };
+		136A1E352F5B835E00BE5330 /* Shade-paper.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Shade-paper.tex"; sourceTree = "<group>"; };
+		136A1E362F5B835E00BE5330 /* shade-stripes.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = "shade-stripes.tex"; sourceTree = "<group>"; };
+		136A1E372F5B835E00BE5330 /* wood4.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = wood4.tex; sourceTree = "<group>"; };
+		136A1E482F5B836900BE5330 /* 0001_carros.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = 0001_carros.tex; sourceTree = "<group>"; };
+		136A1E492F5B836900BE5330 /* 027_Cola_Caballo_06-30-1997.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = "027_Cola_Caballo_06-30-1997.tex"; sourceTree = "<group>"; };
+		136A1E4A2F5B836900BE5330 /* 052terresable.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = 052terresable.tex; sourceTree = "<group>"; };
+		136A1E4B2F5B836900BE5330 /* aglaonema_bark.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = aglaonema_bark.tex; sourceTree = "<group>"; };
+		136A1E4C2F5B836900BE5330 /* aglaonema_leaf.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = aglaonema_leaf.tex; sourceTree = "<group>"; };
+		136A1E4D2F5B836900BE5330 /* ampelopsis_brevipedunculata_bark.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = ampelopsis_brevipedunculata_bark.tex; sourceTree = "<group>"; };
+		136A1E4E2F5B836900BE5330 /* arco_frente.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = arco_frente.tex; sourceTree = "<group>"; };
+		136A1E4F2F5B836900BE5330 /* arcos_lisos_2_color.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = arcos_lisos_2_color.tex; sourceTree = "<group>"; };
+		136A1E502F5B836900BE5330 /* arcos_lisos_3_color_1.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = arcos_lisos_3_color_1.tex; sourceTree = "<group>"; };
+		136A1E512F5B836900BE5330 /* bark06mi.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = bark06mi.tex; sourceTree = "<group>"; };
+		136A1E522F5B836900BE5330 /* Barro_2.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = Barro_2.tex; sourceTree = "<group>"; };
+		136A1E532F5B836900BE5330 /* BL05lef2.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = BL05lef2.tex; sourceTree = "<group>"; };
+		136A1E542F5B836900BE5330 /* BS01brk.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = BS01brk.tex; sourceTree = "<group>"; };
+		136A1E552F5B836900BE5330 /* BS01flo1.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = BS01flo1.tex; sourceTree = "<group>"; };
+		136A1E562F5B836900BE5330 /* BS01flo2.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = BS01flo2.tex; sourceTree = "<group>"; };
+		136A1E572F5B836900BE5330 /* BS01lef.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = BS01lef.tex; sourceTree = "<group>"; };
+		136A1E582F5B836900BE5330 /* BS04brk.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = BS04brk.tex; sourceTree = "<group>"; };
+		136A1E592F5B836900BE5330 /* BS04flo.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = BS04flo.tex; sourceTree = "<group>"; };
+		136A1E5A2F5B836900BE5330 /* BS04lef.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = BS04lef.tex; sourceTree = "<group>"; };
+		136A1E5B2F5B836900BE5330 /* BWK_1024.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = BWK_1024.tex; sourceTree = "<group>"; };
+		136A1E5C2F5B836900BE5330 /* candil_madera.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = candil_madera.tex; sourceTree = "<group>"; };
+		136A1E5D2F5B836900BE5330 /* cantera_naranja_liso.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = cantera_naranja_liso.tex; sourceTree = "<group>"; };
+		136A1E5E2F5B836900BE5330 /* cenicero.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = cenicero.tex; sourceTree = "<group>"; };
+		136A1E5F2F5B836900BE5330 /* ceramic_tile.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = ceramic_tile.tex; sourceTree = "<group>"; };
+		136A1E602F5B836900BE5330 /* citrus_limon_leaf.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = citrus_limon_leaf.tex; sourceTree = "<group>"; };
+		136A1E612F5B836900BE5330 /* columna_b_color.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = columna_b_color.tex; sourceTree = "<group>"; };
+		136A1E622F5B836900BE5330 /* concreto_01.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = concreto_01.tex; sourceTree = "<group>"; };
+		136A1E632F5B836900BE5330 /* concreto_02.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = concreto_02.tex; sourceTree = "<group>"; };
+		136A1E642F5B836900BE5330 /* D30_Smiguel_2003_7758.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = D30_Smiguel_2003_7758.tex; sourceTree = "<group>"; };
+		136A1E652F5B836900BE5330 /* D30_Smiguel_2003_7768.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = D30_Smiguel_2003_7768.tex; sourceTree = "<group>"; };
+		136A1E662F5B836900BE5330 /* D30_Smiguel_2003_7785.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = D30_Smiguel_2003_7785.tex; sourceTree = "<group>"; };
+		136A1E672F5B836900BE5330 /* D30_Smiguel_2003_7812.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = D30_Smiguel_2003_7812.tex; sourceTree = "<group>"; };
+		136A1E682F5B836900BE5330 /* D30_Smiguel_2003_7815.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = D30_Smiguel_2003_7815.tex; sourceTree = "<group>"; };
+		136A1E692F5B836900BE5330 /* D30_Smiguel_2003_7833.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = D30_Smiguel_2003_7833.tex; sourceTree = "<group>"; };
+		136A1E6A2F5B836900BE5330 /* D30_Smiguel_2003_7843.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = D30_Smiguel_2003_7843.tex; sourceTree = "<group>"; };
+		136A1E6B2F5B836900BE5330 /* detmoldura_01_color.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = detmoldura_01_color.tex; sourceTree = "<group>"; };
+		136A1E6C2F5B836900BE5330 /* detmoldura_02_color.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = detmoldura_02_color.tex; sourceTree = "<group>"; };
+		136A1E6D2F5B836900BE5330 /* detmoldura_03_color.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = detmoldura_03_color.tex; sourceTree = "<group>"; };
+		136A1E6E2F5B836900BE5330 /* detmoldura_04_color.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = detmoldura_04_color.tex; sourceTree = "<group>"; };
+		136A1E6F2F5B836900BE5330 /* detmoldura_05_color.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = detmoldura_05_color.tex; sourceTree = "<group>"; };
+		136A1E982F5B83A600BE5330 /* detmoldura_06_color.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = detmoldura_06_color.tex; sourceTree = "<group>"; };
+		136A1E992F5B83A600BE5330 /* dracaena_fragrans_leaf.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = dracaena_fragrans_leaf.tex; sourceTree = "<group>"; };
+		136A1E9A2F5B83A600BE5330 /* elaeagnus_umbellate_bark.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = elaeagnus_umbellate_bark.tex; sourceTree = "<group>"; };
+		136A1E9B2F5B83A600BE5330 /* escalera_color.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = escalera_color.tex; sourceTree = "<group>"; };
+		136A1E9C2F5B83A600BE5330 /* escurridera_color.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = escurridera_color.tex; sourceTree = "<group>"; };
+		136A1E9D2F5B83A600BE5330 /* EU15lef.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = EU15lef.tex; sourceTree = "<group>"; };
+		136A1E9E2F5B83A600BE5330 /* Fierro_A.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = Fierro_A.tex; sourceTree = "<group>"; };
+		136A1E9F2F5B83A600BE5330 /* fierro_b.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = fierro_b.tex; sourceTree = "<group>"; };
+		136A1EA02F5B83A600BE5330 /* Finishes.Flooring.Carpet.Loop.5.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = Finishes.Flooring.Carpet.Loop.5.tex; sourceTree = "<group>"; };
+		136A1EA12F5B83A600BE5330 /* fittonia_verschaffeltii_bark.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = fittonia_verschaffeltii_bark.tex; sourceTree = "<group>"; };
+		136A1EA22F5B83A600BE5330 /* FL03lef1.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = FL03lef1.tex; sourceTree = "<group>"; };
+		136A1EA32F5B83A600BE5330 /* FL04cnt1.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = FL04cnt1.tex; sourceTree = "<group>"; };
+		136A1EA42F5B83A600BE5330 /* FL04cnt2.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = FL04cnt2.tex; sourceTree = "<group>"; };
+		136A1EA52F5B83A600BE5330 /* FL04lef1.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = FL04lef1.tex; sourceTree = "<group>"; };
+		136A1EA62F5B83A600BE5330 /* FL04lef2.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = FL04lef2.tex; sourceTree = "<group>"; };
+		136A1EA72F5B83A600BE5330 /* FL04pet1.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = FL04pet1.tex; sourceTree = "<group>"; };
+		136A1EA82F5B83A600BE5330 /* FL04stm.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = FL04stm.tex; sourceTree = "<group>"; };
+		136A1EA92F5B83A600BE5330 /* FL11lef1.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = FL11lef1.tex; sourceTree = "<group>"; };
+		136A1EAA2F5B83A600BE5330 /* FL11lef2.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = FL11lef2.tex; sourceTree = "<group>"; };
+		136A1EAB2F5B83A600BE5330 /* FL11pet1.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = FL11pet1.tex; sourceTree = "<group>"; };
+		136A1EAC2F5B83A600BE5330 /* FL11pet2.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = FL11pet2.tex; sourceTree = "<group>"; };
+		136A1EAD2F5B83A600BE5330 /* FL11pet3.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = FL11pet3.tex; sourceTree = "<group>"; };
+		136A1EAE2F5B83A600BE5330 /* FL11pet4.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = FL11pet4.tex; sourceTree = "<group>"; };
+		136A1EAF2F5B83A600BE5330 /* FL11sta.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = FL11sta.tex; sourceTree = "<group>"; };
+		136A1EB02F5B83A600BE5330 /* FL11stm.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = FL11stm.tex; sourceTree = "<group>"; };
+		136A1EB12F5B83A600BE5330 /* FL12lef1.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = FL12lef1.tex; sourceTree = "<group>"; };
+		136A1EB22F5B83A600BE5330 /* FL12pet1.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = FL12pet1.tex; sourceTree = "<group>"; };
+		136A1EB32F5B83A600BE5330 /* FL12pet2.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = FL12pet2.tex; sourceTree = "<group>"; };
+		136A1EB42F5B83A600BE5330 /* FL12pis1.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = FL12pis1.tex; sourceTree = "<group>"; };
+		136A1EB52F5B83A600BE5330 /* FL12sta1.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = FL12sta1.tex; sourceTree = "<group>"; };
+		136A1EB62F5B83A600BE5330 /* FL12stm.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = FL12stm.tex; sourceTree = "<group>"; };
+		136A1EB72F5B83A600BE5330 /* FL13lef1.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = FL13lef1.tex; sourceTree = "<group>"; };
+		136A1EB82F5B83A600BE5330 /* FL13lef4.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = FL13lef4.tex; sourceTree = "<group>"; };
+		136A1EB92F5B83A600BE5330 /* FL13lef5.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = FL13lef5.tex; sourceTree = "<group>"; };
+		136A1EBA2F5B83A600BE5330 /* FL13pet1.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = FL13pet1.tex; sourceTree = "<group>"; };
+		136A1EBB2F5B83A600BE5330 /* FL13pet2.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = FL13pet2.tex; sourceTree = "<group>"; };
+		136A1EBC2F5B83A600BE5330 /* FL13pet3.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = FL13pet3.tex; sourceTree = "<group>"; };
+		136A1EBD2F5B83A600BE5330 /* FL13stm.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = FL13stm.tex; sourceTree = "<group>"; };
+		136A1EBE2F5B83A600BE5330 /* FL15cnt1.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = FL15cnt1.tex; sourceTree = "<group>"; };
+		136A1EBF2F5B83A600BE5330 /* FL15cnt2.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = FL15cnt2.tex; sourceTree = "<group>"; };
+		136A1EC02F5B83A600BE5330 /* FL15lef1.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = FL15lef1.tex; sourceTree = "<group>"; };
+		136A1EC12F5B83A600BE5330 /* FL15lef2.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = FL15lef2.tex; sourceTree = "<group>"; };
+		136A1EC22F5B83A600BE5330 /* FL15pet2.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = FL15pet2.tex; sourceTree = "<group>"; };
+		136A1EC32F5B83A600BE5330 /* FL15stm.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = FL15stm.tex; sourceTree = "<group>"; };
+		136A1EC42F5B83A600BE5330 /* FL16lef1.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = FL16lef1.tex; sourceTree = "<group>"; };
+		136A1EC52F5B83A600BE5330 /* FL16lef3.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = FL16lef3.tex; sourceTree = "<group>"; };
+		136A1EC62F5B83A600BE5330 /* FL16pet1.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = FL16pet1.tex; sourceTree = "<group>"; };
+		136A1EC72F5B83A600BE5330 /* FL16stm.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = FL16stm.tex; sourceTree = "<group>"; };
+		136A1EC82F5B83A600BE5330 /* FL17cnt.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = FL17cnt.tex; sourceTree = "<group>"; };
+		136A1EC92F5B83A600BE5330 /* FL17lef1.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = FL17lef1.tex; sourceTree = "<group>"; };
+		136A1ECA2F5B83A600BE5330 /* FL17lef2.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = FL17lef2.tex; sourceTree = "<group>"; };
+		136A1ECB2F5B83A600BE5330 /* FL17lef3.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = FL17lef3.tex; sourceTree = "<group>"; };
+		136A1ECC2F5B83A600BE5330 /* FL17lef5.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = FL17lef5.tex; sourceTree = "<group>"; };
+		136A1ECD2F5B83A600BE5330 /* FL17lef6.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = FL17lef6.tex; sourceTree = "<group>"; };
+		136A1ECE2F5B83A600BE5330 /* FL17pet1.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = FL17pet1.tex; sourceTree = "<group>"; };
+		136A1ECF2F5B83A600BE5330 /* FL17pet2.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = FL17pet2.tex; sourceTree = "<group>"; };
+		136A1ED02F5B83A600BE5330 /* FL17pet5.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = FL17pet5.tex; sourceTree = "<group>"; };
+		136A1ED12F5B83A600BE5330 /* FL17stm.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = FL17stm.tex; sourceTree = "<group>"; };
+		136A1ED22F5B83A600BE5330 /* FL19lef2.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = FL19lef2.tex; sourceTree = "<group>"; };
+		136A1ED32F5B83A600BE5330 /* FL19lef3.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = FL19lef3.tex; sourceTree = "<group>"; };
+		136A1ED42F5B83A600BE5330 /* FL19lef4.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = FL19lef4.tex; sourceTree = "<group>"; };
+		136A1ED52F5B83A600BE5330 /* FL19pe13.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = FL19pe13.tex; sourceTree = "<group>"; };
+		136A1ED62F5B83A600BE5330 /* FL19pe14.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = FL19pe14.tex; sourceTree = "<group>"; };
+		136A1ED72F5B83A600BE5330 /* FL19pe15.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = FL19pe15.tex; sourceTree = "<group>"; };
+		136A1ED82F5B83A600BE5330 /* FL19pe16.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = FL19pe16.tex; sourceTree = "<group>"; };
+		136A1ED92F5B83A600BE5330 /* FL19stm.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = FL19stm.tex; sourceTree = "<group>"; };
+		136A1EDA2F5B83A600BE5330 /* FL29cnt1.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = FL29cnt1.tex; sourceTree = "<group>"; };
+		136A1EDB2F5B83A600BE5330 /* FL29cnt2.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = FL29cnt2.tex; sourceTree = "<group>"; };
+		136A1EDC2F5B83A600BE5330 /* FL29lef.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = FL29lef.tex; sourceTree = "<group>"; };
+		136A1EDD2F5B83A600BE5330 /* FL29pet1.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = FL29pet1.tex; sourceTree = "<group>"; };
+		136A1EDE2F5B83A600BE5330 /* FL29pet2.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = FL29pet2.tex; sourceTree = "<group>"; };
+		136A1EDF2F5B83A600BE5330 /* FL29stm1.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = FL29stm1.tex; sourceTree = "<group>"; };
+		136A1EE02F5B83A600BE5330 /* FL29stm2.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = FL29stm2.tex; sourceTree = "<group>"; };
+		136A1EE12F5B83A600BE5330 /* FL29twg.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = FL29twg.tex; sourceTree = "<group>"; };
+		136A1EE22F5B83A600BE5330 /* Forja_Macetas.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = Forja_Macetas.tex; sourceTree = "<group>"; };
+		136A1EE32F5B83A600BE5330 /* fuente_azulejo.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = fuente_azulejo.tex; sourceTree = "<group>"; };
+		136A1EE42F5B83A600BE5330 /* fuente_piedra_01.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = fuente_piedra_01.tex; sourceTree = "<group>"; };
+		136A1EE52F5B83A600BE5330 /* fuente_piedra_02.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = fuente_piedra_02.tex; sourceTree = "<group>"; };
+		136A1EE62F5B83A600BE5330 /* HP01lef1.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = HP01lef1.tex; sourceTree = "<group>"; };
+		136A1EE72F5B83A600BE5330 /* HP01lef2.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = HP01lef2.tex; sourceTree = "<group>"; };
+		136A1EE82F5B83A600BE5330 /* HP01pet3.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = HP01pet3.tex; sourceTree = "<group>"; };
+		136A1EE92F5B83A600BE5330 /* HP01stm1.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = HP01stm1.tex; sourceTree = "<group>"; };
+		136A1EEA2F5B83A600BE5330 /* HP01stm2.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = HP01stm2.tex; sourceTree = "<group>"; };
+		136A1EEB2F5B83A600BE5330 /* HP04lef2.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = HP04lef2.tex; sourceTree = "<group>"; };
+		136A1EEC2F5B83A600BE5330 /* HP07lef1.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = HP07lef1.tex; sourceTree = "<group>"; };
+		136A1EED2F5B83A600BE5330 /* HP07lef2.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = HP07lef2.tex; sourceTree = "<group>"; };
+		136A1EEE2F5B83A600BE5330 /* HP07stm1.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = HP07stm1.tex; sourceTree = "<group>"; };
+		136A1EEF2F5B83A600BE5330 /* HP07stm2.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = HP07stm2.tex; sourceTree = "<group>"; };
+		136A1EF02F5B83A600BE5330 /* HP11lef2.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = HP11lef2.tex; sourceTree = "<group>"; };
+		136A1EF12F5B83A600BE5330 /* HP11stm.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = HP11stm.tex; sourceTree = "<group>"; };
+		136A1EF22F5B83A600BE5330 /* HP13lef2.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = HP13lef2.tex; sourceTree = "<group>"; };
+		136A1EF32F5B83A600BE5330 /* HP13lef3.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = HP13lef3.tex; sourceTree = "<group>"; };
+		136A1EF42F5B83A600BE5330 /* HP13stm2.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = HP13stm2.tex; sourceTree = "<group>"; };
+		136A1EF52F5B83A600BE5330 /* HP17lef1.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = HP17lef1.tex; sourceTree = "<group>"; };
+		136A1EF62F5B83A600BE5330 /* HP17lef2.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = HP17lef2.tex; sourceTree = "<group>"; };
+		136A1EF72F5B83A600BE5330 /* HP17stm.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = HP17stm.tex; sourceTree = "<group>"; };
+		136A1EF82F5B83A600BE5330 /* HP19lef2.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = HP19lef2.tex; sourceTree = "<group>"; };
+		136A1EF92F5B83A600BE5330 /* HP19lef3.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = HP19lef3.tex; sourceTree = "<group>"; };
+		136A1EFA2F5B83A600BE5330 /* HP19stm1.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = HP19stm1.tex; sourceTree = "<group>"; };
+		136A1EFB2F5B83A600BE5330 /* HP19stm2.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = HP19stm2.tex; sourceTree = "<group>"; };
+		136A1EFC2F5B83A600BE5330 /* hypoestes_phyllostachya_bark.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = hypoestes_phyllostachya_bark.tex; sourceTree = "<group>"; };
+		136A1EFD2F5B83A600BE5330 /* impatiens_newguinea_hybrids_petal.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = impatiens_newguinea_hybrids_petal.tex; sourceTree = "<group>"; };
+		136A1EFE2F5B83A600BE5330 /* individual_b.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = individual_b.tex; sourceTree = "<group>"; };
+		136A1EFF2F5B83A600BE5330 /* jardinera_1_color.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = jardinera_1_color.tex; sourceTree = "<group>"; };
+		136A1F002F5B83A600BE5330 /* l04-upper.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = "l04-upper.tex"; sourceTree = "<group>"; };
+		136A1F012F5B83A600BE5330 /* l33-upper.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = "l33-upper.tex"; sourceTree = "<group>"; };
+		136A1F022F5B83A600BE5330 /* l37-upper.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = "l37-upper.tex"; sourceTree = "<group>"; };
+		136A1F032F5B83A600BE5330 /* losa.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = losa.tex; sourceTree = "<group>"; };
+		136A1F042F5B83A600BE5330 /* Maceta_A_Color.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = Maceta_A_Color.tex; sourceTree = "<group>"; };
+		136A1F052F5B83A600BE5330 /* Maceta_A2_Color.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = Maceta_A2_Color.tex; sourceTree = "<group>"; };
+		136A1F062F5B83A600BE5330 /* Maceta_B_Color.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = Maceta_B_Color.tex; sourceTree = "<group>"; };
+		136A1F072F5B83A600BE5330 /* Maceta_B2_Color.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = Maceta_B2_Color.tex; sourceTree = "<group>"; };
+		136A1F082F5B83A600BE5330 /* Maceta_C_Color.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = Maceta_C_Color.tex; sourceTree = "<group>"; };
+		136A1F092F5B83A600BE5330 /* Maceta_C2_Color.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = Maceta_C2_Color.tex; sourceTree = "<group>"; };
+		136A1F0A2F5B83A600BE5330 /* Maceta_D_Bump_0.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = Maceta_D_Bump_0.tex; sourceTree = "<group>"; };
+		136A1F0B2F5B83A600BE5330 /* Maceta_D2_Color_0.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = Maceta_D2_Color_0.tex; sourceTree = "<group>"; };
+		136A1F0C2F5B83A600BE5330 /* madera_barandal_esc_2.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = madera_barandal_esc_2.tex; sourceTree = "<group>"; };
+		136A1F0D2F5B83A600BE5330 /* madera_marcos.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = madera_marcos.tex; sourceTree = "<group>"; };
+		136A1F0E2F5B83A600BE5330 /* madera_rustica_2.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = madera_rustica_2.tex; sourceTree = "<group>"; };
+		136A1F0F2F5B83A600BE5330 /* madera_triplay_01.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = madera_triplay_01.tex; sourceTree = "<group>"; };
+		136A1F102F5B83A600BE5330 /* marco_puerta_1.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = marco_puerta_1.tex; sourceTree = "<group>"; };
+		136A1F112F5B83A600BE5330 /* metal_viejo_2.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = metal_viejo_2.tex; sourceTree = "<group>"; };
+		136A1F122F5B83A600BE5330 /* mold_arco_01_color.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = mold_arco_01_color.tex; sourceTree = "<group>"; };
+		136A1F132F5B83A600BE5330 /* moldura_techo.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = moldura_techo.tex; sourceTree = "<group>"; };
+		136A1F142F5B83A600BE5330 /* moldura_volado.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = moldura_volado.tex; sourceTree = "<group>"; };
+		136A1F152F5B83A600BE5330 /* moldura2piso_color.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = moldura2piso_color.tex; sourceTree = "<group>"; };
+		136A1F162F5B83A600BE5330 /* molduraterraza__color.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = molduraterraza__color.tex; sourceTree = "<group>"; };
+		136A1F172F5B83A600BE5330 /* muros_a.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = muros_a.tex; sourceTree = "<group>"; };
+		136A1F182F5B83A600BE5330 /* muros_b.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = muros_b.tex; sourceTree = "<group>"; };
+		136A1F192F5B83A600BE5330 /* muros_b1.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = muros_b1.tex; sourceTree = "<group>"; };
+		136A1F1A2F5B83A600BE5330 /* muros_b2.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = muros_b2.tex; sourceTree = "<group>"; };
+		136A1F1B2F5B83A600BE5330 /* muros_c2.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = muros_c2.tex; sourceTree = "<group>"; };
+		136A1F1C2F5B83A600BE5330 /* muros_d.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = muros_d.tex; sourceTree = "<group>"; };
+		136A1F1D2F5B83A600BE5330 /* muros_e.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = muros_e.tex; sourceTree = "<group>"; };
+		136A1F1E2F5B83A600BE5330 /* muros_f.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = muros_f.tex; sourceTree = "<group>"; };
+		136A1F1F2F5B83A600BE5330 /* muros_g.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = muros_g.tex; sourceTree = "<group>"; };
+		136A1F202F5B83A600BE5330 /* muros_h.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = muros_h.tex; sourceTree = "<group>"; };
+		136A1F212F5B83A600BE5330 /* muros_j.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = muros_j.tex; sourceTree = "<group>"; };
+		136A1F222F5B83A600BE5330 /* muros_k.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = muros_k.tex; sourceTree = "<group>"; };
+		136A1F232F5B83A600BE5330 /* muros_l.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = muros_l.tex; sourceTree = "<group>"; };
+		136A1F242F5B83A600BE5330 /* muros_m.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = muros_m.tex; sourceTree = "<group>"; };
+		136A1F252F5B83A600BE5330 /* muros_n.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = muros_n.tex; sourceTree = "<group>"; };
+		136A1F262F5B83A600BE5330 /* muros_p_.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = muros_p_.tex; sourceTree = "<group>"; };
+		136A1F272F5B83A600BE5330 /* muros_q.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = muros_q.tex; sourceTree = "<group>"; };
+		136A1F282F5B83A600BE5330 /* muros_q_patio2.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = muros_q_patio2.tex; sourceTree = "<group>"; };
+		136A1F292F5B83A600BE5330 /* muros_q3.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = muros_q3.tex; sourceTree = "<group>"; };
+		136A1F2A2F5B83A600BE5330 /* muros_q4.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = muros_q4.tex; sourceTree = "<group>"; };
+		136A1F2B2F5B83A600BE5330 /* N_arco_frente_displace_inv.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = N_arco_frente_displace_inv.tex; sourceTree = "<group>"; };
+		136A1F2C2F5B83A600BE5330 /* N_arcos_lisos_2_bump.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = N_arcos_lisos_2_bump.tex; sourceTree = "<group>"; };
+		136A1F2D2F5B83A600BE5330 /* N_arcos_lisos_3_bump_1.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = N_arcos_lisos_3_bump_1.tex; sourceTree = "<group>"; };
+		136A1F2E2F5B83A600BE5330 /* N_bark06mi.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = N_bark06mi.tex; sourceTree = "<group>"; };
+		136A1F2F2F5B83A600BE5330 /* N_bwk_1024_Bump.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = N_bwk_1024_Bump.tex; sourceTree = "<group>"; };
+		136A1F302F5B83A600BE5330 /* N_columna_b_displacement_3_inv.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = N_columna_b_displacement_3_inv.tex; sourceTree = "<group>"; };
+		136A1F312F5B83A600BE5330 /* N_detmoldura_01_bump.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = N_detmoldura_01_bump.tex; sourceTree = "<group>"; };
+		136A1F322F5B83A600BE5330 /* N_detmoldura_02_bump.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = N_detmoldura_02_bump.tex; sourceTree = "<group>"; };
+		136A1F332F5B83A600BE5330 /* N_detmoldura_03_bump.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = N_detmoldura_03_bump.tex; sourceTree = "<group>"; };
+		136A1F342F5B83A600BE5330 /* N_detmoldura_04_bump.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = N_detmoldura_04_bump.tex; sourceTree = "<group>"; };
+		136A1F352F5B83A600BE5330 /* N_detmoldura_05_bump.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = N_detmoldura_05_bump.tex; sourceTree = "<group>"; };
+		136A1F362F5B83A600BE5330 /* N_detmoldura_06_bump.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = N_detmoldura_06_bump.tex; sourceTree = "<group>"; };
+		136A1F372F5B83A600BE5330 /* N_escalera_bump.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = N_escalera_bump.tex; sourceTree = "<group>"; };
+		136A1F382F5B83A600BE5330 /* N_escurridera_bump.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = N_escurridera_bump.tex; sourceTree = "<group>"; };
+		136A1F392F5B83A600BE5330 /* N_Fierro_A_Bump.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = N_Fierro_A_Bump.tex; sourceTree = "<group>"; };
+		136A1F3A2F5B83A600BE5330 /* N_Finishes.Flooring.Carpet.Loop.5.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = N_Finishes.Flooring.Carpet.Loop.5.tex; sourceTree = "<group>"; };
+		136A1F3B2F5B83A600BE5330 /* N_Forja_Macetas_bump.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = N_Forja_Macetas_bump.tex; sourceTree = "<group>"; };
+		136A1F3C2F5B83A600BE5330 /* N_HP11stm.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = N_HP11stm.tex; sourceTree = "<group>"; };
+		136A1F3D2F5B83A600BE5330 /* N_hp13lef1_bump.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = N_hp13lef1_bump.tex; sourceTree = "<group>"; };
+		136A1F3E2F5B83A600BE5330 /* N_jardinera_1_displacement_2.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = N_jardinera_1_displacement_2.tex; sourceTree = "<group>"; };
+		136A1F3F2F5B83A600BE5330 /* N_l04-upper.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = "N_l04-upper.tex"; sourceTree = "<group>"; };
+		136A1F402F5B83A600BE5330 /* N_l33-upper.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = "N_l33-upper.tex"; sourceTree = "<group>"; };
+		136A1F412F5B83A600BE5330 /* N_l37-upper.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = "N_l37-upper.tex"; sourceTree = "<group>"; };
+		136A1F422F5B83A600BE5330 /* N_Maceta_A_Bump.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = N_Maceta_A_Bump.tex; sourceTree = "<group>"; };
+		136A1F432F5B83A600BE5330 /* N_Maceta_B_Bump.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = N_Maceta_B_Bump.tex; sourceTree = "<group>"; };
+		136A1F442F5B83A600BE5330 /* N_Maceta_C_Bump.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = N_Maceta_C_Bump.tex; sourceTree = "<group>"; };
+		136A1F452F5B83A600BE5330 /* N_Maceta_D_Bump_0.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = N_Maceta_D_Bump_0.tex; sourceTree = "<group>"; };
+		136A1F462F5B83A600BE5330 /* N_madera_barandal_esc_2_bump.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = N_madera_barandal_esc_2_bump.tex; sourceTree = "<group>"; };
+		136A1F472F5B83A600BE5330 /* N_marco_puerta_1_bump.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = N_marco_puerta_1_bump.tex; sourceTree = "<group>"; };
+		136A1F482F5B83A600BE5330 /* N_metal_viejo_2.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = N_metal_viejo_2.tex; sourceTree = "<group>"; };
+		136A1F492F5B83A600BE5330 /* N_mold_arco_01_bump.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = N_mold_arco_01_bump.tex; sourceTree = "<group>"; };
+		136A1F4A2F5B83A600BE5330 /* N_moldura_techo_bump.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = N_moldura_techo_bump.tex; sourceTree = "<group>"; };
+		136A1F4B2F5B83A600BE5330 /* N_moldura2piso_bump.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = N_moldura2piso_bump.tex; sourceTree = "<group>"; };
+		136A1F4C2F5B83A600BE5330 /* N_molduraterraza_bump.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = N_molduraterraza_bump.tex; sourceTree = "<group>"; };
+		136A1F4D2F5B83A600BE5330 /* N_muros_b1.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = N_muros_b1.tex; sourceTree = "<group>"; };
+		136A1F4E2F5B83A600BE5330 /* N_piso_patio_exterior_displace_inv.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = N_piso_patio_exterior_displace_inv.tex; sourceTree = "<group>"; };
+		136A1F4F2F5B83A600BE5330 /* N_piso_rustico_displace2.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = N_piso_rustico_displace2.tex; sourceTree = "<group>"; };
+		136A1F502F5B83A600BE5330 /* N_PITTED.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = N_PITTED.tex; sourceTree = "<group>"; };
+		136A1F512F5B83A600BE5330 /* N_postes_barandal_bump.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = N_postes_barandal_bump.tex; sourceTree = "<group>"; };
+		136A1F522F5B83A600BE5330 /* N_puerta_bump.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = N_puerta_bump.tex; sourceTree = "<group>"; };
+		136A1F532F5B83A600BE5330 /* N_rust_detalle_bump.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = N_rust_detalle_bump.tex; sourceTree = "<group>"; };
+		136A1F542F5B83A600BE5330 /* N_silla_d_piel_bump.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = N_silla_d_piel_bump.tex; sourceTree = "<group>"; };
+		136A1F552F5B83A600BE5330 /* N_sm_leaf_02_bump.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = N_sm_leaf_02_bump.tex; sourceTree = "<group>"; };
+		136A1F562F5B83A600BE5330 /* N_sm_tronco_bump.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = N_sm_tronco_bump.tex; sourceTree = "<group>"; };
+		136A1F572F5B83A600BE5330 /* N_tela_blanca.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = N_tela_blanca.tex; sourceTree = "<group>"; };
+		136A1F582F5B83A600BE5330 /* N_vigas_a2_bump.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = N_vigas_a2_bump.tex; sourceTree = "<group>"; };
+		136A1F592F5B83A600BE5330 /* N_WOOD08_Bump.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = N_WOOD08_Bump.tex; sourceTree = "<group>"; };
+		136A1F5A2F5B83A600BE5330 /* pared_barro_afinado.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = pared_barro_afinado.tex; sourceTree = "<group>"; };
+		136A1F5B2F5B83A600BE5330 /* pared_calle.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = pared_calle.tex; sourceTree = "<group>"; };
+		136A1F5C2F5B83A600BE5330 /* piso_patio_exterior.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = piso_patio_exterior.tex; sourceTree = "<group>"; };
+		136A1F5D2F5B83A600BE5330 /* piso_patio_exterior2.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = piso_patio_exterior2.tex; sourceTree = "<group>"; };
+		136A1F5E2F5B83A600BE5330 /* piso_rustico.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = piso_rustico.tex; sourceTree = "<group>"; };
+		136A1F5F2F5B83A600BE5330 /* plato_a.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = plato_a.tex; sourceTree = "<group>"; };
+		136A1F602F5B83A600BE5330 /* postes_barandal_color.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = postes_barandal_color.tex; sourceTree = "<group>"; };
+		136A1F612F5B83A600BE5330 /* puerta.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = puerta.tex; sourceTree = "<group>"; };
+		136A1F622F5B83A600BE5330 /* quercus_rubra_bark.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = quercus_rubra_bark.tex; sourceTree = "<group>"; };
+		136A1F632F5B83A600BE5330 /* rust_a1.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = rust_a1.tex; sourceTree = "<group>"; };
+		136A1F642F5B83A600BE5330 /* rust_detalle.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = rust_detalle.tex; sourceTree = "<group>"; };
+		136A1F652F5B83A600BE5330 /* silla_d_piel.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = silla_d_piel.tex; sourceTree = "<group>"; };
+		136A1F662F5B83A600BE5330 /* sm_hoja_c_seca.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = sm_hoja_c_seca.tex; sourceTree = "<group>"; };
+		136A1F672F5B83A600BE5330 /* sm_leaf_02a.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = sm_leaf_02a.tex; sourceTree = "<group>"; };
+		136A1F682F5B83A600BE5330 /* sm_leaf_02b.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = sm_leaf_02b.tex; sourceTree = "<group>"; };
+		136A1F692F5B83A600BE5330 /* sm_leaf_03a.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = sm_leaf_03a.tex; sourceTree = "<group>"; };
+		136A1F6A2F5B83A600BE5330 /* sm_leaf_seca_02b.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = sm_leaf_seca_02b.tex; sourceTree = "<group>"; };
+		136A1F6B2F5B83A600BE5330 /* sm_leaf_seca_03b.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = sm_leaf_seca_03b.tex; sourceTree = "<group>"; };
+		136A1F6C2F5B83A600BE5330 /* sm_tronco.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = sm_tronco.tex; sourceTree = "<group>"; };
+		136A1F6D2F5B83A600BE5330 /* tapa_talabera.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = tapa_talabera.tex; sourceTree = "<group>"; };
+		136A1F6E2F5B83A600BE5330 /* techo.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = techo.tex; sourceTree = "<group>"; };
+		136A1F6F2F5B83A600BE5330 /* techo_01.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = techo_01.tex; sourceTree = "<group>"; };
+		136A1F702F5B83A600BE5330 /* tela_blanca.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = tela_blanca.tex; sourceTree = "<group>"; };
+		136A1F712F5B83A600BE5330 /* tela_mesa_b.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = tela_mesa_b.tex; sourceTree = "<group>"; };
+		136A1F722F5B83A600BE5330 /* tela_mesa_d.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = tela_mesa_d.tex; sourceTree = "<group>"; };
+		136A1F732F5B83A600BE5330 /* tela_silla_b.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = tela_silla_b.tex; sourceTree = "<group>"; };
+		136A1F742F5B83A600BE5330 /* TR02lef5.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = TR02lef5.tex; sourceTree = "<group>"; };
+		136A1F752F5B83A600BE5330 /* TR14lef1.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = TR14lef1.tex; sourceTree = "<group>"; };
+		136A1F762F5B83A600BE5330 /* Vigas_A2.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = Vigas_A2.tex; sourceTree = "<group>"; };
+		136A1F772F5B83A600BE5330 /* Vigas_B.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = Vigas_B.tex; sourceTree = "<group>"; };
+		136A1F782F5B83A600BE5330 /* wood.3.Bubinga.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = wood.3.Bubinga.tex; sourceTree = "<group>"; };
+		136A1F792F5B83A600BE5330 /* WOOD08.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = WOOD08.tex; sourceTree = "<group>"; };
+		136A1F7A2F5B83A600BE5330 /* zebrina_pendula_bark.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = zebrina_pendula_bark.tex; sourceTree = "<group>"; };
 		BA02D95A2F557A58009EBF35 /* AssetBaker */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = AssetBaker; sourceTree = BUILT_PRODUCTS_DIR; };
 		BA02D9942F557EB0009EBF35 /* libate.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libate.tbd; path = usr/lib/libate.tbd; sourceTree = SDKROOT; };
 		BA02D9AB2F558F09009EBF35 /* 332936164838540657.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = 332936164838540657.tex; sourceTree = "<group>"; };
@@ -1203,6 +1775,313 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		136A17832F5B811700BE5330 /* Buddha */ = {
+			isa = PBXGroup;
+			children = (
+				136A17822F5B811700BE5330 /* Buddha.bin */,
+			);
+			path = Buddha;
+			sourceTree = "<group>";
+		};
+		136A17852F5B811700BE5330 /* LivingRoom */ = {
+			isa = PBXGroup;
+			children = (
+				136A1E282F5B835E00BE5330 /* apple.tex */,
+				136A1E292F5B835E00BE5330 /* book-spines.tex */,
+				136A1E2A2F5B835E00BE5330 /* carpet-text3b.tex */,
+				136A1E2B2F5B835E00BE5330 /* cushion-green-circles.tex */,
+				136A1E2C2F5B835E00BE5330 /* cushion-purple-yellow-stripe.tex */,
+				136A1E2D2F5B835E00BE5330 /* cushion-stripe-purple.tex */,
+				136A1E2E2F5B835E00BE5330 /* magazine.tex */,
+				136A1E2F2F5B835E00BE5330 /* photo1.tex */,
+				136A1E302F5B835E00BE5330 /* photo2.tex */,
+				136A1E312F5B835E00BE5330 /* photo3.tex */,
+				136A1E322F5B835E00BE5330 /* photo4.tex */,
+				136A1E332F5B835E00BE5330 /* pic5wide.tex */,
+				136A1E342F5B835E00BE5330 /* picture11-vert.tex */,
+				136A1E352F5B835E00BE5330 /* Shade-paper.tex */,
+				136A1E362F5B835E00BE5330 /* shade-stripes.tex */,
+				136A1E372F5B835E00BE5330 /* wood4.tex */,
+				136A17842F5B811700BE5330 /* LivingRoom.bin */,
+			);
+			path = LivingRoom;
+			sourceTree = "<group>";
+		};
+		136A17872F5B811700BE5330 /* SanMiguel */ = {
+			isa = PBXGroup;
+			children = (
+				136A1E982F5B83A600BE5330 /* detmoldura_06_color.tex */,
+				136A1E992F5B83A600BE5330 /* dracaena_fragrans_leaf.tex */,
+				136A1E9A2F5B83A600BE5330 /* elaeagnus_umbellate_bark.tex */,
+				136A1E9B2F5B83A600BE5330 /* escalera_color.tex */,
+				136A1E9C2F5B83A600BE5330 /* escurridera_color.tex */,
+				136A1E9D2F5B83A600BE5330 /* EU15lef.tex */,
+				136A1E9E2F5B83A600BE5330 /* Fierro_A.tex */,
+				136A1E9F2F5B83A600BE5330 /* fierro_b.tex */,
+				136A1EA02F5B83A600BE5330 /* Finishes.Flooring.Carpet.Loop.5.tex */,
+				136A1EA12F5B83A600BE5330 /* fittonia_verschaffeltii_bark.tex */,
+				136A1EA22F5B83A600BE5330 /* FL03lef1.tex */,
+				136A1EA32F5B83A600BE5330 /* FL04cnt1.tex */,
+				136A1EA42F5B83A600BE5330 /* FL04cnt2.tex */,
+				136A1EA52F5B83A600BE5330 /* FL04lef1.tex */,
+				136A1EA62F5B83A600BE5330 /* FL04lef2.tex */,
+				136A1EA72F5B83A600BE5330 /* FL04pet1.tex */,
+				136A1EA82F5B83A600BE5330 /* FL04stm.tex */,
+				136A1EA92F5B83A600BE5330 /* FL11lef1.tex */,
+				136A1EAA2F5B83A600BE5330 /* FL11lef2.tex */,
+				136A1EAB2F5B83A600BE5330 /* FL11pet1.tex */,
+				136A1EAC2F5B83A600BE5330 /* FL11pet2.tex */,
+				136A1EAD2F5B83A600BE5330 /* FL11pet3.tex */,
+				136A1EAE2F5B83A600BE5330 /* FL11pet4.tex */,
+				136A1EAF2F5B83A600BE5330 /* FL11sta.tex */,
+				136A1EB02F5B83A600BE5330 /* FL11stm.tex */,
+				136A1EB12F5B83A600BE5330 /* FL12lef1.tex */,
+				136A1EB22F5B83A600BE5330 /* FL12pet1.tex */,
+				136A1EB32F5B83A600BE5330 /* FL12pet2.tex */,
+				136A1EB42F5B83A600BE5330 /* FL12pis1.tex */,
+				136A1EB52F5B83A600BE5330 /* FL12sta1.tex */,
+				136A1EB62F5B83A600BE5330 /* FL12stm.tex */,
+				136A1EB72F5B83A600BE5330 /* FL13lef1.tex */,
+				136A1EB82F5B83A600BE5330 /* FL13lef4.tex */,
+				136A1EB92F5B83A600BE5330 /* FL13lef5.tex */,
+				136A1EBA2F5B83A600BE5330 /* FL13pet1.tex */,
+				136A1EBB2F5B83A600BE5330 /* FL13pet2.tex */,
+				136A1EBC2F5B83A600BE5330 /* FL13pet3.tex */,
+				136A1EBD2F5B83A600BE5330 /* FL13stm.tex */,
+				136A1EBE2F5B83A600BE5330 /* FL15cnt1.tex */,
+				136A1EBF2F5B83A600BE5330 /* FL15cnt2.tex */,
+				136A1EC02F5B83A600BE5330 /* FL15lef1.tex */,
+				136A1EC12F5B83A600BE5330 /* FL15lef2.tex */,
+				136A1EC22F5B83A600BE5330 /* FL15pet2.tex */,
+				136A1EC32F5B83A600BE5330 /* FL15stm.tex */,
+				136A1EC42F5B83A600BE5330 /* FL16lef1.tex */,
+				136A1EC52F5B83A600BE5330 /* FL16lef3.tex */,
+				136A1EC62F5B83A600BE5330 /* FL16pet1.tex */,
+				136A1EC72F5B83A600BE5330 /* FL16stm.tex */,
+				136A1EC82F5B83A600BE5330 /* FL17cnt.tex */,
+				136A1EC92F5B83A600BE5330 /* FL17lef1.tex */,
+				136A1ECA2F5B83A600BE5330 /* FL17lef2.tex */,
+				136A1ECB2F5B83A600BE5330 /* FL17lef3.tex */,
+				136A1ECC2F5B83A600BE5330 /* FL17lef5.tex */,
+				136A1ECD2F5B83A600BE5330 /* FL17lef6.tex */,
+				136A1ECE2F5B83A600BE5330 /* FL17pet1.tex */,
+				136A1ECF2F5B83A600BE5330 /* FL17pet2.tex */,
+				136A1ED02F5B83A600BE5330 /* FL17pet5.tex */,
+				136A1ED12F5B83A600BE5330 /* FL17stm.tex */,
+				136A1ED22F5B83A600BE5330 /* FL19lef2.tex */,
+				136A1ED32F5B83A600BE5330 /* FL19lef3.tex */,
+				136A1ED42F5B83A600BE5330 /* FL19lef4.tex */,
+				136A1ED52F5B83A600BE5330 /* FL19pe13.tex */,
+				136A1ED62F5B83A600BE5330 /* FL19pe14.tex */,
+				136A1ED72F5B83A600BE5330 /* FL19pe15.tex */,
+				136A1ED82F5B83A600BE5330 /* FL19pe16.tex */,
+				136A1ED92F5B83A600BE5330 /* FL19stm.tex */,
+				136A1EDA2F5B83A600BE5330 /* FL29cnt1.tex */,
+				136A1EDB2F5B83A600BE5330 /* FL29cnt2.tex */,
+				136A1EDC2F5B83A600BE5330 /* FL29lef.tex */,
+				136A1EDD2F5B83A600BE5330 /* FL29pet1.tex */,
+				136A1EDE2F5B83A600BE5330 /* FL29pet2.tex */,
+				136A1EDF2F5B83A600BE5330 /* FL29stm1.tex */,
+				136A1EE02F5B83A600BE5330 /* FL29stm2.tex */,
+				136A1EE12F5B83A600BE5330 /* FL29twg.tex */,
+				136A1EE22F5B83A600BE5330 /* Forja_Macetas.tex */,
+				136A1EE32F5B83A600BE5330 /* fuente_azulejo.tex */,
+				136A1EE42F5B83A600BE5330 /* fuente_piedra_01.tex */,
+				136A1EE52F5B83A600BE5330 /* fuente_piedra_02.tex */,
+				136A1EE62F5B83A600BE5330 /* HP01lef1.tex */,
+				136A1EE72F5B83A600BE5330 /* HP01lef2.tex */,
+				136A1EE82F5B83A600BE5330 /* HP01pet3.tex */,
+				136A1EE92F5B83A600BE5330 /* HP01stm1.tex */,
+				136A1EEA2F5B83A600BE5330 /* HP01stm2.tex */,
+				136A1EEB2F5B83A600BE5330 /* HP04lef2.tex */,
+				136A1EEC2F5B83A600BE5330 /* HP07lef1.tex */,
+				136A1EED2F5B83A600BE5330 /* HP07lef2.tex */,
+				136A1EEE2F5B83A600BE5330 /* HP07stm1.tex */,
+				136A1EEF2F5B83A600BE5330 /* HP07stm2.tex */,
+				136A1EF02F5B83A600BE5330 /* HP11lef2.tex */,
+				136A1EF12F5B83A600BE5330 /* HP11stm.tex */,
+				136A1EF22F5B83A600BE5330 /* HP13lef2.tex */,
+				136A1EF32F5B83A600BE5330 /* HP13lef3.tex */,
+				136A1EF42F5B83A600BE5330 /* HP13stm2.tex */,
+				136A1EF52F5B83A600BE5330 /* HP17lef1.tex */,
+				136A1EF62F5B83A600BE5330 /* HP17lef2.tex */,
+				136A1EF72F5B83A600BE5330 /* HP17stm.tex */,
+				136A1EF82F5B83A600BE5330 /* HP19lef2.tex */,
+				136A1EF92F5B83A600BE5330 /* HP19lef3.tex */,
+				136A1EFA2F5B83A600BE5330 /* HP19stm1.tex */,
+				136A1EFB2F5B83A600BE5330 /* HP19stm2.tex */,
+				136A1EFC2F5B83A600BE5330 /* hypoestes_phyllostachya_bark.tex */,
+				136A1EFD2F5B83A600BE5330 /* impatiens_newguinea_hybrids_petal.tex */,
+				136A1EFE2F5B83A600BE5330 /* individual_b.tex */,
+				136A1EFF2F5B83A600BE5330 /* jardinera_1_color.tex */,
+				136A1F002F5B83A600BE5330 /* l04-upper.tex */,
+				136A1F012F5B83A600BE5330 /* l33-upper.tex */,
+				136A1F022F5B83A600BE5330 /* l37-upper.tex */,
+				136A1F032F5B83A600BE5330 /* losa.tex */,
+				136A1F042F5B83A600BE5330 /* Maceta_A_Color.tex */,
+				136A1F052F5B83A600BE5330 /* Maceta_A2_Color.tex */,
+				136A1F062F5B83A600BE5330 /* Maceta_B_Color.tex */,
+				136A1F072F5B83A600BE5330 /* Maceta_B2_Color.tex */,
+				136A1F082F5B83A600BE5330 /* Maceta_C_Color.tex */,
+				136A1F092F5B83A600BE5330 /* Maceta_C2_Color.tex */,
+				136A1F0A2F5B83A600BE5330 /* Maceta_D_Bump_0.tex */,
+				136A1F0B2F5B83A600BE5330 /* Maceta_D2_Color_0.tex */,
+				136A1F0C2F5B83A600BE5330 /* madera_barandal_esc_2.tex */,
+				136A1F0D2F5B83A600BE5330 /* madera_marcos.tex */,
+				136A1F0E2F5B83A600BE5330 /* madera_rustica_2.tex */,
+				136A1F0F2F5B83A600BE5330 /* madera_triplay_01.tex */,
+				136A1F102F5B83A600BE5330 /* marco_puerta_1.tex */,
+				136A1F112F5B83A600BE5330 /* metal_viejo_2.tex */,
+				136A1F122F5B83A600BE5330 /* mold_arco_01_color.tex */,
+				136A1F132F5B83A600BE5330 /* moldura_techo.tex */,
+				136A1F142F5B83A600BE5330 /* moldura_volado.tex */,
+				136A1F152F5B83A600BE5330 /* moldura2piso_color.tex */,
+				136A1F162F5B83A600BE5330 /* molduraterraza__color.tex */,
+				136A1F172F5B83A600BE5330 /* muros_a.tex */,
+				136A1F182F5B83A600BE5330 /* muros_b.tex */,
+				136A1F192F5B83A600BE5330 /* muros_b1.tex */,
+				136A1F1A2F5B83A600BE5330 /* muros_b2.tex */,
+				136A1F1B2F5B83A600BE5330 /* muros_c2.tex */,
+				136A1F1C2F5B83A600BE5330 /* muros_d.tex */,
+				136A1F1D2F5B83A600BE5330 /* muros_e.tex */,
+				136A1F1E2F5B83A600BE5330 /* muros_f.tex */,
+				136A1F1F2F5B83A600BE5330 /* muros_g.tex */,
+				136A1F202F5B83A600BE5330 /* muros_h.tex */,
+				136A1F212F5B83A600BE5330 /* muros_j.tex */,
+				136A1F222F5B83A600BE5330 /* muros_k.tex */,
+				136A1F232F5B83A600BE5330 /* muros_l.tex */,
+				136A1F242F5B83A600BE5330 /* muros_m.tex */,
+				136A1F252F5B83A600BE5330 /* muros_n.tex */,
+				136A1F262F5B83A600BE5330 /* muros_p_.tex */,
+				136A1F272F5B83A600BE5330 /* muros_q.tex */,
+				136A1F282F5B83A600BE5330 /* muros_q_patio2.tex */,
+				136A1F292F5B83A600BE5330 /* muros_q3.tex */,
+				136A1F2A2F5B83A600BE5330 /* muros_q4.tex */,
+				136A1F2B2F5B83A600BE5330 /* N_arco_frente_displace_inv.tex */,
+				136A1F2C2F5B83A600BE5330 /* N_arcos_lisos_2_bump.tex */,
+				136A1F2D2F5B83A600BE5330 /* N_arcos_lisos_3_bump_1.tex */,
+				136A1F2E2F5B83A600BE5330 /* N_bark06mi.tex */,
+				136A1F2F2F5B83A600BE5330 /* N_bwk_1024_Bump.tex */,
+				136A1F302F5B83A600BE5330 /* N_columna_b_displacement_3_inv.tex */,
+				136A1F312F5B83A600BE5330 /* N_detmoldura_01_bump.tex */,
+				136A1F322F5B83A600BE5330 /* N_detmoldura_02_bump.tex */,
+				136A1F332F5B83A600BE5330 /* N_detmoldura_03_bump.tex */,
+				136A1F342F5B83A600BE5330 /* N_detmoldura_04_bump.tex */,
+				136A1F352F5B83A600BE5330 /* N_detmoldura_05_bump.tex */,
+				136A1F362F5B83A600BE5330 /* N_detmoldura_06_bump.tex */,
+				136A1F372F5B83A600BE5330 /* N_escalera_bump.tex */,
+				136A1F382F5B83A600BE5330 /* N_escurridera_bump.tex */,
+				136A1F392F5B83A600BE5330 /* N_Fierro_A_Bump.tex */,
+				136A1F3A2F5B83A600BE5330 /* N_Finishes.Flooring.Carpet.Loop.5.tex */,
+				136A1F3B2F5B83A600BE5330 /* N_Forja_Macetas_bump.tex */,
+				136A1F3C2F5B83A600BE5330 /* N_HP11stm.tex */,
+				136A1F3D2F5B83A600BE5330 /* N_hp13lef1_bump.tex */,
+				136A1F3E2F5B83A600BE5330 /* N_jardinera_1_displacement_2.tex */,
+				136A1F3F2F5B83A600BE5330 /* N_l04-upper.tex */,
+				136A1F402F5B83A600BE5330 /* N_l33-upper.tex */,
+				136A1F412F5B83A600BE5330 /* N_l37-upper.tex */,
+				136A1F422F5B83A600BE5330 /* N_Maceta_A_Bump.tex */,
+				136A1F432F5B83A600BE5330 /* N_Maceta_B_Bump.tex */,
+				136A1F442F5B83A600BE5330 /* N_Maceta_C_Bump.tex */,
+				136A1F452F5B83A600BE5330 /* N_Maceta_D_Bump_0.tex */,
+				136A1F462F5B83A600BE5330 /* N_madera_barandal_esc_2_bump.tex */,
+				136A1F472F5B83A600BE5330 /* N_marco_puerta_1_bump.tex */,
+				136A1F482F5B83A600BE5330 /* N_metal_viejo_2.tex */,
+				136A1F492F5B83A600BE5330 /* N_mold_arco_01_bump.tex */,
+				136A1F4A2F5B83A600BE5330 /* N_moldura_techo_bump.tex */,
+				136A1F4B2F5B83A600BE5330 /* N_moldura2piso_bump.tex */,
+				136A1F4C2F5B83A600BE5330 /* N_molduraterraza_bump.tex */,
+				136A1F4D2F5B83A600BE5330 /* N_muros_b1.tex */,
+				136A1F4E2F5B83A600BE5330 /* N_piso_patio_exterior_displace_inv.tex */,
+				136A1F4F2F5B83A600BE5330 /* N_piso_rustico_displace2.tex */,
+				136A1F502F5B83A600BE5330 /* N_PITTED.tex */,
+				136A1F512F5B83A600BE5330 /* N_postes_barandal_bump.tex */,
+				136A1F522F5B83A600BE5330 /* N_puerta_bump.tex */,
+				136A1F532F5B83A600BE5330 /* N_rust_detalle_bump.tex */,
+				136A1F542F5B83A600BE5330 /* N_silla_d_piel_bump.tex */,
+				136A1F552F5B83A600BE5330 /* N_sm_leaf_02_bump.tex */,
+				136A1F562F5B83A600BE5330 /* N_sm_tronco_bump.tex */,
+				136A1F572F5B83A600BE5330 /* N_tela_blanca.tex */,
+				136A1F582F5B83A600BE5330 /* N_vigas_a2_bump.tex */,
+				136A1F592F5B83A600BE5330 /* N_WOOD08_Bump.tex */,
+				136A1F5A2F5B83A600BE5330 /* pared_barro_afinado.tex */,
+				136A1F5B2F5B83A600BE5330 /* pared_calle.tex */,
+				136A1F5C2F5B83A600BE5330 /* piso_patio_exterior.tex */,
+				136A1F5D2F5B83A600BE5330 /* piso_patio_exterior2.tex */,
+				136A1F5E2F5B83A600BE5330 /* piso_rustico.tex */,
+				136A1F5F2F5B83A600BE5330 /* plato_a.tex */,
+				136A1F602F5B83A600BE5330 /* postes_barandal_color.tex */,
+				136A1F612F5B83A600BE5330 /* puerta.tex */,
+				136A1F622F5B83A600BE5330 /* quercus_rubra_bark.tex */,
+				136A1F632F5B83A600BE5330 /* rust_a1.tex */,
+				136A1F642F5B83A600BE5330 /* rust_detalle.tex */,
+				136A1F652F5B83A600BE5330 /* silla_d_piel.tex */,
+				136A1F662F5B83A600BE5330 /* sm_hoja_c_seca.tex */,
+				136A1F672F5B83A600BE5330 /* sm_leaf_02a.tex */,
+				136A1F682F5B83A600BE5330 /* sm_leaf_02b.tex */,
+				136A1F692F5B83A600BE5330 /* sm_leaf_03a.tex */,
+				136A1F6A2F5B83A600BE5330 /* sm_leaf_seca_02b.tex */,
+				136A1F6B2F5B83A600BE5330 /* sm_leaf_seca_03b.tex */,
+				136A1F6C2F5B83A600BE5330 /* sm_tronco.tex */,
+				136A1F6D2F5B83A600BE5330 /* tapa_talabera.tex */,
+				136A1F6E2F5B83A600BE5330 /* techo.tex */,
+				136A1F6F2F5B83A600BE5330 /* techo_01.tex */,
+				136A1F702F5B83A600BE5330 /* tela_blanca.tex */,
+				136A1F712F5B83A600BE5330 /* tela_mesa_b.tex */,
+				136A1F722F5B83A600BE5330 /* tela_mesa_d.tex */,
+				136A1F732F5B83A600BE5330 /* tela_silla_b.tex */,
+				136A1F742F5B83A600BE5330 /* TR02lef5.tex */,
+				136A1F752F5B83A600BE5330 /* TR14lef1.tex */,
+				136A1F762F5B83A600BE5330 /* Vigas_A2.tex */,
+				136A1F772F5B83A600BE5330 /* Vigas_B.tex */,
+				136A1F782F5B83A600BE5330 /* wood.3.Bubinga.tex */,
+				136A1F792F5B83A600BE5330 /* WOOD08.tex */,
+				136A1F7A2F5B83A600BE5330 /* zebrina_pendula_bark.tex */,
+				136A1E482F5B836900BE5330 /* 0001_carros.tex */,
+				136A1E492F5B836900BE5330 /* 027_Cola_Caballo_06-30-1997.tex */,
+				136A1E4A2F5B836900BE5330 /* 052terresable.tex */,
+				136A1E4B2F5B836900BE5330 /* aglaonema_bark.tex */,
+				136A1E4C2F5B836900BE5330 /* aglaonema_leaf.tex */,
+				136A1E4D2F5B836900BE5330 /* ampelopsis_brevipedunculata_bark.tex */,
+				136A1E4E2F5B836900BE5330 /* arco_frente.tex */,
+				136A1E4F2F5B836900BE5330 /* arcos_lisos_2_color.tex */,
+				136A1E502F5B836900BE5330 /* arcos_lisos_3_color_1.tex */,
+				136A1E512F5B836900BE5330 /* bark06mi.tex */,
+				136A1E522F5B836900BE5330 /* Barro_2.tex */,
+				136A1E532F5B836900BE5330 /* BL05lef2.tex */,
+				136A1E542F5B836900BE5330 /* BS01brk.tex */,
+				136A1E552F5B836900BE5330 /* BS01flo1.tex */,
+				136A1E562F5B836900BE5330 /* BS01flo2.tex */,
+				136A1E572F5B836900BE5330 /* BS01lef.tex */,
+				136A1E582F5B836900BE5330 /* BS04brk.tex */,
+				136A1E592F5B836900BE5330 /* BS04flo.tex */,
+				136A1E5A2F5B836900BE5330 /* BS04lef.tex */,
+				136A1E5B2F5B836900BE5330 /* BWK_1024.tex */,
+				136A1E5C2F5B836900BE5330 /* candil_madera.tex */,
+				136A1E5D2F5B836900BE5330 /* cantera_naranja_liso.tex */,
+				136A1E5E2F5B836900BE5330 /* cenicero.tex */,
+				136A1E5F2F5B836900BE5330 /* ceramic_tile.tex */,
+				136A1E602F5B836900BE5330 /* citrus_limon_leaf.tex */,
+				136A1E612F5B836900BE5330 /* columna_b_color.tex */,
+				136A1E622F5B836900BE5330 /* concreto_01.tex */,
+				136A1E632F5B836900BE5330 /* concreto_02.tex */,
+				136A1E642F5B836900BE5330 /* D30_Smiguel_2003_7758.tex */,
+				136A1E652F5B836900BE5330 /* D30_Smiguel_2003_7768.tex */,
+				136A1E662F5B836900BE5330 /* D30_Smiguel_2003_7785.tex */,
+				136A1E672F5B836900BE5330 /* D30_Smiguel_2003_7812.tex */,
+				136A1E682F5B836900BE5330 /* D30_Smiguel_2003_7815.tex */,
+				136A1E692F5B836900BE5330 /* D30_Smiguel_2003_7833.tex */,
+				136A1E6A2F5B836900BE5330 /* D30_Smiguel_2003_7843.tex */,
+				136A1E6B2F5B836900BE5330 /* detmoldura_01_color.tex */,
+				136A1E6C2F5B836900BE5330 /* detmoldura_02_color.tex */,
+				136A1E6D2F5B836900BE5330 /* detmoldura_03_color.tex */,
+				136A1E6E2F5B836900BE5330 /* detmoldura_04_color.tex */,
+				136A1E6F2F5B836900BE5330 /* detmoldura_05_color.tex */,
+				136A17862F5B811700BE5330 /* SanMiguel.bin */,
+			);
+			path = SanMiguel;
+			sourceTree = "<group>";
+		};
 		BA02D9932F557EB0009EBF35 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -1298,6 +2177,9 @@
 		BA02D9F22F558F09009EBF35 /* BakedAssets */ = {
 			isa = PBXGroup;
 			children = (
+				136A17832F5B811700BE5330 /* Buddha */,
+				136A17852F5B811700BE5330 /* LivingRoom */,
+				136A17872F5B811700BE5330 /* SanMiguel */,
 				BA82AC602F55C5D50052AFC5 /* Bistro */,
 				BAA3CC4A2F55A17E0096A85B /* IntelSponza */,
 				BA02DA3C2F559466009EBF35 /* Cube */,
@@ -2019,6 +2901,233 @@
 				BA82AC812F55C5D60052AFC5 /* Paris_StreetPivot_BaseColor.tex in Resources */,
 				BA82AC822F55C5D60052AFC5 /* Balcony_Green_Wood_Specular.tex in Resources */,
 				BA82AC832F55C5D60052AFC5 /* Pavement_Cobblestone_Wet_Leaves_BLENDSHADER_Specular.tex in Resources */,
+				136A1F7B2F5B83A600BE5330 /* HP04lef2.tex in Resources */,
+				136A1F7C2F5B83A600BE5330 /* FL12stm.tex in Resources */,
+				136A1F7D2F5B83A600BE5330 /* rust_a1.tex in Resources */,
+				136A1F7E2F5B83A600BE5330 /* madera_triplay_01.tex in Resources */,
+				136A1F7F2F5B83A600BE5330 /* escalera_color.tex in Resources */,
+				136A1F802F5B83A600BE5330 /* puerta.tex in Resources */,
+				136A1F812F5B83A600BE5330 /* N_piso_patio_exterior_displace_inv.tex in Resources */,
+				136A1F822F5B83A600BE5330 /* N_tela_blanca.tex in Resources */,
+				136A1F832F5B83A600BE5330 /* metal_viejo_2.tex in Resources */,
+				136A1F842F5B83A600BE5330 /* N_Maceta_D_Bump_0.tex in Resources */,
+				136A1F852F5B83A600BE5330 /* FL16stm.tex in Resources */,
+				136A1F862F5B83A600BE5330 /* FL15lef2.tex in Resources */,
+				136A1F872F5B83A600BE5330 /* wood.3.Bubinga.tex in Resources */,
+				136A1F882F5B83A600BE5330 /* HP01stm1.tex in Resources */,
+				136A1F892F5B83A600BE5330 /* muros_k.tex in Resources */,
+				136A1F8A2F5B83A600BE5330 /* N_marco_puerta_1_bump.tex in Resources */,
+				136A1F8B2F5B83A600BE5330 /* FL11pet1.tex in Resources */,
+				136A1F8C2F5B83A600BE5330 /* N_detmoldura_01_bump.tex in Resources */,
+				136A1F8D2F5B83A600BE5330 /* HP01pet3.tex in Resources */,
+				136A1F8E2F5B83A600BE5330 /* HP13stm2.tex in Resources */,
+				136A1F8F2F5B83A600BE5330 /* FL03lef1.tex in Resources */,
+				136A1F902F5B83A600BE5330 /* FL29twg.tex in Resources */,
+				136A1F912F5B83A600BE5330 /* madera_marcos.tex in Resources */,
+				136A1F922F5B83A600BE5330 /* N_escurridera_bump.tex in Resources */,
+				136A1F932F5B83A600BE5330 /* piso_patio_exterior2.tex in Resources */,
+				136A1F942F5B83A600BE5330 /* HP01lef1.tex in Resources */,
+				136A1F952F5B83A600BE5330 /* HP13lef2.tex in Resources */,
+				136A1F962F5B83A600BE5330 /* Maceta_C_Color.tex in Resources */,
+				136A1F972F5B83A600BE5330 /* N_piso_rustico_displace2.tex in Resources */,
+				136A1F982F5B83A600BE5330 /* N_Fierro_A_Bump.tex in Resources */,
+				136A1F992F5B83A600BE5330 /* HP17stm.tex in Resources */,
+				136A1F9A2F5B83A600BE5330 /* N_detmoldura_02_bump.tex in Resources */,
+				136A1F9B2F5B83A600BE5330 /* moldura2piso_color.tex in Resources */,
+				136A1F9C2F5B83A600BE5330 /* N_rust_detalle_bump.tex in Resources */,
+				136A1F9D2F5B83A600BE5330 /* escurridera_color.tex in Resources */,
+				136A1F9E2F5B83A600BE5330 /* FL15pet2.tex in Resources */,
+				136A1F9F2F5B83A600BE5330 /* l04-upper.tex in Resources */,
+				136A1FA02F5B83A600BE5330 /* FL11sta.tex in Resources */,
+				136A1FA12F5B83A600BE5330 /* sm_hoja_c_seca.tex in Resources */,
+				136A1FA22F5B83A600BE5330 /* FL29cnt2.tex in Resources */,
+				136A1FA32F5B83A600BE5330 /* Maceta_B2_Color.tex in Resources */,
+				136A1FA42F5B83A600BE5330 /* N_HP11stm.tex in Resources */,
+				136A1FA52F5B83A600BE5330 /* fuente_piedra_02.tex in Resources */,
+				136A1FA62F5B83A600BE5330 /* mold_arco_01_color.tex in Resources */,
+				136A1FA72F5B83A600BE5330 /* N_l37-upper.tex in Resources */,
+				136A1FA82F5B83A600BE5330 /* EU15lef.tex in Resources */,
+				136A1FA92F5B83A600BE5330 /* N_detmoldura_06_bump.tex in Resources */,
+				136A1FAA2F5B83A600BE5330 /* tapa_talabera.tex in Resources */,
+				136A1FAB2F5B83A600BE5330 /* HP13lef3.tex in Resources */,
+				136A1FAC2F5B83A600BE5330 /* l33-upper.tex in Resources */,
+				136A1FAD2F5B83A600BE5330 /* tela_silla_b.tex in Resources */,
+				136A1FAE2F5B83A600BE5330 /* dracaena_fragrans_leaf.tex in Resources */,
+				136A1FAF2F5B83A600BE5330 /* TR02lef5.tex in Resources */,
+				136A1FB02F5B83A600BE5330 /* Maceta_D_Bump_0.tex in Resources */,
+				136A1FB12F5B83A600BE5330 /* FL11lef1.tex in Resources */,
+				136A1FB22F5B83A600BE5330 /* FL19pe15.tex in Resources */,
+				136A1FB32F5B83A600BE5330 /* muros_b.tex in Resources */,
+				136A1FB42F5B83A600BE5330 /* N_detmoldura_04_bump.tex in Resources */,
+				136A1FB52F5B83A600BE5330 /* TR14lef1.tex in Resources */,
+				136A1FB62F5B83A600BE5330 /* N_Maceta_C_Bump.tex in Resources */,
+				136A1FB72F5B83A600BE5330 /* FL19pe14.tex in Resources */,
+				136A1FB82F5B83A600BE5330 /* FL12pet2.tex in Resources */,
+				136A1FB92F5B83A600BE5330 /* FL17pet1.tex in Resources */,
+				136A1FBA2F5B83A600BE5330 /* muros_q.tex in Resources */,
+				136A1FBB2F5B83A600BE5330 /* FL29stm1.tex in Resources */,
+				136A1FBC2F5B83A600BE5330 /* piso_rustico.tex in Resources */,
+				136A1FBD2F5B83A600BE5330 /* postes_barandal_color.tex in Resources */,
+				136A1FBE2F5B83A600BE5330 /* N_arco_frente_displace_inv.tex in Resources */,
+				136A1FBF2F5B83A600BE5330 /* tela_blanca.tex in Resources */,
+				136A1FC02F5B83A600BE5330 /* HP01lef2.tex in Resources */,
+				136A1FC12F5B83A600BE5330 /* madera_barandal_esc_2.tex in Resources */,
+				136A1FC22F5B83A600BE5330 /* HP19lef2.tex in Resources */,
+				136A1FC32F5B83A600BE5330 /* techo_01.tex in Resources */,
+				136A1FC42F5B83A600BE5330 /* FL19lef2.tex in Resources */,
+				136A1FC52F5B83A600BE5330 /* HP07stm1.tex in Resources */,
+				136A1FC62F5B83A600BE5330 /* N_vigas_a2_bump.tex in Resources */,
+				136A1FC72F5B83A600BE5330 /* fierro_b.tex in Resources */,
+				136A1FC82F5B83A600BE5330 /* N_Maceta_A_Bump.tex in Resources */,
+				136A1FC92F5B83A600BE5330 /* FL17lef6.tex in Resources */,
+				136A1FCA2F5B83A600BE5330 /* FL17lef3.tex in Resources */,
+				136A1FCB2F5B83A600BE5330 /* FL17lef5.tex in Resources */,
+				136A1FCC2F5B83A600BE5330 /* FL11stm.tex in Resources */,
+				136A1FCD2F5B83A600BE5330 /* madera_rustica_2.tex in Resources */,
+				136A1FCE2F5B83A600BE5330 /* muros_f.tex in Resources */,
+				136A1FCF2F5B83A600BE5330 /* FL12pet1.tex in Resources */,
+				136A1FD02F5B83A600BE5330 /* N_l04-upper.tex in Resources */,
+				136A1FD12F5B83A600BE5330 /* N_arcos_lisos_3_bump_1.tex in Resources */,
+				136A1FD22F5B83A600BE5330 /* moldura_techo.tex in Resources */,
+				136A1FD32F5B83A600BE5330 /* FL15cnt2.tex in Resources */,
+				136A1FD42F5B83A600BE5330 /* HP07stm2.tex in Resources */,
+				136A1FD52F5B83A600BE5330 /* hypoestes_phyllostachya_bark.tex in Resources */,
+				136A1FD62F5B83A600BE5330 /* N_columna_b_displacement_3_inv.tex in Resources */,
+				136A1FD72F5B83A600BE5330 /* HP19lef3.tex in Resources */,
+				136A1FD82F5B83A600BE5330 /* FL29pet2.tex in Resources */,
+				136A1FD92F5B83A600BE5330 /* FL17pet2.tex in Resources */,
+				136A1FDA2F5B83A600BE5330 /* muros_h.tex in Resources */,
+				136A1FDB2F5B83A600BE5330 /* Finishes.Flooring.Carpet.Loop.5.tex in Resources */,
+				136A1FDC2F5B83A600BE5330 /* FL17lef1.tex in Resources */,
+				136A1FDD2F5B83A600BE5330 /* individual_b.tex in Resources */,
+				136A1FDE2F5B83A600BE5330 /* FL29stm2.tex in Resources */,
+				136A1FDF2F5B83A600BE5330 /* N_hp13lef1_bump.tex in Resources */,
+				136A1FE02F5B83A600BE5330 /* FL17stm.tex in Resources */,
+				136A1FE12F5B83A600BE5330 /* muros_c2.tex in Resources */,
+				136A1FE22F5B83A600BE5330 /* HP19stm1.tex in Resources */,
+				136A1FE32F5B83A600BE5330 /* N_bwk_1024_Bump.tex in Resources */,
+				136A1FE42F5B83A600BE5330 /* FL11lef2.tex in Resources */,
+				136A1FE52F5B83A600BE5330 /* HP17lef2.tex in Resources */,
+				136A1FE62F5B83A600BE5330 /* FL12lef1.tex in Resources */,
+				136A1FE72F5B83A600BE5330 /* FL29lef.tex in Resources */,
+				136A1FE82F5B83A600BE5330 /* muros_j.tex in Resources */,
+				136A1FE92F5B83A600BE5330 /* muros_q_patio2.tex in Resources */,
+				136A1FEA2F5B83A600BE5330 /* N_Forja_Macetas_bump.tex in Resources */,
+				136A1FEB2F5B83A600BE5330 /* FL17pet5.tex in Resources */,
+				136A1FEC2F5B83A600BE5330 /* fuente_piedra_01.tex in Resources */,
+				136A1FED2F5B83A600BE5330 /* FL13lef4.tex in Resources */,
+				136A1FEE2F5B83A600BE5330 /* FL13pet3.tex in Resources */,
+				136A1FEF2F5B83A600BE5330 /* FL04cnt2.tex in Resources */,
+				136A1FF02F5B83A600BE5330 /* N_escalera_bump.tex in Resources */,
+				136A1FF12F5B83A600BE5330 /* tela_mesa_b.tex in Resources */,
+				136A1FF22F5B83A600BE5330 /* zebrina_pendula_bark.tex in Resources */,
+				136A1FF32F5B83A600BE5330 /* muros_q3.tex in Resources */,
+				136A1FF42F5B83A600BE5330 /* N_moldura_techo_bump.tex in Resources */,
+				136A1FF52F5B83A600BE5330 /* N_sm_tronco_bump.tex in Resources */,
+				136A1FF62F5B83A600BE5330 /* FL29pet1.tex in Resources */,
+				136A1FF72F5B83A600BE5330 /* muros_n.tex in Resources */,
+				136A1FF82F5B83A600BE5330 /* HP17lef1.tex in Resources */,
+				136A1FF92F5B83A600BE5330 /* l37-upper.tex in Resources */,
+				136A1FFA2F5B83A600BE5330 /* N_PITTED.tex in Resources */,
+				136A1FFB2F5B83A600BE5330 /* FL13pet2.tex in Resources */,
+				136A1FFC2F5B83A600BE5330 /* FL13stm.tex in Resources */,
+				136A1FFD2F5B83A600BE5330 /* FL16lef1.tex in Resources */,
+				136A1FFE2F5B83A600BE5330 /* N_detmoldura_03_bump.tex in Resources */,
+				136A1FFF2F5B83A600BE5330 /* muros_g.tex in Resources */,
+				136A20002F5B83A600BE5330 /* N_moldura2piso_bump.tex in Resources */,
+				136A20012F5B83A600BE5330 /* WOOD08.tex in Resources */,
+				136A20022F5B83A600BE5330 /* FL04lef1.tex in Resources */,
+				136A20032F5B83A600BE5330 /* FL17cnt.tex in Resources */,
+				136A20042F5B83A600BE5330 /* muros_q4.tex in Resources */,
+				136A20052F5B83A600BE5330 /* N_molduraterraza_bump.tex in Resources */,
+				136A20062F5B83A600BE5330 /* Maceta_A2_Color.tex in Resources */,
+				136A20072F5B83A600BE5330 /* N_detmoldura_05_bump.tex in Resources */,
+				136A20082F5B83A600BE5330 /* piso_patio_exterior.tex in Resources */,
+				136A20092F5B83A600BE5330 /* muros_p_.tex in Resources */,
+				136A200A2F5B83A600BE5330 /* plato_a.tex in Resources */,
+				136A200B2F5B83A600BE5330 /* Maceta_D2_Color_0.tex in Resources */,
+				136A200C2F5B83A600BE5330 /* sm_leaf_seca_02b.tex in Resources */,
+				136A200D2F5B83A600BE5330 /* FL04stm.tex in Resources */,
+				136A200E2F5B83A600BE5330 /* Maceta_B_Color.tex in Resources */,
+				136A200F2F5B83A600BE5330 /* HP11lef2.tex in Resources */,
+				136A20102F5B83A600BE5330 /* N_puerta_bump.tex in Resources */,
+				136A20112F5B83A600BE5330 /* pared_calle.tex in Resources */,
+				136A20122F5B83A600BE5330 /* FL19lef3.tex in Resources */,
+				136A20132F5B83A600BE5330 /* N_mold_arco_01_bump.tex in Resources */,
+				136A20142F5B83A600BE5330 /* FL12pis1.tex in Resources */,
+				136A20152F5B83A600BE5330 /* HP11stm.tex in Resources */,
+				136A20162F5B83A600BE5330 /* sm_leaf_02a.tex in Resources */,
+				136A20172F5B83A600BE5330 /* sm_leaf_03a.tex in Resources */,
+				136A20182F5B83A600BE5330 /* FL15lef1.tex in Resources */,
+				136A20192F5B83A600BE5330 /* FL19pe13.tex in Resources */,
+				136A201A2F5B83A600BE5330 /* N_arcos_lisos_2_bump.tex in Resources */,
+				136A201B2F5B83A600BE5330 /* N_silla_d_piel_bump.tex in Resources */,
+				136A201C2F5B83A600BE5330 /* molduraterraza__color.tex in Resources */,
+				136A201D2F5B83A600BE5330 /* FL15cnt1.tex in Resources */,
+				136A201E2F5B83A600BE5330 /* Forja_Macetas.tex in Resources */,
+				136A201F2F5B83A600BE5330 /* N_l33-upper.tex in Resources */,
+				136A20202F5B83A600BE5330 /* N_bark06mi.tex in Resources */,
+				136A20212F5B83A600BE5330 /* Vigas_A2.tex in Resources */,
+				136A20222F5B83A600BE5330 /* HP19stm2.tex in Resources */,
+				136A20232F5B83A600BE5330 /* moldura_volado.tex in Resources */,
+				136A20242F5B83A600BE5330 /* N_postes_barandal_bump.tex in Resources */,
+				136A20252F5B83A600BE5330 /* sm_leaf_02b.tex in Resources */,
+				136A20262F5B83A600BE5330 /* FL13lef5.tex in Resources */,
+				136A20272F5B83A600BE5330 /* FL12sta1.tex in Resources */,
+				136A20282F5B83A600BE5330 /* marco_puerta_1.tex in Resources */,
+				136A20292F5B83A600BE5330 /* fuente_azulejo.tex in Resources */,
+				136A202A2F5B83A600BE5330 /* FL16pet1.tex in Resources */,
+				136A202B2F5B83A600BE5330 /* quercus_rubra_bark.tex in Resources */,
+				136A202C2F5B83A600BE5330 /* techo.tex in Resources */,
+				136A202D2F5B83A600BE5330 /* muros_b1.tex in Resources */,
+				136A202E2F5B83A600BE5330 /* N_Finishes.Flooring.Carpet.Loop.5.tex in Resources */,
+				136A202F2F5B83A600BE5330 /* FL17lef2.tex in Resources */,
+				136A20302F5B83A600BE5330 /* muros_b2.tex in Resources */,
+				136A20312F5B83A600BE5330 /* muros_a.tex in Resources */,
+				136A20322F5B83A600BE5330 /* FL19stm.tex in Resources */,
+				136A20332F5B83A600BE5330 /* N_sm_leaf_02_bump.tex in Resources */,
+				136A20342F5B83A600BE5330 /* FL04cnt1.tex in Resources */,
+				136A20352F5B83A600BE5330 /* losa.tex in Resources */,
+				136A20362F5B83A600BE5330 /* tela_mesa_d.tex in Resources */,
+				136A20372F5B83A600BE5330 /* N_muros_b1.tex in Resources */,
+				136A20382F5B83A600BE5330 /* FL04lef2.tex in Resources */,
+				136A20392F5B83A600BE5330 /* jardinera_1_color.tex in Resources */,
+				136A203A2F5B83A600BE5330 /* Vigas_B.tex in Resources */,
+				136A203B2F5B83A600BE5330 /* FL29cnt1.tex in Resources */,
+				136A203C2F5B83A600BE5330 /* sm_leaf_seca_03b.tex in Resources */,
+				136A203D2F5B83A600BE5330 /* HP01stm2.tex in Resources */,
+				136A203E2F5B83A600BE5330 /* pared_barro_afinado.tex in Resources */,
+				136A203F2F5B83A600BE5330 /* FL19lef4.tex in Resources */,
+				136A20402F5B83A600BE5330 /* muros_d.tex in Resources */,
+				136A20412F5B83A600BE5330 /* N_metal_viejo_2.tex in Resources */,
+				136A20422F5B83A600BE5330 /* silla_d_piel.tex in Resources */,
+				136A20432F5B83A600BE5330 /* detmoldura_06_color.tex in Resources */,
+				136A20442F5B83A600BE5330 /* FL11pet4.tex in Resources */,
+				136A20452F5B83A600BE5330 /* FL19pe16.tex in Resources */,
+				136A20462F5B83A600BE5330 /* muros_e.tex in Resources */,
+				136A20472F5B83A600BE5330 /* FL13pet1.tex in Resources */,
+				136A20482F5B83A600BE5330 /* FL15stm.tex in Resources */,
+				136A20492F5B83A600BE5330 /* HP07lef1.tex in Resources */,
+				136A204A2F5B83A600BE5330 /* Maceta_A_Color.tex in Resources */,
+				136A204B2F5B83A600BE5330 /* HP07lef2.tex in Resources */,
+				136A204C2F5B83A600BE5330 /* Fierro_A.tex in Resources */,
+				136A204D2F5B83A600BE5330 /* N_jardinera_1_displacement_2.tex in Resources */,
+				136A204E2F5B83A600BE5330 /* N_WOOD08_Bump.tex in Resources */,
+				136A204F2F5B83A600BE5330 /* rust_detalle.tex in Resources */,
+				136A20502F5B83A600BE5330 /* elaeagnus_umbellate_bark.tex in Resources */,
+				136A20512F5B83A600BE5330 /* FL11pet2.tex in Resources */,
+				136A20522F5B83A600BE5330 /* N_Maceta_B_Bump.tex in Resources */,
+				136A20532F5B83A600BE5330 /* FL13lef1.tex in Resources */,
+				136A20542F5B83A600BE5330 /* sm_tronco.tex in Resources */,
+				136A20552F5B83A600BE5330 /* FL11pet3.tex in Resources */,
+				136A20562F5B83A600BE5330 /* impatiens_newguinea_hybrids_petal.tex in Resources */,
+				136A20572F5B83A600BE5330 /* muros_l.tex in Resources */,
+				136A20582F5B83A600BE5330 /* Maceta_C2_Color.tex in Resources */,
+				136A20592F5B83A600BE5330 /* FL04pet1.tex in Resources */,
+				136A205A2F5B83A600BE5330 /* fittonia_verschaffeltii_bark.tex in Resources */,
+				136A205B2F5B83A600BE5330 /* N_madera_barandal_esc_2_bump.tex in Resources */,
+				136A205C2F5B83A600BE5330 /* muros_m.tex in Resources */,
+				136A205D2F5B83A600BE5330 /* FL16lef3.tex in Resources */,
 				BA82AC842F55C5D60052AFC5 /* Vespa_Odometer_Glass_Normal.tex in Resources */,
 				BA82AC852F55C5D60052AFC5 /* Concrete2_Specular.tex in Resources */,
 				BA82AC862F55C5D60052AFC5 /* MASTER_Concrete_Grooved_Normal.tex in Resources */,
@@ -2361,6 +3470,9 @@
 				BA82ADD72F55C5D60052AFC5 /* Vespa_Odometer_Specular.tex in Resources */,
 				BA82ADD82F55C5D60052AFC5 /* Chimneys_Metal_Specular.tex in Resources */,
 				BA82ADD92F55C5D60052AFC5 /* Paris_LiquorBottle_01_Glass_Wine_Specular.tex in Resources */,
+				136A17882F5B811700BE5330 /* LivingRoom.bin in Resources */,
+				136A17892F5B811700BE5330 /* SanMiguel.bin in Resources */,
+				136A178A2F5B811700BE5330 /* Buddha.bin in Resources */,
 				BA82ADDA2F55C5D60052AFC5 /* MASTER_Wood_Painted3_Specular.tex in Resources */,
 				BA82ADDB2F55C5D60052AFC5 /* Foliage_Ivy_branches_Normal.tex in Resources */,
 				BA82ADDC2F55C5D60052AFC5 /* MASTER_Concrete_White_Specular.tex in Resources */,
@@ -2372,6 +3484,22 @@
 				BA82ADE22F55C5D60052AFC5 /* MASTER_Awning_Fabric_Cyan_BaseColor.tex in Resources */,
 				BA82ADE32F55C5D60052AFC5 /* MASTER_Bronze_BLENDSHADER_Specular.tex in Resources */,
 				BA82ADE42F55C5D60052AFC5 /* NapkinHolder_BaseColor.tex in Resources */,
+				136A1E382F5B835E00BE5330 /* shade-stripes.tex in Resources */,
+				136A1E392F5B835E00BE5330 /* photo4.tex in Resources */,
+				136A1E3A2F5B835E00BE5330 /* cushion-purple-yellow-stripe.tex in Resources */,
+				136A1E3B2F5B835E00BE5330 /* magazine.tex in Resources */,
+				136A1E3C2F5B835E00BE5330 /* book-spines.tex in Resources */,
+				136A1E3D2F5B835E00BE5330 /* photo2.tex in Resources */,
+				136A1E3E2F5B835E00BE5330 /* apple.tex in Resources */,
+				136A1E3F2F5B835E00BE5330 /* picture11-vert.tex in Resources */,
+				136A1E402F5B835E00BE5330 /* Shade-paper.tex in Resources */,
+				136A1E412F5B835E00BE5330 /* carpet-text3b.tex in Resources */,
+				136A1E422F5B835E00BE5330 /* cushion-stripe-purple.tex in Resources */,
+				136A1E432F5B835E00BE5330 /* pic5wide.tex in Resources */,
+				136A1E442F5B835E00BE5330 /* wood4.tex in Resources */,
+				136A1E452F5B835E00BE5330 /* photo3.tex in Resources */,
+				136A1E462F5B835E00BE5330 /* photo1.tex in Resources */,
+				136A1E472F5B835E00BE5330 /* cushion-green-circles.tex in Resources */,
 				BA82ADE52F55C5D60052AFC5 /* MASTER_Concrete_Smooth_Normal.tex in Resources */,
 				BA82ADE62F55C5D60052AFC5 /* MASTER_Curtains_Specular.tex in Resources */,
 				BA82ADE72F55C5D60052AFC5 /* Sidewalkbarrier_BaseColor.tex in Resources */,
@@ -2492,6 +3620,46 @@
 				BAA3CC892F55A17F0096A85B /* roof_tiles_01_Normal.tex in Resources */,
 				BAA3CC8A2F55A17F0096A85B /* col_1stfloor_Normal.tex in Resources */,
 				BAA3CC8B2F55A17F0096A85B /* arch_stone_wall_01_Roughnessarch_stone_wall_01_Metalness.tex in Resources */,
+				136A1E702F5B836900BE5330 /* detmoldura_01_color.tex in Resources */,
+				136A1E712F5B836900BE5330 /* D30_Smiguel_2003_7833.tex in Resources */,
+				136A1E722F5B836900BE5330 /* 0001_carros.tex in Resources */,
+				136A1E732F5B836900BE5330 /* 052terresable.tex in Resources */,
+				136A1E742F5B836900BE5330 /* arcos_lisos_3_color_1.tex in Resources */,
+				136A1E752F5B836900BE5330 /* arco_frente.tex in Resources */,
+				136A1E762F5B836900BE5330 /* D30_Smiguel_2003_7843.tex in Resources */,
+				136A1E772F5B836900BE5330 /* arcos_lisos_2_color.tex in Resources */,
+				136A1E782F5B836900BE5330 /* BS04brk.tex in Resources */,
+				136A1E792F5B836900BE5330 /* candil_madera.tex in Resources */,
+				136A1E7A2F5B836900BE5330 /* ceramic_tile.tex in Resources */,
+				136A1E7B2F5B836900BE5330 /* 027_Cola_Caballo_06-30-1997.tex in Resources */,
+				136A1E7C2F5B836900BE5330 /* D30_Smiguel_2003_7768.tex in Resources */,
+				136A1E7D2F5B836900BE5330 /* cantera_naranja_liso.tex in Resources */,
+				136A1E7E2F5B836900BE5330 /* detmoldura_04_color.tex in Resources */,
+				136A1E7F2F5B836900BE5330 /* D30_Smiguel_2003_7785.tex in Resources */,
+				136A1E802F5B836900BE5330 /* BS01flo2.tex in Resources */,
+				136A1E812F5B836900BE5330 /* citrus_limon_leaf.tex in Resources */,
+				136A1E822F5B836900BE5330 /* BS01flo1.tex in Resources */,
+				136A1E832F5B836900BE5330 /* aglaonema_bark.tex in Resources */,
+				136A1E842F5B836900BE5330 /* D30_Smiguel_2003_7758.tex in Resources */,
+				136A1E852F5B836900BE5330 /* Barro_2.tex in Resources */,
+				136A1E862F5B836900BE5330 /* concreto_02.tex in Resources */,
+				136A1E872F5B836900BE5330 /* D30_Smiguel_2003_7815.tex in Resources */,
+				136A1E882F5B836900BE5330 /* ampelopsis_brevipedunculata_bark.tex in Resources */,
+				136A1E892F5B836900BE5330 /* BS01brk.tex in Resources */,
+				136A1E8A2F5B836900BE5330 /* BS01lef.tex in Resources */,
+				136A1E8B2F5B836900BE5330 /* BS04flo.tex in Resources */,
+				136A1E8C2F5B836900BE5330 /* BS04lef.tex in Resources */,
+				136A1E8D2F5B836900BE5330 /* detmoldura_02_color.tex in Resources */,
+				136A1E8E2F5B836900BE5330 /* detmoldura_03_color.tex in Resources */,
+				136A1E8F2F5B836900BE5330 /* detmoldura_05_color.tex in Resources */,
+				136A1E902F5B836900BE5330 /* aglaonema_leaf.tex in Resources */,
+				136A1E912F5B836900BE5330 /* concreto_01.tex in Resources */,
+				136A1E922F5B836900BE5330 /* BWK_1024.tex in Resources */,
+				136A1E932F5B836900BE5330 /* BL05lef2.tex in Resources */,
+				136A1E942F5B836900BE5330 /* cenicero.tex in Resources */,
+				136A1E952F5B836900BE5330 /* bark06mi.tex in Resources */,
+				136A1E962F5B836900BE5330 /* columna_b_color.tex in Resources */,
+				136A1E972F5B836900BE5330 /* D30_Smiguel_2003_7812.tex in Resources */,
 				BAA3CC8C2F55A17F0096A85B /* lionhead_01_Normal.tex in Resources */,
 				BAA3CC8D2F55A17F0096A85B /* roof_tiles_01_BaseColor.tex in Resources */,
 				BAA3CC8E2F55A17F0096A85B /* lionhead_01_Roughnesslionhead_01_Metalness.tex in Resources */,

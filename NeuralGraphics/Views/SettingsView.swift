@@ -34,7 +34,7 @@ struct SettingsView: View {
                         .frame(maxWidth: 120)
                     }
                 }
-                
+
                 // Forward Pass section
                 VStack(alignment: .leading, spacing: 12) {
                     Text("Forward Pass")
@@ -48,6 +48,17 @@ struct SettingsView: View {
                         Spacer()
                         Toggle("", isOn: $settings.useMeshShader)
                             .toggleStyle(.switch)
+                            .labelsHidden()
+                    }
+
+                    HStack {
+                        Text("Forced LOD")
+                            .font(.system(size: 12, weight: .medium))
+                        Spacer()
+                        Text("LOD\(settings.forcedLOD)")
+                            .font(.system(size: 12).monospacedDigit())
+                            .foregroundStyle(.secondary)
+                        Stepper("", value: $settings.forcedLOD, in: 0...4)
                             .labelsHidden()
                     }
                 }

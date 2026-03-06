@@ -74,9 +74,10 @@ void forward_ms(const device ModelData& modelData [[buffer(0)]],
         uint vertexIndex = m.VertexOffset + gtid;
         vertexIndex = meshletVertices[vertexIndex];
 
-        uint meshletHash = hash(gid);
-        float3 meshletColor = float3(float(meshletHash & 255), float((meshletHash >> 8) & 255), float((meshletHash >> 16) & 255)) / 255.0;
-
+        //uint meshletHash = hash(gid);
+        //float3 meshletColor = float3(float(meshletHash & 255), float((meshletHash >> 8) & 255), float((meshletHash >> 16) & 255)) / 255.0;
+        float3 meshletColor = vertices[vertexIndex].Normal * 0.5 + 0.5;
+        
         VSOut vtx;
         vtx.Position = modelData.Camera * float4(vertices[vertexIndex].Position, 1.0);
         vtx.Color = meshletColor;

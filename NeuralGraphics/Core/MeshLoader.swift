@@ -5,33 +5,52 @@
 //  Created by Amélie Heinrich on 02/03/2026.
 //
 
+import Foundation
 import Metal
 import simd
-import Foundation
+
+// ---- Constants matching MeshCompressor.h -----------------------------------
+
+let kMaxLODs: Int = 5
 
 // ---- CPU-side instance descriptor ------------------------------------------
 
 struct MeshInstance {
-    var aabbMin:               SIMD3<Float>
-    var aabbMax:               SIMD3<Float>
-    var vertexOffset:          UInt32
-    var indexOffset:           UInt32
-    var indexCount:            UInt32
-    var meshletOffset:         UInt32
-    var meshletVerticesOffset: UInt32
-    var meshletIndicesOffset:  UInt32
-    var meshletBoundsOffset:   UInt32
-    var materialIndex:         UInt32
-    var meshletCount:          UInt32   // derived: not stored in file, computed post-load
+    var aabbMin: SIMD3<Float>
+    var aabbMax: SIMD3<Float>
+    var vertexOffset: UInt32
+    var materialIndex: UInt32
+
+    // Per-LOD offsets and counts (up to kMaxLODs entries; only lodCount are valid)
+    var indexOffset: [UInt32]  // [kMaxLODs]
+    var indexCount: [UInt32]  // [kMaxLODs]
+    var meshletOffset: [UInt32]  // [kMaxLODs]
+    var meshletVerticesOffset: [UInt32]  // [kMaxLODs]
+    var meshletIndicesOffset: [UInt32]  // [kMaxLODs]
+    var meshletBoundsOffset: [UInt32]  // [kMaxLODs]
+    var meshletCount: [UInt32]  // [kMaxLODs]
 }
 
 // ---- CPU-side material descriptor ------------------------------------------
 
 struct MeshMaterial {
-    var albedo:   Texture?
-    var normal:   Texture?
-    var orm:      Texture?
+    var albedo: Texture?
+    var normal: Texture?
+    var orm: Texture?
     var emissive: Texture?
+}
+
+// ---- Per-LOD GPU buffers ---------------------------------------------------
+
+class MeshLOD {
+    var indexBuffer: Buffer!
+    var meshletBuffer: Buffer!
+    var meshletVerticesBuffer: Buffer!
+    var meshletTrianglesBuffer: Buffer!
+    var meshletBoundsBuffer: Buffer!
+
+    var totalMeshletCount: Int = 0
+    var totalIndexCount: Int = 0
 }
 
 // ---- Loaded mesh -----------------------------------------------------------
@@ -40,19 +59,28 @@ class Mesh {
     var instances: [MeshInstance] = []
     var materials: [MeshMaterial] = []
 
-    var vertexBuffer:          Buffer!   // MeshVertex[]          48 bytes each
-    var indexBuffer:           Buffer!   // uint32[]
-    var meshletBuffer:         Buffer!   // MeshMeshlet[]         16 bytes each
-    var meshletVerticesBuffer: Buffer!   // uint32[]  (vertex indirection)
-    var meshletTrianglesBuffer:Buffer!   // uint8[]   (triangle indices, padded per meshlet)
-    var meshletBoundsBuffer:   Buffer!   // MeshMeshletBounds[]   48 bytes each
-    var instanceBuffer:        Buffer!   // raw MeshInstance[]    56 bytes each
+    var lodCount: Int = 1
 
-    var totalMeshletCount: Int = 0
-    var totalVertexCount:  Int = 0
-    var totalIndexCount:   Int = 0
-    
+    // Vertex buffer is shared across all LODs
+    var vertexBuffer: Buffer!
+    var totalVertexCount: Int = 0
+
+    // Per-LOD geometry buffers
+    var lods: [MeshLOD] = []
+
+    // Instance buffer (raw bytes uploaded to GPU)
+    var instanceBuffer: Buffer!
+
     var blas: BLAS!
+
+    // Legacy accessors for LOD0 (convenience for code that doesn't care about LODs)
+    var indexBuffer: Buffer! { lods.isEmpty ? nil : lods[0].indexBuffer }
+    var meshletBuffer: Buffer! { lods.isEmpty ? nil : lods[0].meshletBuffer }
+    var meshletVerticesBuffer: Buffer! { lods.isEmpty ? nil : lods[0].meshletVerticesBuffer }
+    var meshletTrianglesBuffer: Buffer! { lods.isEmpty ? nil : lods[0].meshletTrianglesBuffer }
+    var meshletBoundsBuffer: Buffer! { lods.isEmpty ? nil : lods[0].meshletBoundsBuffer }
+    var totalMeshletCount: Int { lods.isEmpty ? 0 : lods[0].totalMeshletCount }
+    var totalIndexCount: Int { lods.isEmpty ? 0 : lods[0].totalIndexCount }
 }
 
 // ---- Sequential binary reader ----------------------------------------------
@@ -72,7 +100,7 @@ private final class BinaryReader {
     }
 
     func readSlice(count: Int) -> Data {
-        let slice = data[cursor ..< cursor + count]
+        let slice = data[cursor..<cursor + count]
         cursor += count
         return Data(slice)
     }
@@ -84,14 +112,35 @@ class MeshLoader {
     // C struct byte strides (must stay in sync with MeshCompressor.h):
     //   MeshVertex:         float3 pos + float3 norm + float2 uv + float4 tan = 48
     //   MeshMeshlet:        4 × uint32                                         = 16
-    //   MeshInstance (raw): float3×2 + 8×uint32                                = 56
-    //   MeshMaterial (raw): 4 × char[256]                                      = 1024
     //   MeshMeshletBounds:  11 floats + 4 int8                                 = 48
-    private static let vertexStride        = 48
-    private static let meshletStride       = 16
-    private static let instanceStride      = 56
-    private static let materialStride      = 1024
-    private static let boundsStride        = 48
+    //   MeshMaterial (raw): 4 × char[256]                                      = 1024
+    //
+    // MeshInstance (raw) — v2 with per-LOD arrays:
+    //   float3 AABBMin                   12
+    //   float3 AABBMax                   12
+    //   uint32 VertexOffset               4
+    //   uint32 MaterialIndex              4
+    //   uint32 IndexOffset[kMaxLODs]     20
+    //   uint32 IndexCount[kMaxLODs]      20
+    //   uint32 MeshletOffset[kMaxLODs]   20
+    //   uint32 MeshletVerticesOffset[kMaxLODs] 20
+    //   uint32 MeshletIndicesOffset[kMaxLODs]  20
+    //   uint32 MeshletBoundsOffset[kMaxLODs]   20
+    //   uint32 MeshletCount[kMaxLODs]    20
+    //                                   ----
+    //                                    172
+    //
+    // MeshHeader:
+    //   uint32 InstanceCount              4
+    //   uint32 MaterialCount              4
+    //   uint32 LODCount                   4
+    //                                   ----
+    //                                     12
+    private static let vertexStride = 48
+    private static let meshletStride = 16
+    private static let instanceStride = 172
+    private static let materialStride = 1024
+    private static let boundsStride = 48
 
     /// - Parameters:
     ///   - url: Location of the `.bin` scene file.
@@ -110,6 +159,9 @@ class MeshLoader {
         progress?(0.02, "Parsing scene header…")
         let instanceCount = Int(r.read(UInt32.self))
         let materialCount = Int(r.read(UInt32.self))
+        let lodCount = Int(r.read(UInt32.self))
+
+        let clampedLODCount = min(max(lodCount, 1), kMaxLODs)
 
         // ---- Instance bytes — kept verbatim for GPU upload ----
         let rawInstances = r.readSlice(count: instanceCount * instanceStride)
@@ -118,54 +170,58 @@ class MeshLoader {
         let rawMaterials = r.readSlice(count: materialCount * materialStride)
 
         // ---- Parse CPU-side instances ----
-        // C MeshInstance field offsets:
+        // C MeshInstance field offsets (v2):
         //   0:  AABBMin[3]            (12 bytes)
         //   12: AABBMax[3]            (12 bytes)
         //   24: VertexOffset          (4 bytes)
-        //   28: IndexOffset           (4 bytes)
-        //   32: IndexCount            (4 bytes)
-        //   36: MeshletOffset         (4 bytes)
-        //   40: MeshletVerticesOffset (4 bytes)
-        //   44: MeshletIndicesOffset  (4 bytes)
-        //   48: MeshletBoundsOffset   (4 bytes)
-        //   52: MaterialIndex         (4 bytes)
+        //   28: MaterialIndex         (4 bytes)
+        //   32: IndexOffset[5]        (20 bytes)
+        //   52: IndexCount[5]         (20 bytes)
+        //   72: MeshletOffset[5]      (20 bytes)
+        //   92: MeshletVerticesOffset[5]  (20 bytes)
+        //  112: MeshletIndicesOffset[5]   (20 bytes)
+        //  132: MeshletBoundsOffset[5]    (20 bytes)
+        //  152: MeshletCount[5]       (20 bytes)
         var swiftInstances = [MeshInstance]()
         swiftInstances.reserveCapacity(instanceCount)
 
         rawInstances.withUnsafeBytes { ptr in
-            for i in 0 ..< instanceCount {
+            for i in 0..<instanceCount {
                 let b = i * instanceStride
-                func f(_ o: Int) -> Float  { ptr.loadUnaligned(fromByteOffset: b + o, as: Float.self)  }
-                func u(_ o: Int) -> UInt32 { ptr.loadUnaligned(fromByteOffset: b + o, as: UInt32.self) }
-                swiftInstances.append(MeshInstance(
-                    aabbMin:               SIMD3(f(0),  f(4),  f(8)),
-                    aabbMax:               SIMD3(f(12), f(16), f(20)),
-                    vertexOffset:          u(24),
-                    indexOffset:           u(28),
-                    indexCount:            u(32),
-                    meshletOffset:         u(36),
-                    meshletVerticesOffset: u(40),
-                    meshletIndicesOffset:  u(44),
-                    meshletBoundsOffset:   u(48),
-                    materialIndex:         u(52),
-                    meshletCount:          0
-                ))
+                func f(_ o: Int) -> Float {
+                    ptr.loadUnaligned(fromByteOffset: b + o, as: Float.self)
+                }
+                func u(_ o: Int) -> UInt32 {
+                    ptr.loadUnaligned(fromByteOffset: b + o, as: UInt32.self)
+                }
+
+                func uArray(_ baseOff: Int) -> [UInt32] {
+                    (0..<kMaxLODs).map { u(baseOff + $0 * 4) }
+                }
+
+                swiftInstances.append(
+                    MeshInstance(
+                        aabbMin: SIMD3(f(0), f(4), f(8)),
+                        aabbMax: SIMD3(f(12), f(16), f(20)),
+                        vertexOffset: u(24),
+                        materialIndex: u(28),
+                        indexOffset: uArray(32),
+                        indexCount: uArray(52),
+                        meshletOffset: uArray(72),
+                        meshletVerticesOffset: uArray(92),
+                        meshletIndicesOffset: uArray(112),
+                        meshletBoundsOffset: uArray(132),
+                        meshletCount: uArray(152)
+                    ))
             }
         }
 
         // ---- Parse material paths and load textures ----
-        // C MeshMaterial layout within each 1024-byte block:
-        //   0:   AlbedoPath   char[256]
-        //   256: NormalPath   char[256]
-        //   512: ORMPath      char[256]
-        //   768: EmissivePath char[256]
-        //
-        // Texture loading is the bottleneck: progress 5 % → 85 %.
         var swiftMaterials = [MeshMaterial]()
         swiftMaterials.reserveCapacity(materialCount)
 
         rawMaterials.withUnsafeBytes { ptr in
-            for i in 0 ..< materialCount {
+            for i in 0..<materialCount {
                 let base = i * materialStride
 
                 let pct = 0.05 + 0.80 * Double(i) / Double(max(materialCount, 1))
@@ -188,105 +244,169 @@ class MeshLoader {
                     )
                 }
 
-                swiftMaterials.append(MeshMaterial(
-                    albedo:   tex(off: 0,   label: "Albedo[\(i)]"),
-                    normal:   tex(off: 256, label: "Normal[\(i)]"),
-                    orm:      tex(off: 512, label: "ORM[\(i)]"),
-                    emissive: tex(off: 768, label: "Emissive[\(i)]")
-                ))
+                swiftMaterials.append(
+                    MeshMaterial(
+                        albedo: tex(off: 0, label: "Albedo[\(i)]"),
+                        normal: tex(off: 256, label: "Normal[\(i)]"),
+                        orm: tex(off: 512, label: "ORM[\(i)]"),
+                        emissive: tex(off: 768, label: "Emissive[\(i)]")
+                    ))
             }
         }
 
-        // ---- Geometry arrays ----
+        // ---- Shared vertex array ----
         progress?(0.85, "Parsing geometry…")
-        let vertexCount  = Int(r.read(UInt32.self))
-        let vertexData   = r.readSlice(count: vertexCount * vertexStride)
+        let vertexCount = Int(r.read(UInt32.self))
+        let vertexData = r.readSlice(count: vertexCount * vertexStride)
 
-        let indexCount   = Int(r.read(UInt32.self))
-        let indexData    = r.readSlice(count: indexCount * MemoryLayout<UInt32>.size)
+        // ---- Per-LOD geometry arrays ----
+        struct LODData {
+            var indexCount: Int
+            var indexData: Data
+            var meshletCount: Int
+            var meshletData: Data
+            var mvCount: Int
+            var mvData: Data
+            var mtBytes: Int
+            var mtData: Data
+            var boundsCount: Int
+            var boundsData: Data
+        }
 
-        let meshletCount = Int(r.read(UInt32.self))
-        let meshletData  = r.readSlice(count: meshletCount * meshletStride)
+        var lodDataArray = [LODData]()
+        lodDataArray.reserveCapacity(clampedLODCount)
 
-        let mvCount      = Int(r.read(UInt32.self))
-        let mvData       = r.readSlice(count: mvCount * MemoryLayout<UInt32>.size)
+        for lod in 0..<clampedLODCount {
+            progress?(
+                0.85 + 0.05 * Double(lod) / Double(clampedLODCount), "Parsing LOD\(lod) geometry…")
 
-        let mtBytes      = Int(r.read(UInt32.self))
-        let mtData       = r.readSlice(count: mtBytes)
+            let idxCount = Int(r.read(UInt32.self))
+            let idxData = r.readSlice(count: idxCount * MemoryLayout<UInt32>.size)
 
-        let boundsCount  = Int(r.read(UInt32.self))
-        let boundsData   = r.readSlice(count: boundsCount * boundsStride)
+            let mlCount = Int(r.read(UInt32.self))
+            let mlData = r.readSlice(count: mlCount * meshletStride)
 
-        // ---- Derive per-instance meshlet count ----
-        for i in 0 ..< instanceCount {
-            let next = (i + 1 < instanceCount)
-                ? swiftInstances[i + 1].meshletOffset
-                : UInt32(meshletCount)
-            swiftInstances[i].meshletCount = next - swiftInstances[i].meshletOffset
+            let mvC = Int(r.read(UInt32.self))
+            let mvD = r.readSlice(count: mvC * MemoryLayout<UInt32>.size)
+
+            let mtB = Int(r.read(UInt32.self))
+            let mtD = r.readSlice(count: mtB)
+
+            let bnC = Int(r.read(UInt32.self))
+            let bnD = r.readSlice(count: bnC * boundsStride)
+
+            lodDataArray.append(
+                LODData(
+                    indexCount: idxCount, indexData: idxData,
+                    meshletCount: mlCount, meshletData: mlData,
+                    mvCount: mvC, mvData: mvD,
+                    mtBytes: mtB, mtData: mtD,
+                    boundsCount: bnC, boundsData: bnD
+                ))
         }
 
         // ---- Build GPU buffers ----
-        progress?(0.80, "Uploading to GPU…")
-        let mesh                   = Mesh()
-        mesh.instances             = swiftInstances
-        mesh.materials             = swiftMaterials
-        mesh.totalMeshletCount     = meshletCount
-        mesh.totalVertexCount      = vertexCount
-        mesh.totalIndexCount       = indexCount
+        progress?(0.90, "Uploading to GPU…")
+        let mesh = Mesh()
+        mesh.instances = swiftInstances
+        mesh.materials = swiftMaterials
+        mesh.lodCount = clampedLODCount
+        mesh.totalVertexCount = vertexCount
 
         let name = url.deletingPathExtension().lastPathComponent
 
-        vertexData.withUnsafeBytes   { mesh.vertexBuffer           = Buffer(bytes: $0.baseAddress!, size: vertexData.count,   makeResidentNow: false) }
-        indexData.withUnsafeBytes    { mesh.indexBuffer            = Buffer(bytes: $0.baseAddress!, size: indexData.count,    makeResidentNow: false) }
-        meshletData.withUnsafeBytes  { mesh.meshletBuffer          = Buffer(bytes: $0.baseAddress!, size: meshletData.count,  makeResidentNow: false) }
-        mvData.withUnsafeBytes       { mesh.meshletVerticesBuffer  = Buffer(bytes: $0.baseAddress!, size: mvData.count,       makeResidentNow: false) }
-        mtData.withUnsafeBytes       { mesh.meshletTrianglesBuffer = Buffer(bytes: $0.baseAddress!, size: mtData.count,       makeResidentNow: false) }
-        boundsData.withUnsafeBytes   { mesh.meshletBoundsBuffer    = Buffer(bytes: $0.baseAddress!, size: boundsData.count,   makeResidentNow: false) }
-        rawInstances.withUnsafeBytes { mesh.instanceBuffer         = Buffer(bytes: $0.baseAddress!, size: rawInstances.count, makeResidentNow: false) }
-
-        mesh.vertexBuffer.setName(name:           "\(name) Vertices")
-        mesh.indexBuffer.setName(name:            "\(name) Indices")
-        mesh.meshletBuffer.setName(name:          "\(name) Meshlets")
-        mesh.meshletVerticesBuffer.setName(name:  "\(name) Meshlet Vertices")
-        mesh.meshletTrianglesBuffer.setName(name: "\(name) Meshlet Triangles")
-        mesh.meshletBoundsBuffer.setName(name:    "\(name) Meshlet Bounds")
-        mesh.instanceBuffer.setName(name:         "\(name) Instances")
-
-        // ---- Commit residency atomically on the calling thread ----
-        // All seven buffers are added to the residency set in one go, avoiding
-        // any race if load() is called from a background thread while the main
-        // thread is already committing a prior residency set update.
-        if RendererData.device.supportsFamily(.apple9) {
-            mesh.blas = BLAS(model: mesh, makeResidentNow: false)
-            mesh.blas.setName(name: "\(name) BLAS")
+        // Shared vertex buffer
+        vertexData.withUnsafeBytes {
+            mesh.vertexBuffer = Buffer(
+                bytes: $0.baseAddress!, size: vertexData.count, makeResidentNow: false)
         }
+        mesh.vertexBuffer.setName(name: "\(name) Vertices")
+
+        // Instance buffer
+        rawInstances.withUnsafeBytes {
+            mesh.instanceBuffer = Buffer(
+                bytes: $0.baseAddress!, size: rawInstances.count, makeResidentNow: false)
+        }
+        mesh.instanceBuffer.setName(name: "\(name) Instances")
+
+        // Per-LOD buffers
+        for lod in 0..<clampedLODCount {
+            let ld = lodDataArray[lod]
+            let meshLOD = MeshLOD()
+            meshLOD.totalMeshletCount = ld.meshletCount
+            meshLOD.totalIndexCount = ld.indexCount
+
+            ld.indexData.withUnsafeBytes {
+                meshLOD.indexBuffer = Buffer(
+                    bytes: $0.baseAddress!, size: ld.indexData.count, makeResidentNow: false)
+            }
+            ld.meshletData.withUnsafeBytes {
+                meshLOD.meshletBuffer = Buffer(
+                    bytes: $0.baseAddress!, size: ld.meshletData.count, makeResidentNow: false)
+            }
+            ld.mvData.withUnsafeBytes {
+                meshLOD.meshletVerticesBuffer = Buffer(
+                    bytes: $0.baseAddress!, size: ld.mvData.count, makeResidentNow: false)
+            }
+            ld.mtData.withUnsafeBytes {
+                meshLOD.meshletTrianglesBuffer = Buffer(
+                    bytes: $0.baseAddress!, size: ld.mtData.count, makeResidentNow: false)
+            }
+            ld.boundsData.withUnsafeBytes {
+                meshLOD.meshletBoundsBuffer = Buffer(
+                    bytes: $0.baseAddress!, size: ld.boundsData.count, makeResidentNow: false)
+            }
+
+            meshLOD.indexBuffer.setName(name: "\(name) LOD\(lod) Indices")
+            meshLOD.meshletBuffer.setName(name: "\(name) LOD\(lod) Meshlets")
+            meshLOD.meshletVerticesBuffer.setName(name: "\(name) LOD\(lod) Meshlet Vertices")
+            meshLOD.meshletTrianglesBuffer.setName(name: "\(name) LOD\(lod) Meshlet Triangles")
+            meshLOD.meshletBoundsBuffer.setName(name: "\(name) LOD\(lod) Meshlet Bounds")
+
+            mesh.lods.append(meshLOD)
+        }
+
+        // ---- Commit residency ----
+        // if RendererData.device.supportsFamily(.apple9) {
+        //     mesh.blas = BLAS(model: mesh, makeResidentNow: false)
+        //     mesh.blas.setName(name: "\(name) BLAS")
+        // }
 
         mesh.vertexBuffer.makeResident()
-        mesh.indexBuffer.makeResident()
-        mesh.meshletBuffer.makeResident()
-        mesh.meshletVerticesBuffer.makeResident()
-        mesh.meshletTrianglesBuffer.makeResident()
-        mesh.meshletBoundsBuffer.makeResident()
         mesh.instanceBuffer.makeResident()
-        mesh.blas?.makeResident()
-        
-        progress?(0.90, "Building BLAS…")
-        if RendererData.device.supportsFamily(.apple9) {
-            let commandBuffer = CommandBuffer()
-            commandBuffer.begin(commitResidencySet: false)
-            let cp = commandBuffer.beginComputePass()
-            cp.buildBLAS(blas: mesh.blas)
-            cp.end()
-            commandBuffer.end()
-            commandBuffer.commit()
-
-            RendererData.waitIdle()
-
-            mesh.blas.destroyScratch()
+        for lod in mesh.lods {
+            lod.indexBuffer.makeResident()
+            lod.meshletBuffer.makeResident()
+            lod.meshletVerticesBuffer.makeResident()
+            lod.meshletTrianglesBuffer.makeResident()
+            lod.meshletBoundsBuffer.makeResident()
         }
+        // mesh.blas?.makeResident()
+
+        // progress?(0.95, "Building BLAS…")
+        // if RendererData.device.supportsFamily(.apple9) {
+        //     let commandBuffer = CommandBuffer()
+        //     commandBuffer.begin(commitResidencySet: false)
+        //     let cp = commandBuffer.beginComputePass()
+        //     cp.buildBLAS(blas: mesh.blas)
+        //     cp.end()
+        //     commandBuffer.end()
+        //     commandBuffer.commit()
+//
+        //     RendererData.waitIdle()
+//
+        //     mesh.blas.destroyScratch()
+        // }
 
         progress?(1.00, "Done")
-        print("[MeshLoader] \(name): \(instanceCount) instance(s), \(materialCount) material(s), \(vertexCount) verts, \(meshletCount) meshlets")
+        print(
+            "[MeshLoader] \(name): \(instanceCount) instance(s), \(materialCount) material(s), \(vertexCount) verts, \(clampedLODCount) LOD(s)"
+        )
+        for lod in 0..<clampedLODCount {
+            print(
+                "[MeshLoader]   LOD\(lod): \(lodDataArray[lod].indexCount) indices, \(lodDataArray[lod].meshletCount) meshlets"
+            )
+        }
         return mesh
     }
 }

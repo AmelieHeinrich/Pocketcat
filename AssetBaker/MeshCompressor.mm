@@ -148,15 +148,24 @@ static std::string OutputTexturePath(const std::string& outDir, const char* uri)
 // ---- Per-primitive work item ------------------------------------------------
 // Filled on the main thread, processed in parallel, merged back in order.
 
-struct PrimitiveResult
+// Per-LOD geometry data for a single primitive.
+struct LODGeometry
 {
-    // Geometry
-    std::vector<MeshVertex>        vertices;
     std::vector<uint32_t>          indices;
     std::vector<MeshMeshlet>       meshlets;
     std::vector<uint32_t>          meshletVertices;
     std::vector<uint8_t>           meshletTriangles;
     std::vector<MeshMeshletBounds> meshletBounds;
+};
+
+struct PrimitiveResult
+{
+    // Vertices are shared across all LODs (simplification reuses original vertices)
+    std::vector<MeshVertex>        vertices;
+
+    // Per-LOD index / meshlet data
+    LODGeometry lods[kMaxLODs];
+    uint32_t    lodCount = 0;   // how many LODs were actually generated (1..kMaxLODs)
 
     // Instance (offsets will be fixed up when merging into global arrays)
     MeshInstance inst = {};
@@ -167,6 +176,85 @@ struct PrimitiveResult
     int         primIndex    = 0;
 };
 
+// ---- Build meshlets + bounds for a given index buffer -----------------------
+
+static void BuildMeshletsForLOD(
+    LODGeometry&                   out,
+    const std::vector<uint32_t>&   indices,
+    const std::vector<MeshVertex>& vertices)
+{
+    constexpr size_t kMaxVerts     = 64;
+    constexpr size_t kMaxTriangles = 124;
+    constexpr float  kConeWeight   = 0.5f;
+
+    size_t indexCount  = indices.size();
+    size_t vertexCount = vertices.size();
+
+    size_t maxMeshlets = meshopt_buildMeshletsBound(indexCount, kMaxVerts, kMaxTriangles);
+
+    std::vector<meshopt_Meshlet> msMeshlets(maxMeshlets);
+    std::vector<uint32_t>        msVertices(maxMeshlets * kMaxVerts);
+    std::vector<uint8_t>         msTriangles(maxMeshlets * kMaxTriangles * 3);
+
+    size_t meshletCount = meshopt_buildMeshlets(
+        msMeshlets.data(), msVertices.data(), msTriangles.data(),
+        indices.data(), indexCount,
+        &vertices[0].Position[0], vertexCount, sizeof(MeshVertex),
+        kMaxVerts, kMaxTriangles, kConeWeight);
+
+    if (meshletCount == 0) return;
+
+    // Trim to actual data
+    const meshopt_Meshlet& last = msMeshlets[meshletCount - 1];
+    msVertices.resize(last.vertex_offset + last.vertex_count);
+    msTriangles.resize(last.triangle_offset + ((last.triangle_count * 3 + 3) & ~3u));
+
+    // Optimize each meshlet for locality
+    for (size_t k = 0; k < meshletCount; k++) {
+        meshopt_optimizeMeshlet(
+            msVertices.data()  + msMeshlets[k].vertex_offset,
+            msTriangles.data() + msMeshlets[k].triangle_offset,
+            msMeshlets[k].triangle_count,
+            msMeshlets[k].vertex_count);
+    }
+
+    // Compute meshlet bounds
+    std::vector<MeshMeshletBounds> localBounds(meshletCount);
+    for (size_t k = 0; k < meshletCount; k++) {
+        meshopt_Bounds b = meshopt_computeMeshletBounds(
+            msVertices.data()  + msMeshlets[k].vertex_offset,
+            msTriangles.data() + msMeshlets[k].triangle_offset,
+            msMeshlets[k].triangle_count,
+            &vertices[0].Position[0], vertexCount, sizeof(MeshVertex));
+
+        MeshMeshletBounds& mb = localBounds[k];
+        memcpy(mb.Center,   b.center,    sizeof(mb.Center));
+        mb.Radius = b.radius;
+        memcpy(mb.ConeApex, b.cone_apex, sizeof(mb.ConeApex));
+        memcpy(mb.ConeAxis, b.cone_axis, sizeof(mb.ConeAxis));
+        mb.ConeCutoff = b.cone_cutoff;
+        memcpy(mb.ConeAxisS8, b.cone_axis_s8, sizeof(mb.ConeAxisS8));
+        mb.ConeCutoffS8 = b.cone_cutoff_s8;
+    }
+
+    // Convert raw meshopt meshlets into our MeshMeshlet structs.
+    // Offsets here are LOCAL (relative to this LOD's own arrays).
+    out.meshlets.reserve(meshletCount);
+    for (size_t k = 0; k < meshletCount; k++) {
+        MeshMeshlet mm = {};
+        mm.VertexOffset   = msMeshlets[k].vertex_offset;
+        mm.TriangleOffset = msMeshlets[k].triangle_offset;
+        mm.VertexCount    = msMeshlets[k].vertex_count;
+        mm.TriangleCount  = msMeshlets[k].triangle_count;
+        out.meshlets.push_back(mm);
+    }
+
+    out.indices         = indices;   // copy
+    out.meshletVertices  = std::move(msVertices);
+    out.meshletTriangles = std::move(msTriangles);
+    out.meshletBounds    = std::move(localBounds);
+}
+
 // ---- Process one primitive --------------------------------------------------
 
 static PrimitiveResult ProcessPrimitive(
@@ -176,10 +264,6 @@ static PrimitiveResult ProcessPrimitive(
     int                    primIndex,
     uint32_t               matIndex)
 {
-    constexpr size_t kMaxVerts     = 64;
-    constexpr size_t kMaxTriangles = 124;
-    constexpr float  kConeWeight   = 0.5f;
-
     PrimitiveResult result;
     result.nodeName  = node.name ? node.name : "(unnamed)";
     result.nodeIndex = nodeIndex;
@@ -284,80 +368,59 @@ static PrimitiveResult ProcessPrimitive(
             aabbMax[k] = std::max(aabbMax[k], v.Position[k]);
         }
 
-    // ---- Build meshlets ----
-    size_t maxMeshlets = meshopt_buildMeshletsBound(indexCount, kMaxVerts, kMaxTriangles);
+    // ---- Build LOD0 meshlets (full detail) ----
+    BuildMeshletsForLOD(result.lods[0], optIndices, optVerts);
+    result.lodCount = 1;
 
-    std::vector<meshopt_Meshlet> msMeshlets(maxMeshlets);
-    std::vector<uint32_t>        msVertices(maxMeshlets * kMaxVerts);
-    std::vector<uint8_t>         msTriangles(maxMeshlets * kMaxTriangles * 3);
+    // ---- Generate simplified LODs (LOD1..LOD4) ----
+    // We simplify the *original* LOD0 indices each time (not chaining LODs)
+    // to get the best quality at each level. Stop early if simplification
+    // produces no meaningful triangle reduction vs the previous LOD.
+    size_t prevIndexCount = indexCount;
+    for (uint32_t lod = 1; lod < kMaxLODs; lod++) {
+        size_t targetIndexCount = static_cast<size_t>(indexCount * kLODThresholds[lod]);
+        // Need at least 3 indices to form a triangle
+        if (targetIndexCount < 3) break;
 
-    size_t meshletCount = meshopt_buildMeshlets(
-        msMeshlets.data(), msVertices.data(), msTriangles.data(),
-        optIndices.data(), indexCount,
-        &optVerts[0].Position[0], uniqueCount, sizeof(MeshVertex),
-        kMaxVerts, kMaxTriangles, kConeWeight);
+        std::vector<uint32_t> simplified(indexCount);
+        float lodError = 0.0f;
+        size_t simplifiedCount = meshopt_simplify(
+            simplified.data(),
+            optIndices.data(), indexCount,
+            &optVerts[0].Position[0], uniqueCount, sizeof(MeshVertex),
+            targetIndexCount, kLODTargetErrors[lod],
+            /* options= */ 0, &lodError);
 
-    // Trim to actual data
-    const meshopt_Meshlet& last = msMeshlets[meshletCount - 1];
-    msVertices.resize(last.vertex_offset + last.vertex_count);
-    msTriangles.resize(last.triangle_offset + ((last.triangle_count * 3 + 3) & ~3u));
+        // If simplification didn't reduce triangle count meaningfully
+        // (less than 10% reduction from previous LOD), stop generating LODs.
+        if (simplifiedCount >= prevIndexCount * 95 / 100) break;
+        // Need at least one triangle
+        if (simplifiedCount < 3) break;
 
-    // Optimize each meshlet for locality
-    for (size_t k = 0; k < meshletCount; k++) {
-        meshopt_optimizeMeshlet(
-            msVertices.data()  + msMeshlets[k].vertex_offset,
-            msTriangles.data() + msMeshlets[k].triangle_offset,
-            msMeshlets[k].triangle_count,
-            msMeshlets[k].vertex_count);
-    }
+        simplified.resize(simplifiedCount);
+        prevIndexCount = simplifiedCount;
 
-    // ---- Compute meshlet bounds ----
-    std::vector<MeshMeshletBounds> localBounds(meshletCount);
-    for (size_t k = 0; k < meshletCount; k++) {
-        meshopt_Bounds b = meshopt_computeMeshletBounds(
-            msVertices.data()  + msMeshlets[k].vertex_offset,
-            msTriangles.data() + msMeshlets[k].triangle_offset,
-            msMeshlets[k].triangle_count,
-            &optVerts[0].Position[0], uniqueCount, sizeof(MeshVertex));
+        // Build meshlets for this LOD
+        BuildMeshletsForLOD(result.lods[lod], simplified, optVerts);
 
-        MeshMeshletBounds& mb = localBounds[k];
-        memcpy(mb.Center,   b.center,    sizeof(mb.Center));
-        mb.Radius = b.radius;
-        memcpy(mb.ConeApex, b.cone_apex, sizeof(mb.ConeApex));
-        memcpy(mb.ConeAxis, b.cone_axis, sizeof(mb.ConeAxis));
-        mb.ConeCutoff = b.cone_cutoff;
-        memcpy(mb.ConeAxisS8, b.cone_axis_s8, sizeof(mb.ConeAxisS8));
-        mb.ConeCutoffS8 = b.cone_cutoff_s8;
+        // Only count this LOD if meshlet generation succeeded
+        if (result.lods[lod].meshlets.empty()) break;
+        result.lodCount = lod + 1;
     }
 
     // ---- Pack result ----
-    // Instance offsets are zero here; they will be fixed up during the
-    // single-threaded merge step once each result's global offset is known.
     MeshInstance& inst = result.inst;
+    memset(&inst, 0, sizeof(inst));
     memcpy(inst.AABBMin, aabbMin, sizeof(aabbMin));
     memcpy(inst.AABBMax, aabbMax, sizeof(aabbMax));
-    inst.IndexCount    = static_cast<uint32_t>(indexCount);
     inst.MaterialIndex = matIndex;
 
-    result.vertices        = std::move(optVerts);
-    result.indices         = std::move(optIndices);
-
-    // Convert raw meshopt meshlets into our MeshMeshlet structs.
-    // Offsets here are LOCAL (relative to this primitive's own arrays).
-    // The merge step will add the global base offsets.
-    result.meshlets.reserve(meshletCount);
-    for (size_t k = 0; k < meshletCount; k++) {
-        MeshMeshlet mm = {};
-        mm.VertexOffset   = msMeshlets[k].vertex_offset;
-        mm.TriangleOffset = msMeshlets[k].triangle_offset;
-        mm.VertexCount    = msMeshlets[k].vertex_count;
-        mm.TriangleCount  = msMeshlets[k].triangle_count;
-        result.meshlets.push_back(mm);
+    // Fill per-LOD IndexCount in the instance (offsets are fixed up during merge)
+    for (uint32_t lod = 0; lod < result.lodCount; lod++) {
+        inst.IndexCount[lod] = static_cast<uint32_t>(result.lods[lod].indices.size());
     }
 
-    result.meshletVertices  = std::move(msVertices);
-    result.meshletTriangles = std::move(msTriangles);
-    result.meshletBounds    = std::move(localBounds);
+    result.vertices = std::move(optVerts);
 
     return result;
 }
@@ -528,6 +591,7 @@ void CompressMesh(const std::string& in, const std::string& out)
 
     // ---- Compress textures in parallel --------------------------------------
 
+#if !SKIP_TEXTURES
     if (!textureJobs.empty()) {
         printf("[MeshCompressor] Compressing textures on %u thread(s)...\n", threadCount);
         fflush(stdout);
@@ -566,6 +630,7 @@ void CompressMesh(const std::string& in, const std::string& out)
                FormatDuration(NowSeconds() - texStart).c_str());
         fflush(stdout);
     }
+#endif
 
     // ---- Build material array -----------------------------------------------
     // Now that all textures exist on disk, fill MeshMaterial with the output paths.
@@ -670,13 +735,14 @@ void CompressMesh(const std::string& in, const std::string& out)
             {
                 std::lock_guard<std::mutex> lk(logMutex2);
                 printf("[MeshCompressor]   prim [%zu/%zu] node=%d (%s) prim=%d"
-                       " | verts=%zu meshlets=%zu (%.2fs)\n",
+                       " | verts=%zu meshlets=%zu lods=%u (%.2fs)\n",
                        done, primTotal,
                        job.nodeIndex,
                        results[i].nodeName.c_str(),
                        job.primIndex,
                        results[i].vertices.size(),
-                       results[i].meshlets.size(),
+                       results[i].lods[0].meshlets.size(),
+                       results[i].lodCount,
                        elapsed);
                 fflush(stdout);
             }
@@ -698,69 +764,93 @@ void CompressMesh(const std::string& in, const std::string& out)
 
     double mergeStart = NowSeconds();
 
+    // Determine global LOD count: maximum across all primitives
+    uint32_t globalLODCount = 1;
+    for (size_t i = 0; i < primTotal; i++) {
+        if (!results[i].vertices.empty())
+            globalLODCount = std::max(globalLODCount, results[i].lodCount);
+    }
+
+    // Per-LOD global arrays
     std::vector<MeshVertex>        allVertices;
-    std::vector<uint32_t>          allIndices;
-    std::vector<MeshMeshlet>       allMeshlets;
-    std::vector<uint32_t>          allMeshletVertices;
-    std::vector<uint8_t>           allMeshletTriangles;
-    std::vector<MeshMeshletBounds> allMeshletBounds;
+    std::vector<uint32_t>          allIndices[kMaxLODs];
+    std::vector<MeshMeshlet>       allMeshlets[kMaxLODs];
+    std::vector<uint32_t>          allMeshletVertices[kMaxLODs];
+    std::vector<uint8_t>           allMeshletTriangles[kMaxLODs];
+    std::vector<MeshMeshletBounds> allMeshletBounds[kMaxLODs];
     std::vector<MeshInstance>      instances;
 
     for (size_t i = 0; i < primTotal; i++) {
         PrimitiveResult& r = results[i];
         if (r.vertices.empty()) continue;  // primitive was skipped (e.g. no posAcc)
 
-        const uint32_t globalVertexBase          = static_cast<uint32_t>(allVertices.size());
-        const uint32_t globalIndexBase           = static_cast<uint32_t>(allIndices.size());
-        const uint32_t globalMeshletBase         = static_cast<uint32_t>(allMeshlets.size());
-        const uint32_t globalMeshletVertexBase   = static_cast<uint32_t>(allMeshletVertices.size());
-        const uint32_t globalMeshletTriangleBase = static_cast<uint32_t>(allMeshletTriangles.size());
-        const uint32_t globalBoundsBase          = static_cast<uint32_t>(allMeshletBounds.size());
+        const uint32_t globalVertexBase = static_cast<uint32_t>(allVertices.size());
 
-        // Fix up instance offsets
-        r.inst.VertexOffset          = globalVertexBase;
-        r.inst.IndexOffset           = globalIndexBase;
-        r.inst.MeshletOffset         = globalMeshletBase;
-        r.inst.MeshletVerticesOffset = globalMeshletVertexBase;
-        r.inst.MeshletIndicesOffset  = globalMeshletTriangleBase;
-        r.inst.MeshletBoundsOffset   = globalBoundsBase;
-        instances.push_back(r.inst);
+        // Fix up instance vertex offset (shared across all LODs)
+        r.inst.VertexOffset = globalVertexBase;
 
-        // Vertices + indices
+        // Vertices are shared across LODs
         allVertices.insert(allVertices.end(), r.vertices.begin(), r.vertices.end());
-        allIndices.insert(allIndices.end(), r.indices.begin(), r.indices.end());
 
-        // Meshlets: patch local offsets to global coordinates
-        for (MeshMeshlet& mm : r.meshlets) {
-            mm.VertexOffset   += globalMeshletVertexBase;
-            mm.TriangleOffset += globalMeshletTriangleBase;
-            allMeshlets.push_back(mm);
+        // Merge per-LOD data
+        for (uint32_t lod = 0; lod < globalLODCount; lod++) {
+            // If this primitive doesn't have this LOD level, fall back to the
+            // highest LOD it does have (coarsest available).
+            uint32_t srcLod = std::min(lod, r.lodCount - 1);
+            const LODGeometry& src = r.lods[srcLod];
+
+            const uint32_t globalIndexBase           = static_cast<uint32_t>(allIndices[lod].size());
+            const uint32_t globalMeshletBase         = static_cast<uint32_t>(allMeshlets[lod].size());
+            const uint32_t globalMeshletVertexBase   = static_cast<uint32_t>(allMeshletVertices[lod].size());
+            const uint32_t globalMeshletTriangleBase = static_cast<uint32_t>(allMeshletTriangles[lod].size());
+            const uint32_t globalBoundsBase          = static_cast<uint32_t>(allMeshletBounds[lod].size());
+
+            r.inst.IndexOffset[lod]           = globalIndexBase;
+            r.inst.IndexCount[lod]            = static_cast<uint32_t>(src.indices.size());
+            r.inst.MeshletOffset[lod]         = globalMeshletBase;
+            r.inst.MeshletVerticesOffset[lod] = globalMeshletVertexBase;
+            r.inst.MeshletIndicesOffset[lod]  = globalMeshletTriangleBase;
+            r.inst.MeshletBoundsOffset[lod]   = globalBoundsBase;
+            r.inst.MeshletCount[lod]          = static_cast<uint32_t>(src.meshlets.size());
+
+            // Indices
+            allIndices[lod].insert(allIndices[lod].end(), src.indices.begin(), src.indices.end());
+
+            // Meshlets: patch local offsets to global coordinates
+            for (MeshMeshlet mm : src.meshlets) {
+                mm.VertexOffset   += globalMeshletVertexBase;
+                mm.TriangleOffset += globalMeshletTriangleBase;
+                allMeshlets[lod].push_back(mm);
+            }
+
+            // Meshlet vertex indirection: local vertex index -> global vertex index
+            for (uint32_t vi : src.meshletVertices)
+                allMeshletVertices[lod].push_back(globalVertexBase + vi);
+
+            allMeshletTriangles[lod].insert(allMeshletTriangles[lod].end(),
+                                            src.meshletTriangles.begin(), src.meshletTriangles.end());
+            allMeshletBounds[lod].insert(allMeshletBounds[lod].end(),
+                                         src.meshletBounds.begin(), src.meshletBounds.end());
         }
 
-        // Meshlet vertex indirection: local vertex index -> global vertex index
-        for (uint32_t vi : r.meshletVertices)
-            allMeshletVertices.push_back(globalVertexBase + vi);
-
-        allMeshletTriangles.insert(allMeshletTriangles.end(),
-                                   r.meshletTriangles.begin(), r.meshletTriangles.end());
-        allMeshletBounds.insert(allMeshletBounds.end(),
-                                r.meshletBounds.begin(), r.meshletBounds.end());
+        instances.push_back(r.inst);
     }
 
-    printf("[MeshCompressor] Merge done in %s\n",
-           FormatDuration(NowSeconds() - mergeStart).c_str());
+    printf("[MeshCompressor] Merge done in %s — %u LOD level(s)\n",
+           FormatDuration(NowSeconds() - mergeStart).c_str(), globalLODCount);
     fflush(stdout);
 
     // ---- Write binary output ------------------------------------------------
-    // Layout:
-    //   MeshHeader
-    //   MeshInstance[InstanceCount]
+    // Layout (v2 — with LODs):
+    //   MeshHeader { InstanceCount, MaterialCount, LODCount }
+    //   MeshInstance[InstanceCount]      (per-LOD offsets baked in)
     //   MeshMaterial[MaterialCount]
-    //   uint32 vertexCount   + MeshVertex[vertexCount]
+    //   uint32 vertexCount + MeshVertex[vertexCount]          (shared across LODs)
+    //   --- repeated for each LOD level [0..LODCount-1]: ---
     //   uint32 indexCount    + uint32[indexCount]
     //   uint32 meshletCount  + MeshMeshlet[meshletCount]
-    //   uint32 mvCount       + uint32[mvCount]    (meshlet vertex indirection)
-    //   uint32 mtBytes       + uint8[mtBytes]     (meshlet triangle indices, padded)
+    //   uint32 mvCount       + uint32[mvCount]
+    //   uint32 mtBytes       + uint8[mtBytes]
     //   uint32 boundsCount   + MeshMeshletBounds[boundsCount]
 
     printf("[MeshCompressor] Writing output file: %s\n", out.c_str());
@@ -780,27 +870,32 @@ void CompressMesh(const std::string& in, const std::string& out)
     MeshHeader header = {};
     header.InstanceCount = static_cast<uint32_t>(instances.size());
     header.MaterialCount = static_cast<uint32_t>(materials.size());
+    header.LODCount      = globalLODCount;
     writeSpan(&header, sizeof(header));
     writeSpan(instances.data(), sizeof(MeshInstance) * instances.size());
     writeSpan(materials.data(), sizeof(MeshMaterial) * materials.size());
 
+    // Vertices (shared across all LODs)
     writeU32(static_cast<uint32_t>(allVertices.size()));
     writeSpan(allVertices.data(), sizeof(MeshVertex) * allVertices.size());
 
-    writeU32(static_cast<uint32_t>(allIndices.size()));
-    writeSpan(allIndices.data(), sizeof(uint32_t) * allIndices.size());
+    // Per-LOD geometry arrays
+    for (uint32_t lod = 0; lod < globalLODCount; lod++) {
+        writeU32(static_cast<uint32_t>(allIndices[lod].size()));
+        writeSpan(allIndices[lod].data(), sizeof(uint32_t) * allIndices[lod].size());
 
-    writeU32(static_cast<uint32_t>(allMeshlets.size()));
-    writeSpan(allMeshlets.data(), sizeof(MeshMeshlet) * allMeshlets.size());
+        writeU32(static_cast<uint32_t>(allMeshlets[lod].size()));
+        writeSpan(allMeshlets[lod].data(), sizeof(MeshMeshlet) * allMeshlets[lod].size());
 
-    writeU32(static_cast<uint32_t>(allMeshletVertices.size()));
-    writeSpan(allMeshletVertices.data(), sizeof(uint32_t) * allMeshletVertices.size());
+        writeU32(static_cast<uint32_t>(allMeshletVertices[lod].size()));
+        writeSpan(allMeshletVertices[lod].data(), sizeof(uint32_t) * allMeshletVertices[lod].size());
 
-    writeU32(static_cast<uint32_t>(allMeshletTriangles.size()));
-    writeSpan(allMeshletTriangles.data(), allMeshletTriangles.size());
+        writeU32(static_cast<uint32_t>(allMeshletTriangles[lod].size()));
+        writeSpan(allMeshletTriangles[lod].data(), allMeshletTriangles[lod].size());
 
-    writeU32(static_cast<uint32_t>(allMeshletBounds.size()));
-    writeSpan(allMeshletBounds.data(), sizeof(MeshMeshletBounds) * allMeshletBounds.size());
+        writeU32(static_cast<uint32_t>(allMeshletBounds[lod].size()));
+        writeSpan(allMeshletBounds[lod].data(), sizeof(MeshMeshletBounds) * allMeshletBounds[lod].size());
+    }
 
     file.close();
 
@@ -812,9 +907,12 @@ void CompressMesh(const std::string& in, const std::string& out)
     printf("[MeshCompressor]   Total time   : %s\n",   FormatDuration(totalElapsed).c_str());
     printf("[MeshCompressor]   Instances    : %zu\n",  instances.size());
     printf("[MeshCompressor]   Materials    : %zu\n",  materials.size());
+    printf("[MeshCompressor]   LOD levels   : %u\n",   globalLODCount);
     printf("[MeshCompressor]   Vertices     : %zu\n",  allVertices.size());
-    printf("[MeshCompressor]   Indices      : %zu\n",  allIndices.size());
-    printf("[MeshCompressor]   Meshlets     : %zu\n",  allMeshlets.size());
+    for (uint32_t lod = 0; lod < globalLODCount; lod++) {
+        printf("[MeshCompressor]   LOD%u indices : %zu, meshlets: %zu\n",
+               lod, allIndices[lod].size(), allMeshlets[lod].size());
+    }
     printf("[MeshCompressor]   Textures     : %zu\n",  textureJobs.size());
     printf("[MeshCompressor]   %s -> %s\n", in.c_str(), out.c_str());
     fflush(stdout);
