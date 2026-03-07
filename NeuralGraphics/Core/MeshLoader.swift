@@ -287,7 +287,7 @@ class MeshLoader {
             let mlData = r.readSlice(count: mlCount * meshletStride)
 
             let mvC = Int(r.read(UInt32.self))
-            let mvD = r.readSlice(count: mvC * MemoryLayout<UInt32>.size)
+            let mvD = r.readSlice(count: mvC * vertexStride) // flat MeshVertex data, not uint32
 
             let mtB = Int(r.read(UInt32.self))
             let mtD = r.readSlice(count: mtB)
@@ -407,6 +407,9 @@ class MeshLoader {
                 "[MeshLoader]   LOD\(lod): \(lodDataArray[lod].indexCount) indices, \(lodDataArray[lod].meshletCount) meshlets"
             )
         }
+        
+        RendererData.waitIdle()
+        
         return mesh
     }
 }

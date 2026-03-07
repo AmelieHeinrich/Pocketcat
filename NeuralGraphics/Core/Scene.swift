@@ -131,23 +131,21 @@ extension SceneConfiguration {
             ])
         ),
         SceneConfiguration(
-            id: "buddha_storm_sponza",
-            name: "Buddha Storm in Intel Sponza",
+            id: "buddha_storm",
+            name: "Buddha Storm",
             systemIcon: "sparkles",
             tags: ["Stress test", "Mesh shaders"],
             descriptor: SceneDescriptor(
-                models: [
-                    SceneModelDescriptor(resource: "IntelSponza")
-                ]
-                    + (0..<128).map { _ in
+                models: (0..<64).map { _ in
                         SceneModelDescriptor(
                             resource: "Buddha",
-                            transform: simd_float4x4.translation(
-                                simd_float3(
-                                    Float.random(in: -10...10),
-                                    Float.random(in: 0...10),
+                            transform: simd_float4x4.translation(simd_float3(
+                                    Float.random(in: -5...5),
+                                    Float.random(in: -5...5),
                                     Float.random(in: -5...5)
-                                ))
+                            )) * simd_float4x4.rotationX(Float.random(in: -180...180))
+                               * simd_float4x4.rotationY(Float.random(in: -180...180))
+                               * simd_float4x4.rotationZ(Float.random(in: -180...180))
                         )
                     })
         ),

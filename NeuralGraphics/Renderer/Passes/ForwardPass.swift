@@ -108,12 +108,11 @@ class ForwardPass: Pass {
                         rp.setBytes(
                             allocator: context.allocator, index: 0, bytes: &data,
                             size: MemoryLayout<ModelData>.size, stages: .mesh)
-                        rp.setBuffer(buf: model.vertexBuffer, index: 1, stages: .mesh)
                         rp.setBuffer(
-                            buf: lodData.meshletBuffer, index: 2, stages: .mesh,
+                            buf: lodData.meshletBuffer, index: 1, stages: .mesh,
                             offset: Int(instance.meshletOffset[lod]) * 16)
-                        rp.setBuffer(buf: lodData.meshletVerticesBuffer, index: 3, stages: .mesh)
-                        rp.setBuffer(buf: lodData.meshletTrianglesBuffer, index: 4, stages: .mesh)
+                        rp.setBuffer(buf: lodData.meshletVerticesBuffer, index: 2, stages: .mesh)
+                        rp.setBuffer(buf: lodData.meshletTrianglesBuffer, index: 3, stages: .mesh)
                         rp.dispatchMesh(
                             threadgroupsPerGrid: MTLSizeMake(Int(instance.meshletCount[lod]), 1, 1),
                             threadsPerObjectThreadgroup: MTLSizeMake(0, 0, 0),

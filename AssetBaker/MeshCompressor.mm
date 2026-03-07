@@ -153,7 +153,7 @@ struct LODGeometry
 {
     std::vector<uint32_t>          indices;
     std::vector<MeshMeshlet>       meshlets;
-    std::vector<uint32_t>          meshletVertices;
+    std::vector<MeshVertex>        meshletVertices; // flat per-meshlet vertex data (no indirection)
     std::vector<uint8_t>           meshletTriangles;
     std::vector<MeshMeshletBounds> meshletBounds;
 };
@@ -237,20 +237,27 @@ static void BuildMeshletsForLOD(
         mb.ConeCutoffS8 = b.cone_cutoff_s8;
     }
 
-    // Convert raw meshopt meshlets into our MeshMeshlet structs.
-    // Offsets here are LOCAL (relative to this LOD's own arrays).
+    // Convert raw meshopt meshlets into our MeshMeshlet structs, and at the same
+    // time flatten the vertex indirection: instead of storing uint32 global vertex
+    // indices, copy the actual MeshVertex data contiguously per meshlet.
+    // This removes one memory tap in the mesh shader (no indirection at runtime).
     out.meshlets.reserve(meshletCount);
+    std::vector<MeshVertex> flatVerts;
+    flatVerts.reserve(msVertices.size());
     for (size_t k = 0; k < meshletCount; k++) {
         MeshMeshlet mm = {};
-        mm.VertexOffset   = msMeshlets[k].vertex_offset;
+        mm.VertexOffset   = static_cast<uint32_t>(flatVerts.size()); // into flat vertex array
         mm.TriangleOffset = msMeshlets[k].triangle_offset;
         mm.VertexCount    = msMeshlets[k].vertex_count;
         mm.TriangleCount  = msMeshlets[k].triangle_count;
         out.meshlets.push_back(mm);
+
+        for (uint32_t i = 0; i < msMeshlets[k].vertex_count; i++)
+            flatVerts.push_back(vertices[msVertices[msMeshlets[k].vertex_offset + i]]);
     }
 
-    out.indices         = indices;   // copy
-    out.meshletVertices  = std::move(msVertices);
+    out.indices          = indices;   // copy
+    out.meshletVertices  = std::move(flatVerts);
     out.meshletTriangles = std::move(msTriangles);
     out.meshletBounds    = std::move(localBounds);
 }
@@ -775,7 +782,7 @@ void CompressMesh(const std::string& in, const std::string& out)
     std::vector<MeshVertex>        allVertices;
     std::vector<uint32_t>          allIndices[kMaxLODs];
     std::vector<MeshMeshlet>       allMeshlets[kMaxLODs];
-    std::vector<uint32_t>          allMeshletVertices[kMaxLODs];
+    std::vector<MeshVertex>        allMeshletVertices[kMaxLODs]; // flat per-meshlet vertex data
     std::vector<uint8_t>           allMeshletTriangles[kMaxLODs];
     std::vector<MeshMeshletBounds> allMeshletBounds[kMaxLODs];
     std::vector<MeshInstance>      instances;
@@ -823,9 +830,9 @@ void CompressMesh(const std::string& in, const std::string& out)
                 allMeshlets[lod].push_back(mm);
             }
 
-            // Meshlet vertex indirection: local vertex index -> global vertex index
-            for (uint32_t vi : src.meshletVertices)
-                allMeshletVertices[lod].push_back(globalVertexBase + vi);
+            // Flat meshlet vertices: actual vertex data, already contiguous per meshlet
+            allMeshletVertices[lod].insert(allMeshletVertices[lod].end(),
+                                           src.meshletVertices.begin(), src.meshletVertices.end());
 
             allMeshletTriangles[lod].insert(allMeshletTriangles[lod].end(),
                                             src.meshletTriangles.begin(), src.meshletTriangles.end());
@@ -849,7 +856,7 @@ void CompressMesh(const std::string& in, const std::string& out)
     //   --- repeated for each LOD level [0..LODCount-1]: ---
     //   uint32 indexCount    + uint32[indexCount]
     //   uint32 meshletCount  + MeshMeshlet[meshletCount]
-    //   uint32 mvCount       + uint32[mvCount]
+    //   uint32 mvCount       + MeshVertex[mvCount]   (flat, no indirection)
     //   uint32 mtBytes       + uint8[mtBytes]
     //   uint32 boundsCount   + MeshMeshletBounds[boundsCount]
 
@@ -888,7 +895,7 @@ void CompressMesh(const std::string& in, const std::string& out)
         writeSpan(allMeshlets[lod].data(), sizeof(MeshMeshlet) * allMeshlets[lod].size());
 
         writeU32(static_cast<uint32_t>(allMeshletVertices[lod].size()));
-        writeSpan(allMeshletVertices[lod].data(), sizeof(uint32_t) * allMeshletVertices[lod].size());
+        writeSpan(allMeshletVertices[lod].data(), sizeof(MeshVertex) * allMeshletVertices[lod].size());
 
         writeU32(static_cast<uint32_t>(allMeshletTriangles[lod].size()));
         writeSpan(allMeshletTriangles[lod].data(), allMeshletTriangles[lod].size());

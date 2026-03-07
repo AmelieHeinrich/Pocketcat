@@ -71,6 +71,8 @@ class FrameManager {
 
         allocator.reset()
         cmdBuffer.begin()
+        cmdBuffer.useResidencySet(drawable.layer.residencySet)
+        cmdBuffer.useResidencySet(RendererData.residencySet)
 
         var context = FrameContext(
             camera:     CameraData(),

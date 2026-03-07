@@ -47,10 +47,9 @@ uint hash(uint a)
 
 [[mesh]]
 void forward_ms(const device ModelData& modelData [[buffer(0)]],
-                device const VSIn* vertices [[buffer(1)]],
-                device const Meshlet* meshlets [[buffer(2)]],
-                device const uint* meshletVertices [[buffer(3)]],
-                device const uchar* meshletIndices [[buffer(4)]],
+                device const Meshlet* meshlets [[buffer(1)]],
+                device const VSIn* meshletVertices [[buffer(2)]],
+                device const uchar* meshletIndices [[buffer(3)]],
                 uint gtid [[thread_position_in_threadgroup]],
                 uint gid [[threadgroup_position_in_grid]],
                 MeshOutput outMesh) {
@@ -71,15 +70,14 @@ void forward_ms(const device ModelData& modelData [[buffer(0)]],
     }
 
     if (gtid < m.VertexCount) {
-        uint vertexIndex = m.VertexOffset + gtid;
-        vertexIndex = meshletVertices[vertexIndex];
+        uint vertexIndex = m.VertexOffset + gtid; // direct index into flat per-meshlet vertices
 
         //uint meshletHash = hash(gid);
         //float3 meshletColor = float3(float(meshletHash & 255), float((meshletHash >> 8) & 255), float((meshletHash >> 16) & 255)) / 255.0;
-        float3 meshletColor = vertices[vertexIndex].Normal * 0.5 + 0.5;
-        
+        float3 meshletColor = meshletVertices[vertexIndex].Normal;
+
         VSOut vtx;
-        vtx.Position = modelData.Camera * float4(vertices[vertexIndex].Position, 1.0);
+        vtx.Position = modelData.Camera * float4(meshletVertices[vertexIndex].Position, 1.0);
         vtx.Color = meshletColor;
 
         outMesh.set_vertex(gtid, vtx);

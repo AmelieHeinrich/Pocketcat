@@ -45,6 +45,10 @@ class CommandBuffer {
         return ComputePass(label: name, cmdBuffer: self.commandBuffer)
     }
     
+    func useResidencySet(_ set: MTLResidencySet) {
+        commandBuffer.useResidencySet(set)
+    }
+
     func commit() {
         RendererData.cmdQueue.commit([commandBuffer])
     }
