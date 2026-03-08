@@ -24,13 +24,12 @@ private struct DebugData {
 class DebugPass: Pass {
     static let shared = DebugPass()
 
-    // Set from FrameManager.setupTimelines so the pass can read settings each frame.
     weak var settings: RendererSettings? = nil
 
     private let pipelineNoDepth: RenderPipeline
     private let pipelineDepth:   RenderPipeline
     private let vertexBuffers:   [Buffer]
-    private let maxVertices:     Int = 65536
+    private let maxVertices:     Int = 65536 * 2
     private var vertices:        [DebugVertex] = []
 
     private override init() {
@@ -53,13 +52,13 @@ class DebugPass: Pass {
         self.pipelineDepth = RenderPipeline(descriptor: descDepth)
 
         let stride = MemoryLayout<DebugVertex>.stride
+        self.vertices.reserveCapacity(maxVertices)
         self.vertexBuffers = (0..<3).map { i in
-            let buf = Buffer(size: stride * 65536)
+            let buf = Buffer(size: stride * (65536 * 2))
             buf.setName(name: "Debug Vertex Buffer \(i)")
             return buf
         }
-
-        self.vertices.reserveCapacity(65536)
+        
         super.init()
     }
 

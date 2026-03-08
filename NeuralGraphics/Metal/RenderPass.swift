@@ -102,6 +102,10 @@ class RenderPass {
         self.encoder.drawMeshThreadgroups(threadgroupsPerGrid: threadgroupsPerGrid, threadsPerObjectThreadgroup: threadsPerObjectThreadgroup, threadsPerMeshThreadgroup: threadsPerMeshThreadgroup)
     }
     
+    func executeIndirect(icb: ICB, maxCommandCount: Int) {
+        self.encoder.executeCommands(buffer: icb.cmdBuffer, range: 0..<maxCommandCount)
+    }
+    
     func setTexture(texture: Texture, index: Int, stages: MTLRenderStages) {
         if stages.contains(.vertex) {
             RendererData.vertexTable.setTexture(texture.texture.gpuResourceID, index: index)

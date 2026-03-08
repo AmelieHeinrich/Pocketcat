@@ -9,10 +9,10 @@ import Metal
 internal import QuartzCore
 import simd
 
-// Must match ModelData in Model.metal / ModelMS.metal
-private struct ModelData {
-    var camera: simd_float4x4
-    var vertexOffset: UInt32
+// Must match ForwardPushConstants in Model.metal / ModelMS.metal
+private struct ForwardPushConstants {
+    var instanceIndex: UInt32
+    var lod: UInt32
 }
 
 class ForwardPass: Pass {
@@ -20,7 +20,6 @@ class ForwardPass: Pass {
     private let meshPipeline: MeshPipeline
     private var depthTexture: Texture
     private var colorTexture: Texture
-    private let defaultAlbedo: Texture
     private unowned let settings: RendererSettings
 
     init(settings: RendererSettings) {
@@ -28,6 +27,7 @@ class ForwardPass: Pass {
 
         var meshPipelineDesc = MeshPipelineDescriptor()
         meshPipelineDesc.name = "Forward Pipeline (Mesh)"
+        meshPipelineDesc.objectFunction = "forward_os"
         meshPipelineDesc.meshFunction = "forward_ms"
         meshPipelineDesc.fragmentFunction = "forward_msfs"
         meshPipelineDesc.pixelFormats.append(.rgba16Float)
@@ -45,20 +45,6 @@ class ForwardPass: Pass {
         pipelineDesc.depthEnabled = true
         pipelineDesc.depthWriteEnabled = true
         self.pipeline = RenderPipeline(descriptor: pipelineDesc)
-
-        // 1×1 white fallback albedo
-        let whiteDesc = MTLTextureDescriptor.texture2DDescriptor(
-            pixelFormat: .rgba8Unorm, width: 1, height: 1, mipmapped: false)
-        whiteDesc.storageMode = .shared
-        whiteDesc.usage = .shaderRead
-        let white = Texture(descriptor: whiteDesc)
-        white.setLabel(name: "Default White Albedo")
-        var px: UInt32 = 0xFFFF_FFFF
-        withUnsafePointer(to: &px) {
-            white.uploadData(
-                region: MTLRegionMake2D(0, 0, 1, 1), mip: 0, data: UnsafeRawPointer($0), bpp: 4)
-        }
-        self.defaultAlbedo = white
 
         // Color buffer
         let colorDesc = MTLTextureDescriptor.texture2DDescriptor(
@@ -91,57 +77,74 @@ class ForwardPass: Pass {
         rpDesc.name = "Forward Pass"
 
         let rp = context.cmdBuffer.beginRenderPass(descriptor: rpDesc)
+        let sb = context.sceneBuffer
 
-        if let scene = context.scene {
-            for entity in scene.entities {
-                let model = entity.mesh
-                if settings.useMeshShader {
-                    rp.setMeshPipeline(pipeline: meshPipeline)
+        guard sb.buffer != nil, sb.instanceCount > 0 else {
+            rp.producerBarrier(before: .dispatch, after: .fragment)
+            rp.end()
+            context.resources.register(colorTexture, for: "Forward.Color")
+            context.resources.register(depthTexture, for: "Forward.Depth")
+            return
+        }
 
+        if settings.useMeshShader {
+            rp.setMeshPipeline(pipeline: meshPipeline)
+
+            // Bind scene buffer once for mesh + object + fragment stages
+            rp.setBuffer(buf: sb.buffer, index: 0, stages: [.mesh, .object, .fragment])
+
+            var globalInstanceIdx: UInt32 = 0
+            if let scene = context.scene {
+                for entity in scene.entities {
+                    let model = entity.mesh
                     let lod = min(settings.forcedLOD, model.lodCount - 1)
-                    let lodData = model.lods[lod]
 
                     for instance in model.instances {
-                        let mvp = context.camera.projection * context.camera.view * entity.transform
-                        var data = ModelData(camera: mvp, vertexOffset: instance.vertexOffset)
+                        var push = ForwardPushConstants(
+                            instanceIndex: globalInstanceIdx,
+                            lod: UInt32(lod))
+
+                        let tgCountX = Int(instance.meshletCount[lod] / 32) + 1
 
                         rp.setBytes(
-                            allocator: context.allocator, index: 0, bytes: &data,
-                            size: MemoryLayout<ModelData>.size, stages: .mesh)
-                        rp.setBuffer(
-                            buf: lodData.meshletBuffer, index: 1, stages: .mesh,
-                            offset: Int(instance.meshletOffset[lod]) * 16)
-                        rp.setBuffer(buf: lodData.meshletVerticesBuffer, index: 2, stages: .mesh)
-                        rp.setBuffer(buf: lodData.meshletTrianglesBuffer, index: 3, stages: .mesh)
+                            allocator: context.allocator, index: 1, bytes: &push,
+                            size: MemoryLayout<ForwardPushConstants>.size, stages: .mesh)
                         rp.dispatchMesh(
-                            threadgroupsPerGrid: MTLSizeMake(Int(instance.meshletCount[lod]), 1, 1),
-                            threadsPerObjectThreadgroup: MTLSizeMake(0, 0, 0),
-                            threadsPerMeshThreadgroup: MTLSizeMake(128, 1, 1)
-                        )
-                    }
-                } else {
-                    rp.setPipeline(pipeline: pipeline)
+                            threadgroupsPerGrid: MTLSizeMake(tgCountX, 1, 1),
+                            threadsPerObjectThreadgroup: MTLSizeMake(32, 1, 1),
+                            threadsPerMeshThreadgroup: MTLSizeMake(128, 1, 1))
 
+                        globalInstanceIdx += 1
+                    }
+                }
+            }
+        } else {
+            rp.setPipeline(pipeline: pipeline)
+
+            // Bind scene buffer once for vertex + fragment stages
+            rp.setBuffer(buf: sb.buffer, index: 0, stages: [.vertex, .fragment])
+
+            var globalInstanceIdx: UInt32 = 0
+            if let scene = context.scene {
+                for entity in scene.entities {
+                    let model = entity.mesh
                     let lod = min(settings.forcedLOD, model.lodCount - 1)
                     let lodData = model.lods[lod]
 
                     for instance in model.instances {
-                        let mvp = context.camera.projection * context.camera.view * entity.transform
-                        var data = ModelData(camera: mvp, vertexOffset: instance.vertexOffset)
-                        let albedo =
-                            model.materials.indices.contains(Int(instance.materialIndex))
-                            ? (model.materials[Int(instance.materialIndex)].albedo ?? defaultAlbedo)
-                            : defaultAlbedo
+                        var push = ForwardPushConstants(
+                            instanceIndex: globalInstanceIdx,
+                            lod: UInt32(lod))
 
                         rp.setBytes(
-                            allocator: context.allocator, index: 0, bytes: &data,
-                            size: MemoryLayout<ModelData>.size, stages: .vertex)
-                        rp.setBuffer(buf: model.vertexBuffer, index: 1, stages: .vertex)
-                        rp.setTexture(texture: albedo, index: 0, stages: .fragment)
+                            allocator: context.allocator, index: 1, bytes: &push,
+                            size: MemoryLayout<ForwardPushConstants>.size, stages: .vertex)
                         rp.drawIndexed(
                             primitimeType: .triangle, buffer: lodData.indexBuffer,
                             indexCount: Int(instance.indexCount[lod]),
                             indexOffset: UInt64(instance.indexOffset[lod]))
+
+                        globalInstanceIdx += 1
                     }
                 }
             }

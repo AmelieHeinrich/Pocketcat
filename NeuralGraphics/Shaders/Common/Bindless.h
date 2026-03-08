@@ -13,6 +13,119 @@
 using namespace metal;
 using namespace raytracing;
 
-// TODO!
+constant constexpr uint kMaxLODs = 5;
+
+struct MeshVertex
+{
+    packed_float3 Position;
+    packed_float3 Normal;
+    float2        UV;
+    float4        Tangent;
+};
+
+struct MeshMeshlet
+{
+    uint VertexOffset;
+    uint TriangleOffset;
+    uint VertexCount;
+    uint TriangleCount;
+};
+
+struct MeshMeshletBounds
+{
+    float3   Center;
+    float    Radius;
+    float3   ConeApex;
+    float3   ConeAxis;
+    float    ConeCutoff;
+    int8_t   ConeAxisS8[3];
+    int8_t   ConeCutoffS8;
+};
+
+enum SceneMaterialFlags : uint
+{
+    MaterialFlag_HasAlbedo   = (1 << 0),
+    MaterialFlag_HasNormal   = (1 << 1),
+    MaterialFlag_HasORM      = (1 << 2),
+    MaterialFlag_HasEmissive = (1 << 3),
+};
+
+struct SceneMaterial
+{
+    texture2d<float> Albedo;
+    texture2d<float> Normal;
+    texture2d<float> ORM;
+    texture2d<float> Emissive;
+    uint Flags;
+    uint _pad0;
+    uint _pad1;
+    uint _pad2;
+
+    bool hasAlbedo()   const { return Flags & MaterialFlag_HasAlbedo;   }
+    bool hasNormal()   const { return Flags & MaterialFlag_HasNormal;   }
+    bool hasORM()      const { return Flags & MaterialFlag_HasORM;      }
+    bool hasEmissive() const { return Flags & MaterialFlag_HasEmissive; }
+};
+
+struct SceneInstanceLOD
+{
+    const device uint*              IndexBuffer;
+    const device MeshMeshlet*       Meshlets;
+    const device MeshVertex*        MeshletVertices;
+    const device uchar*             MeshletTriangles;
+    const device MeshMeshletBounds* MeshletBounds;
+    uint IndexCount;
+    uint MeshletCount;
+    uint _pad0;
+    uint _pad1;
+};
+
+struct SceneInstance
+{
+    const device MeshVertex* VertexBuffer;
+    uint MaterialIndex;
+    uint EntityIndex;
+    uint LODCount;
+    float3 AABBMin;
+    float3 AABBMax;
+    uint _pad0;
+    SceneInstanceLOD LODs[kMaxLODs];
+};
+
+struct SceneEntity
+{
+    float4x4 Transform;
+};
+
+struct SceneCamera
+{
+    float4x4 View;
+    float4x4 Projection;
+    float4x4 ViewProjection;
+    float4x4 InverseView;
+    float4x4 InverseProjection;
+    float4x4 InverseViewProjection;
+    float4   PositionAndNear;   // .xyz = position, .w = near
+    float4   DirectionAndFar;   // .xyz = direction, .w = far
+
+    float3 GetPosition()  const { return PositionAndNear.xyz;  }
+    float  GetNear()      const { return PositionAndNear.w;    }
+    float3 GetDirection() const { return DirectionAndFar.xyz;  }
+    float  GetFar()       const { return DirectionAndFar.w;    }
+};
+
+struct SceneBuffer
+{
+    SceneCamera Camera;
+
+    uint MaterialCount;
+    uint InstanceCount;
+    uint EntityCount;
+    uint _pad0;
+
+    const device SceneMaterial* Materials;
+    const device SceneInstance* Instances;
+    const device SceneEntity*  Entities;
+};
 
 #endif

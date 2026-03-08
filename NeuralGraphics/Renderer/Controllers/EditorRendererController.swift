@@ -18,11 +18,12 @@ class EditorRendererController: RendererController {
 
     override func render(timeline: RenderTimeline, context: inout FrameContext) {
         let now = CFAbsoluteTimeGetCurrent()
-        let dt  = Float(now - lastFrameTime)
+        let dt = Float(now - lastFrameTime)
         lastFrameTime = now
 
         camera.update(dt: dt)
         context.camera = camera.makeCameraData()
+        context.sceneBuffer.updateCamera(context.camera)
 
         timeline.execute(context: context)
     }

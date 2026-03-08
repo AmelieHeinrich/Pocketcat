@@ -6,6 +6,7 @@
 //
 
 import Metal
+internal import QuartzCore
 
 // FrameManager is the top-level owner of the render graph.
 //
@@ -20,8 +21,6 @@ import Metal
 //       → context.camera populated, timeline.execute(context)
 //         → pass.render(context) for each pass in order
 
-internal import QuartzCore
-
 class FrameManager {
     private let maxFramesInFlight: UInt64 = 3
     private var passes: [Pass]? = nil
@@ -31,10 +30,11 @@ class FrameManager {
     private let allocator: GPULinearAllocator
     private let settings: RendererSettings
 
+    private var sceneBuffer: SceneBufferBuilder
     private var mobileTimeline: RenderTimeline? = nil
     private var desktopTimeline: RenderTimeline? = nil
     private var pathtracedTimeline: RenderTimeline? = nil
-    
+
     var scene: RenderScene?
 
     init(settings: RendererSettings) {
@@ -47,12 +47,14 @@ class FrameManager {
             return cb
         }
         self.allocator = GPULinearAllocator(size: 32 * 1024 * 1024)
-        
+        self.sceneBuffer = SceneBufferBuilder()
+
         setupTimelines(settings: settings)
     }
 
     func setScene(_ scene: RenderScene) {
         self.scene = scene
+        self.sceneBuffer.build(scene: scene)
     }
 
     func resize(width: Int, height: Int) {
@@ -66,7 +68,7 @@ class FrameManager {
         resources.clear()
 
         let frameIndex = Int(RendererData.gpuTimeline.currentValue % maxFramesInFlight)
-        let cmdBuffer  = commandBuffers[frameIndex]
+        let cmdBuffer = commandBuffers[frameIndex]
         RendererData.gpuTimeline.wait(value: cmdBuffer.lastSignaledValue)
 
         allocator.reset()
@@ -75,15 +77,25 @@ class FrameManager {
         cmdBuffer.useResidencySet(RendererData.residencySet)
 
         var context = FrameContext(
-            camera:     CameraData(),
-            cmdBuffer:  cmdBuffer,
-            drawable:   drawable,
-            resources:  resources,
-            scene:      scene,
+            camera: CameraData(),
+            cmdBuffer: cmdBuffer,
+            drawable: drawable,
+            resources: resources,
+            scene: scene,
+            sceneBuffer: sceneBuffer,
             frameIndex: frameIndex,
             allocator: allocator
         )
 
+        // Update entity transforms before passes run
+        if let scene = scene {
+            for (i, entity) in scene.entities.enumerated() {
+                sceneBuffer.updateEntityTransform(i, transform: entity.transform)
+            }
+        }
+
+        // The controller populates context.camera, syncs the scene buffer camera
+        // (via context.sceneBuffer.updateCamera), then executes the timeline.
         switch settings.currentTimeline {
         case .Mobile:
             controller.render(timeline: mobileTimeline!, context: &context)
@@ -104,12 +116,12 @@ class FrameManager {
 
         Input.shared.beginFrame()
     }
-    
+
     func setupTimelines(settings: RendererSettings) {
         // Initialize passes
         let forward = ForwardPass(settings: settings)
         let tonemap = TonemapPass(settings: settings)
-        let debug   = DebugPass.shared
+        let debug = DebugPass.shared
         debug.settings = settings
         self.passes = [forward, tonemap, debug]
 
