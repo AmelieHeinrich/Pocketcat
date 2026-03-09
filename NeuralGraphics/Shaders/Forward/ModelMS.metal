@@ -23,7 +23,7 @@ struct MSOut {
     float3 WorldPos;
     float4 Tangent;
     float3 MeshletColor;
-    uint InstanceIndex [[flat]];
+    uint MaterialIndex [[flat]];
 };
 
 float3 HashColor(uint id)
@@ -99,7 +99,7 @@ void forward_ms(const device SceneBuffer& scene [[buffer(0)]],
         vtx.Normal        = normalize((entity.Transform * float4(v.Normal, 0.0f)).xyz);
         vtx.WorldPos      = worldPos.xyz;
         vtx.Tangent       = v.Tangent;
-        vtx.InstanceIndex = instanceIndex;
+        vtx.MaterialIndex = inst.MaterialIndex;
         vtx.MeshletColor = HashColor(meshletIndex);
 
         outMesh.set_vertex(gtid, vtx);
@@ -109,24 +109,23 @@ void forward_ms(const device SceneBuffer& scene [[buffer(0)]],
 [[fragment]]
 float4 forward_msfs(MSOut in [[stage_in]],
                     const device SceneBuffer& scene [[buffer(0)]]) {
-    //  constexpr sampler textureSampler(
-    //      mag_filter::linear,
-    //      min_filter::linear,
-    //      mip_filter::linear,
-    //      address::repeat,
-    //      lod_clamp(0.0f, MAXFLOAT)
-    //  );
+      constexpr sampler textureSampler(
+          mag_filter::linear,
+          min_filter::linear,
+          mip_filter::linear,
+          address::repeat,
+          lod_clamp(0.0f, MAXFLOAT)
+      );
 
-    //SceneInstance inst = scene.Instances[in.InstanceIndex];
-    //SceneMaterial mat  = scene.Materials[inst.MaterialIndex];
-//
-    //float4 color = float4(1.0f);
-    //if (mat.hasAlbedo()) {
-    //    color = mat.Albedo.sample(textureSampler, in.UV);
-    //}
-//
-    //if (color.a < 0.25f)
-    //    discard_fragment();
+    SceneMaterial mat  = scene.Materials[in.MaterialIndex];
 
-    return float4(in.MeshletColor, 1.0);
+    float4 color = float4(1.0f);
+    if (mat.hasAlbedo()) {
+        color = mat.Albedo.sample(textureSampler, in.UV);
+    }
+
+    if (color.a < 0.25f)
+        discard_fragment();
+
+    return float4(color.rgb * in.MeshletColor, 1.0);
 }

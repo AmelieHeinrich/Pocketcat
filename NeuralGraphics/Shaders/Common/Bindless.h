@@ -111,16 +111,15 @@ struct SceneCamera
 
 struct SceneBuffer
 {
-    SceneCamera Camera;
-
-    uint MaterialCount;
-    uint InstanceCount;
-    uint EntityCount;
-    uint Padding;
-
     const device SceneMaterial* Materials;
     const device SceneInstance* Instances;
     const device SceneEntity*  Entities;
+    uint Padding;
+    
+    SceneCamera Camera;
+    uint MaterialCount;
+    uint InstanceCount;
+    uint EntityCount;
 };
 
 #endif

@@ -16,7 +16,7 @@ struct VSOut {
     float3 Normal;
     float3 WorldPos;
     float4 Tangent;
-    uint InstanceIndex [[flat]];
+    uint MaterialIndex [[flat]];
 };
 
 [[vertex]]
@@ -37,7 +37,7 @@ VSOut forward_vs(uint vid [[vertex_id]],
     out.Normal        = normalize((entity.Transform * float4(v.Normal, 0.0f)).xyz);
     out.WorldPos      = worldPos.xyz;
     out.Tangent       = v.Tangent;
-    out.InstanceIndex = instanceIndex;
+    out.MaterialIndex = inst.MaterialIndex;
     return out;
 }
 
@@ -52,8 +52,7 @@ float4 forward_vsfs(VSOut in [[stage_in]],
         lod_clamp(0.0f, MAXFLOAT)
     );
 
-    SceneInstance inst = scene.Instances[in.InstanceIndex];
-    SceneMaterial mat = scene.Materials[inst.MaterialIndex];
+    SceneMaterial mat = scene.Materials[in.MaterialIndex];
 
     // Albedo
     float4 color = float4(1.0f);

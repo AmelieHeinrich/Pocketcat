@@ -57,14 +57,15 @@ private struct GPUSceneEntity {
 }
 
 private struct GPUSceneBufferHeader {
+    var materialsPtr: UInt64
+    var instancesPtr: UInt64
+    var entitiesPtr: UInt64
+    var padding: UInt32
+    
     var camera: GPUSceneCamera
     var materialCount: UInt32
     var instanceCount: UInt32
     var entityCount: UInt32
-    var padding: UInt32
-    var materialsPtr: UInt64
-    var instancesPtr: UInt64
-    var entitiesPtr: UInt64
 }
 
 class SceneBufferBuilder {
