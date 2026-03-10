@@ -16,7 +16,7 @@ struct VSOut {
     float3 Normal;
     float3 WorldPos;
     float4 Tangent;
-    uint MaterialIndex [[flat]];
+    int MaterialIndex [[flat]];
 };
 
 [[vertex]]
@@ -24,6 +24,12 @@ VSOut forward_vs(uint vid [[vertex_id]],
                  const device SceneBuffer& scene [[buffer(0)]],
                  const device uint& instanceID [[buffer(1)]],
                  uint instanceIndex [[base_instance]]) {
+    if (instanceIndex >= scene.InstanceCount) {
+        VSOut out;
+        out.MaterialIndex = -1;
+        return out;
+    }
+    
     SceneInstance inst = scene.Instances[instanceIndex];
     SceneEntity entity = scene.Entities[inst.EntityIndex];
 
@@ -44,6 +50,8 @@ VSOut forward_vs(uint vid [[vertex_id]],
 [[fragment]]
 float4 forward_vsfs(VSOut in [[stage_in]],
                     const device SceneBuffer& scene [[buffer(0)]]) {
+    if (in.MaterialIndex == -1) return float4(0.0f);
+    
     constexpr sampler textureSampler(
         mag_filter::linear,
         min_filter::linear,

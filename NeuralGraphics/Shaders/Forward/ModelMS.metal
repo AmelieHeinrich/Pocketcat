@@ -53,6 +53,8 @@ void forward_os(const device SceneBuffer& scene [[buffer(0)]],
                 mesh_grid_properties outGrid) {
     if (gtid == 0) {
         uint instance = *instanceIndex;
+        if (instance >= scene.InstanceCount) return;
+        
         SceneInstance inst = scene.Instances[instance];
         SceneInstanceLOD lod = inst.LODs[0];
         outPayload.InstanceIndex = instance;
@@ -74,7 +76,10 @@ void forward_ms(const device SceneBuffer& scene [[buffer(0)]],
     SceneEntity entity = scene.Entities[inst.EntityIndex];
     SceneInstanceLOD lod = inst.LODs[0];
 
-    if (meshletIndex >= lod.MeshletCount) return;
+    if (meshletIndex >= lod.MeshletCount) {
+        outMesh.set_primitive_count(0);
+        return;
+    }
 
     MeshMeshlet m = lod.Meshlets[meshletIndex];
     outMesh.set_primitive_count(m.TriangleCount);
@@ -109,13 +114,13 @@ void forward_ms(const device SceneBuffer& scene [[buffer(0)]],
 [[fragment]]
 float4 forward_msfs(MSOut in [[stage_in]],
                     const device SceneBuffer& scene [[buffer(0)]]) {
-      constexpr sampler textureSampler(
-          mag_filter::linear,
-          min_filter::linear,
-          mip_filter::linear,
-          address::repeat,
-          lod_clamp(0.0f, MAXFLOAT)
-      );
+    constexpr sampler textureSampler(
+        mag_filter::linear,
+        min_filter::linear,
+        mip_filter::linear,
+        address::repeat,
+        lod_clamp(0.0f, MAXFLOAT)
+    );
 
     SceneMaterial mat  = scene.Materials[in.MaterialIndex];
 
