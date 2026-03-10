@@ -34,6 +34,9 @@ class BLAS {
             geometry.triangleCount = Int(mesh.indexCount[0] / 3)
             geometry.indexType = .uint32
             geometry.opaque = true
+            if !model.materials.isEmpty {
+                geometry.opaque = model.materials[Int(mesh.materialIndex)].alphaMode == 1
+            }
 
             geometries.append(geometry)
         }

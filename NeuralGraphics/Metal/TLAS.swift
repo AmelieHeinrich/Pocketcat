@@ -19,12 +19,12 @@ class TLAS {
 
     init(makeResidentNow: Bool = true) {
         instanceBuffer = Buffer(
-            size: MemoryLayout<MTLIndirectAccelerationStructureInstanceDescriptor>.size * 32,
+            size: MemoryLayout<MTLIndirectAccelerationStructureInstanceDescriptor>.size * 65536,
             makeResidentNow: makeResidentNow)
         instanceBuffer.setName(name: "TLAS Instance Buffer")
 
         descriptor = MTL4InstanceAccelerationStructureDescriptor()
-        descriptor.instanceCount = 32
+        descriptor.instanceCount = 65536
         descriptor.instanceDescriptorType = .indirect
         descriptor.instanceDescriptorBuffer = MTL4BufferRangeMake(
             instanceBuffer.getAddress(), UInt64(instanceBuffer.size))

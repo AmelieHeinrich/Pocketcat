@@ -48,6 +48,7 @@ enum SceneMaterialFlags : uint
     MaterialFlag_HasNormal   = (1 << 1),
     MaterialFlag_HasORM      = (1 << 2),
     MaterialFlag_HasEmissive = (1 << 3),
+    MaterialFlag_IsOpaque    = (1 << 4),
 };
 
 struct SceneMaterial
@@ -57,12 +58,13 @@ struct SceneMaterial
     texture2d<float> ORM;
     texture2d<float> Emissive;
     uint Flags;
-    uint Padding;
+    uint AlphaMode;
 
     bool hasAlbedo()   const { return Flags & MaterialFlag_HasAlbedo;   }
     bool hasNormal()   const { return Flags & MaterialFlag_HasNormal;   }
     bool hasORM()      const { return Flags & MaterialFlag_HasORM;      }
     bool hasEmissive() const { return Flags & MaterialFlag_HasEmissive; }
+    bool isOpaque()    const { return Flags & MaterialFlag_IsOpaque;    }
 };
 
 struct SceneInstanceLOD

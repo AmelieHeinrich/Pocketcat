@@ -38,6 +38,7 @@ struct MeshMaterial {
     var normal: Texture?
     var orm: Texture?
     var emissive: Texture?
+    var alphaMode: UInt32 = 0  // 0 = opaque, 1 = mask, 2 = blend
 }
 
 // ---- Per-LOD GPU buffers ---------------------------------------------------
@@ -139,7 +140,7 @@ class MeshLoader {
     private static let vertexStride = 48
     private static let meshletStride = 16
     private static let instanceStride = 172
-    private static let materialStride = 1024
+    private static let materialStride = 1028
     private static let boundsStride = 48
 
     /// - Parameters:
@@ -244,12 +245,15 @@ class MeshLoader {
                     )
                 }
 
+                let alphaMode = ptr.loadUnaligned(fromByteOffset: base + 1024, as: UInt32.self)
+
                 swiftMaterials.append(
                     MeshMaterial(
                         albedo: tex(off: 0, label: "Albedo[\(i)]"),
                         normal: tex(off: 256, label: "Normal[\(i)]"),
                         orm: tex(off: 512, label: "ORM[\(i)]"),
-                        emissive: tex(off: 768, label: "Emissive[\(i)]")
+                        emissive: tex(off: 768, label: "Emissive[\(i)]"),
+                        alphaMode: alphaMode
                     ))
             }
         }
@@ -287,7 +291,7 @@ class MeshLoader {
             let mlData = r.readSlice(count: mlCount * meshletStride)
 
             let mvC = Int(r.read(UInt32.self))
-            let mvD = r.readSlice(count: mvC * vertexStride) // flat MeshVertex data, not uint32
+            let mvD = r.readSlice(count: mvC * vertexStride)  // flat MeshVertex data, not uint32
 
             let mtB = Int(r.read(UInt32.self))
             let mtD = r.readSlice(count: mtB)
@@ -392,9 +396,9 @@ class MeshLoader {
                 "[MeshLoader]   LOD\(lod): \(lodDataArray[lod].indexCount) indices, \(lodDataArray[lod].meshletCount) meshlets"
             )
         }
-        
+
         RendererData.waitIdle()
-        
+
         return mesh
     }
 }

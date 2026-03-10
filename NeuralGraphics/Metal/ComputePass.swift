@@ -59,6 +59,8 @@ class ComputePass {
     }
 
     func buildTLAS(tlas: TLAS) {
+        tlas.descriptor.instanceCount = tlas.instanceDescriptors.count
+        
         self.encoder.build(destinationAccelerationStructure: tlas.tlas, descriptor: tlas.descriptor, scratchBuffer: MTL4BufferRangeMake(tlas.scratchBuffer.getAddress(), UInt64(tlas.scratchBuffer.size)))
     }
     

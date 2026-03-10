@@ -25,7 +25,7 @@ private struct GPUSceneMaterial {
     var ormID: UInt64
     var emissiveID: UInt64
     var flags: UInt32
-    var padding: UInt32
+    var alphaMode: UInt32
 }
 
 private struct GPUSceneInstanceLOD {
@@ -61,7 +61,7 @@ private struct GPUSceneBufferHeader {
     var instancesPtr: UInt64
     var entitiesPtr: UInt64
     var asPtr: UInt64
-    
+
     var camera: GPUSceneCamera
     var materialCount: UInt32
     var instanceCount: UInt32
@@ -140,10 +140,16 @@ class SceneBufferBuilder {
                 let ormID = textureID(mat.orm, flag: 4, flags: &flags)
                 let emissiveID = textureID(mat.emissive, flag: 8, flags: &flags)
 
+                // AlphaMode: 0 = opaque, 1 = mask, 2 = blend
+                let alphaMode = mat.alphaMode
+                if alphaMode == 0 {
+                    flags |= 16  // MaterialFlag_IsOpaque
+                }
+
                 matPtr[matIdx] = GPUSceneMaterial(
                     albedoID: albedoID, normalID: normalID,
                     ormID: ormID, emissiveID: emissiveID,
-                    flags: flags, padding: 0)
+                    flags: flags, alphaMode: alphaMode)
                 matIdx += 1
             }
         }
