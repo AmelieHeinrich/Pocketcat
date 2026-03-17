@@ -22,12 +22,13 @@ internal import QuartzCore
 //         → pass.render(context) for each pass in order
 
 class FrameManager {
-    private let maxFramesInFlight: UInt64 = 3
+    private var frameIndex: Int = 0
+    private let maxFramesInFlight: Int = 3
     private var passes: [Pass]? = nil
     private var controller: RendererController
     private let commandBuffers: [CommandBuffer]
     private let resources: ResourceRegistry = ResourceRegistry()
-    private let allocator: GPULinearAllocator
+    private let allocators: [GPULinearAllocator]
     private let settings: RendererSettings
 
     private var sceneBuffer: SceneBufferBuilder
@@ -46,7 +47,10 @@ class FrameManager {
             cb.setName(name: "Command Buffer \(i)")
             return cb
         }
-        self.allocator = GPULinearAllocator(size: 32 * 1024 * 1024)
+        self.allocators = (0..<3).map { i in
+            let a = GPULinearAllocator(size: 32 * 1024 * 1024)
+            return a
+        }
         self.sceneBuffer = SceneBufferBuilder()
 
         setupTimelines(settings: settings)
@@ -56,7 +60,7 @@ class FrameManager {
         self.scene = scene
         self.sceneBuffer.build(scene: scene)
         RendererData.residencySet.commit()
-        
+
         RendererData.waitIdle()
     }
 
@@ -70,14 +74,13 @@ class FrameManager {
     func render(drawable: CAMetalDrawable) {
         resources.clear()
 
-        let frameIndex = Int(RendererData.gpuTimeline.currentValue % maxFramesInFlight)
-        let cmdBuffer = commandBuffers[frameIndex]
-        RendererData.gpuTimeline.wait(value: cmdBuffer.lastSignaledValue)
+        frameIndex += 1
+        let ringIndex = Int(frameIndex % maxFramesInFlight)
+        let cmdBuffer = commandBuffers[ringIndex]
+        let allocator = allocators[ringIndex]
 
         allocator.reset()
         cmdBuffer.begin()
-        cmdBuffer.useResidencySet(drawable.layer.residencySet)
-        cmdBuffer.useResidencySet(RendererData.residencySet)
 
         var context = FrameContext(
             camera: CameraData(),
@@ -86,7 +89,7 @@ class FrameManager {
             resources: resources,
             scene: scene,
             sceneBuffer: sceneBuffer,
-            frameIndex: frameIndex,
+            frameIndex: ringIndex,
             allocator: allocator
         )
 
@@ -97,8 +100,6 @@ class FrameManager {
             }
         }
 
-        // The controller populates context.camera, syncs the scene buffer camera
-        // (via context.sceneBuffer.updateCamera), then executes the timeline.
         switch settings.currentTimeline {
         case .Mobile:
             controller.render(timeline: mobileTimeline!, context: &context)
@@ -107,15 +108,17 @@ class FrameManager {
         case .Pathtraced:
             controller.render(timeline: pathtracedTimeline!, context: &context)
         }
-
+        
         cmdBuffer.end()
-
-        RendererData.cmdQueue.waitForDrawable(drawable)
         cmdBuffer.commit()
+
+        if cmdBuffer.lastSignaledValue > 0 {
+            RendererData.gpuTimeline.wait(value: cmdBuffer.lastSignaledValue)
+        }
+        RendererData.cmdQueue.waitForDrawable(drawable)
+        cmdBuffer.lastSignaledValue = RendererData.gpuTimeline.signal()
         RendererData.cmdQueue.signalDrawable(drawable)
         drawable.present()
-
-        cmdBuffer.lastSignaledValue = RendererData.gpuTimeline.signal()
 
         Input.shared.beginFrame()
     }
@@ -127,7 +130,7 @@ class FrameManager {
         let debug = DebugPass.shared
         let tlas = TLASBuildPass()
         debug.settings = settings
-        
+
         self.passes = [tlas, forward, tonemap, debug]
 
         // Desktop pipeline

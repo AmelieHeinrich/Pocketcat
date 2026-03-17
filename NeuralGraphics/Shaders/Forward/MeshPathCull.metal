@@ -29,7 +29,6 @@ void mesh_geometry_cull(const device SceneBuffer* scene [[buffer(0)]],
         instanceIDs[threadID] = threadID;
 
         render_command command(icb.CommandBuffer, threadID);
-        command.reset();
         command.set_object_buffer(scene, 0);
         command.set_object_buffer(instanceIDs + threadID, 1);
         command.set_mesh_buffer(scene, 0);

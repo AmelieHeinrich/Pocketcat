@@ -71,13 +71,25 @@ private struct GPUSceneBufferHeader {
 class SceneBufferBuilder {
 
     // The main GPU buffer holding the entire scene description
-    private(set) var buffer: Buffer!
+    private var buffers: [Buffer] = []
+    var buffer: Buffer! { buffers.isEmpty ? nil : buffers[currentFrameIndex] }
     private(set) var accelerationStructure: TLAS!
 
     // Sub-buffers for the arrays (so we can grow them independently)
-    private(set) var materialsBuffer: Buffer!
-    private(set) var instancesBuffer: Buffer!
-    private(set) var entitiesBuffer: Buffer!
+    private var materialsBuffers: [Buffer] = []
+    var materialsBuffer: Buffer! {
+        materialsBuffers.isEmpty ? nil : materialsBuffers[currentFrameIndex]
+    }
+    private var instancesBuffers: [Buffer] = []
+    var instancesBuffer: Buffer! {
+        instancesBuffers.isEmpty ? nil : instancesBuffers[currentFrameIndex]
+    }
+    private var entitiesBuffers: [Buffer] = []
+    var entitiesBuffer: Buffer! {
+        entitiesBuffers.isEmpty ? nil : entitiesBuffers[currentFrameIndex]
+    }
+
+    private var currentFrameIndex: Int = 2
 
     // Fallback 1x1 white texture for materials without textures
     private let fallbackTexture: Texture
@@ -125,125 +137,158 @@ class SceneBufferBuilder {
 
         // ---- Build materials array ----
         let matStride = MemoryLayout<GPUSceneMaterial>.stride
-        materialsBuffer = Buffer(size: max(matStride * materialCount, matStride))
-        materialsBuffer.setName(name: "Scene Materials")
+        materialsBuffers = (0..<3).map { i in
+            let b = Buffer(size: max(matStride * materialCount, matStride))
+            b.setName(name: "Scene Materials \(i)")
+            return b
+        }
 
-        let matPtr = materialsBuffer.contents().bindMemory(
-            to: GPUSceneMaterial.self,
-            capacity: max(materialCount, 1))
-        var matIdx = 0
-        for entity in scene.entities {
-            for mat in entity.mesh.materials {
-                var flags: UInt32 = 0
-                let albedoID = textureID(mat.albedo, flag: 1, flags: &flags)
-                let normalID = textureID(mat.normal, flag: 2, flags: &flags)
-                let ormID = textureID(mat.orm, flag: 4, flags: &flags)
-                let emissiveID = textureID(mat.emissive, flag: 8, flags: &flags)
+        for i in 0..<3 {
+            let matPtr = materialsBuffers[i].contents().bindMemory(
+                to: GPUSceneMaterial.self,
+                capacity: max(materialCount, 1))
+            var matIdx = 0
+            for entity in scene.entities {
+                for mat in entity.mesh.materials {
+                    var flags: UInt32 = 0
+                    let albedoID = textureID(mat.albedo, flag: 1, flags: &flags)
+                    let normalID = textureID(mat.normal, flag: 2, flags: &flags)
+                    let ormID = textureID(mat.orm, flag: 4, flags: &flags)
+                    let emissiveID = textureID(mat.emissive, flag: 8, flags: &flags)
 
-                // AlphaMode: 0 = opaque, 1 = mask, 2 = blend
-                let alphaMode = mat.alphaMode
-                if alphaMode == 0 {
-                    flags |= 16  // MaterialFlag_IsOpaque
+                    // AlphaMode: 0 = opaque, 1 = mask, 2 = blend
+                    let alphaMode = mat.alphaMode
+                    if alphaMode == 0 {
+                        flags |= 16  // MaterialFlag_IsOpaque
+                    }
+
+                    matPtr[matIdx] = GPUSceneMaterial(
+                        albedoID: albedoID, normalID: normalID,
+                        ormID: ormID, emissiveID: emissiveID,
+                        flags: flags, alphaMode: alphaMode)
+                    matIdx += 1
                 }
-
-                matPtr[matIdx] = GPUSceneMaterial(
-                    albedoID: albedoID, normalID: normalID,
-                    ormID: ormID, emissiveID: emissiveID,
-                    flags: flags, alphaMode: alphaMode)
-                matIdx += 1
             }
         }
 
         // ---- Build entities array ----
         let entStride = MemoryLayout<GPUSceneEntity>.stride
-        entitiesBuffer = Buffer(size: max(entStride * entityCount, entStride))
-        entitiesBuffer.setName(name: "Scene Entities")
+        entitiesBuffers = (0..<3).map { i in
+            let b = Buffer(size: max(entStride * entityCount, entStride))
+            b.setName(name: "Scene Entities \(i)")
+            return b
+        }
 
-        let entPtr = entitiesBuffer.contents().bindMemory(
-            to: GPUSceneEntity.self,
-            capacity: max(entityCount, 1))
-        for (i, entity) in scene.entities.enumerated() {
-            entPtr[i] = GPUSceneEntity(transform: entity.transform)
+        for i in 0..<3 {
+            let entPtr = entitiesBuffers[i].contents().bindMemory(
+                to: GPUSceneEntity.self,
+                capacity: max(entityCount, 1))
+            for (idx, entity) in scene.entities.enumerated() {
+                entPtr[idx] = GPUSceneEntity(transform: entity.transform)
+            }
         }
 
         // ---- Build instances array ----
         let instStride = MemoryLayout<GPUSceneInstance>.stride
-        instancesBuffer = Buffer(size: max(instStride * instanceCount, instStride))
-        instancesBuffer.setName(name: "Scene Instances")
+        instancesBuffers = (0..<3).map { i in
+            let b = Buffer(size: max(instStride * instanceCount, instStride))
+            b.setName(name: "Scene Instances \(i)")
+            return b
+        }
 
-        let instPtr = instancesBuffer.contents().bindMemory(
-            to: GPUSceneInstance.self,
-            capacity: max(instanceCount, 1))
-        var instIdx = 0
-        for (entityIdx, entity) in scene.entities.enumerated() {
-            let mesh = entity.mesh
-            let vertexBase = mesh.vertexBuffer.getAddress()
-            let materialOffset = UInt32(entityMaterialOffsets[entityIdx])
+        for i in 0..<3 {
+            let instPtr = instancesBuffers[i].contents().bindMemory(
+                to: GPUSceneInstance.self,
+                capacity: max(instanceCount, 1))
+            var instIdx = 0
+            for (entityIdx, entity) in scene.entities.enumerated() {
+                let mesh = entity.mesh
+                let vertexBase = mesh.vertexBuffer.getAddress()
+                let materialOffset = UInt32(entityMaterialOffsets[entityIdx])
 
-            for instance in mesh.instances {
-                let vertexAddr = vertexBase + UInt64(instance.vertexOffset) * 48  // MeshVertex stride
+                for instance in mesh.instances {
+                    let vertexAddr = vertexBase + UInt64(instance.vertexOffset) * 48  // MeshVertex stride
 
-                var lods: [GPUSceneInstanceLOD] = []
-                for lod in 0..<kMaxLODs {
-                    if lod < mesh.lodCount {
-                        let lodData = mesh.lods[lod]
+                    var lods: [GPUSceneInstanceLOD] = []
+                    for lod in 0..<kMaxLODs {
+                        if lod < mesh.lodCount {
+                            let lodData = mesh.lods[lod]
 
-                        // Meshlet stride = 16 bytes (MeshMeshlet)
-                        // MeshMeshletBounds stride = 48 bytes
-                        let indexAddr =
-                            lodData.indexBuffer.getAddress()
-                            + UInt64(instance.indexOffset[lod]) * 4
-                        let meshletAddr =
-                            lodData.meshletBuffer.getAddress()
-                            + UInt64(instance.meshletOffset[lod]) * 16
-                        let mvAddr = lodData.meshletVerticesBuffer.getAddress()
-                        let mtAddr = lodData.meshletTrianglesBuffer.getAddress()
-                        let boundsAddr =
-                            lodData.meshletBoundsBuffer.getAddress()
-                            + UInt64(instance.meshletBoundsOffset[lod]) * 48
+                            // Meshlet stride = 16 bytes (MeshMeshlet)
+                            // MeshMeshletBounds stride = 48 bytes
+                            let indexAddr =
+                                lodData.indexBuffer.getAddress()
+                                + UInt64(instance.indexOffset[lod]) * 4
+                            let meshletAddr =
+                                lodData.meshletBuffer.getAddress()
+                                + UInt64(instance.meshletOffset[lod]) * 16
+                            let mvAddr = lodData.meshletVerticesBuffer.getAddress()
+                            let mtAddr = lodData.meshletTrianglesBuffer.getAddress()
+                            let boundsAddr =
+                                lodData.meshletBoundsBuffer.getAddress()
+                                + UInt64(instance.meshletBoundsOffset[lod]) * 48
 
-                        lods.append(
-                            GPUSceneInstanceLOD(
-                                indexBuffer: indexAddr,
-                                meshlets: meshletAddr,
-                                meshletVertices: mvAddr,
-                                meshletTriangles: mtAddr,
-                                meshletBounds: boundsAddr,
-                                indexCount: instance.indexCount[lod],
-                                meshletCount: instance.meshletCount[lod]))
-                    } else {
-                        lods.append(
-                            GPUSceneInstanceLOD(
-                                indexBuffer: 0, meshlets: 0,
-                                meshletVertices: 0, meshletTriangles: 0, meshletBounds: 0,
-                                indexCount: 0, meshletCount: 0))
+                            lods.append(
+                                GPUSceneInstanceLOD(
+                                    indexBuffer: indexAddr,
+                                    meshlets: meshletAddr,
+                                    meshletVertices: mvAddr,
+                                    meshletTriangles: mtAddr,
+                                    meshletBounds: boundsAddr,
+                                    indexCount: instance.indexCount[lod],
+                                    meshletCount: instance.meshletCount[lod]))
+                        } else {
+                            lods.append(
+                                GPUSceneInstanceLOD(
+                                    indexBuffer: 0, meshlets: 0,
+                                    meshletVertices: 0, meshletTriangles: 0, meshletBounds: 0,
+                                    indexCount: 0, meshletCount: 0))
+                        }
                     }
-                }
 
-                instPtr[instIdx] = GPUSceneInstance(
-                    vertexBuffer: vertexAddr,
-                    materialIndex: instance.materialIndex + materialOffset,
-                    entityIndex: UInt32(entityIdx),
-                    lodCount: UInt32(mesh.lodCount),
-                    aabbMin: instance.aabbMin,
-                    aabbMax: instance.aabbMax,
-                    lod0: lods[0], lod1: lods[1], lod2: lods[2],
-                    lod3: lods[3], lod4: lods[4])
-                instIdx += 1
+                    instPtr[instIdx] = GPUSceneInstance(
+                        vertexBuffer: vertexAddr,
+                        materialIndex: instance.materialIndex + materialOffset,
+                        entityIndex: UInt32(entityIdx),
+                        lodCount: UInt32(mesh.lodCount),
+                        aabbMin: instance.aabbMin,
+                        aabbMax: instance.aabbMax,
+                        lod0: lods[0], lod1: lods[1], lod2: lods[2],
+                        lod3: lods[3], lod4: lods[4])
+                    instIdx += 1
+                }
             }
         }
 
         // ---- Build root header ----
         let headerSize = MemoryLayout<GPUSceneBufferHeader>.stride
-        buffer = Buffer(size: headerSize)
-        buffer.setName(name: "Scene Buffer")
+        buffers = (0..<3).map { i in
+            let b = Buffer(size: headerSize)
+            b.setName(name: "Scene Buffer \(i)")
+            return b
+        }
 
-        updateCamera(CameraData())  // Initialize with identity camera
-        updatePointers()
+        for i in 0..<3 {
+            currentFrameIndex = i
+            guard let buf = buffer else { continue }
+            let ptr = buf.contents().bindMemory(to: GPUSceneBufferHeader.self, capacity: 1)
+            ptr.pointee.camera = GPUSceneCamera(
+                view: matrix_identity_float4x4,
+                projection: matrix_identity_float4x4,
+                viewProjection: matrix_identity_float4x4,
+                inverseView: matrix_identity_float4x4,
+                inverseProjection: matrix_identity_float4x4,
+                inverseViewProjection: matrix_identity_float4x4,
+                position: .zero,
+                direction: .zero)
+            updatePointers()
+        }
+        currentFrameIndex = 2
     }
 
     /// Updates just the camera data in the scene buffer. Call every frame.
     func updateCamera(_ cam: CameraData) {
+        currentFrameIndex = (currentFrameIndex + 1) % 3
         guard let buf = buffer else { return }
         let ptr = buf.contents().bindMemory(to: GPUSceneBufferHeader.self, capacity: 1)
         ptr.pointee.camera = GPUSceneCamera(
@@ -259,7 +304,9 @@ class SceneBufferBuilder {
 
     /// Updates a single entity's transform. Use for per-frame animation.
     func updateEntityTransform(_ entityIndex: Int, transform: simd_float4x4) {
-        guard let buf = entitiesBuffer, entityIndex < entityCount else { return }
+        let updateIndex = (currentFrameIndex + 1) % 3
+        guard entitiesBuffers.count > updateIndex, entityIndex < entityCount else { return }
+        let buf = entitiesBuffers[updateIndex]
         let ptr = buf.contents().bindMemory(to: GPUSceneEntity.self, capacity: entityCount)
         ptr[entityIndex].transform = transform
     }

@@ -37,8 +37,8 @@ class Renderer: NSObject, MetalViewDelegate {
 
         self.commandQueue = try! device.makeMTL4CommandQueue(descriptor: cmdQueueDescriptor)
         self.residencySet = try! device.makeResidencySet(descriptor: residencySetDescriptor)
-        self.commandQueue.addResidencySet(residencySet)
         self.compiler = try! device.makeCompiler(descriptor: compilerDescriptor)
+        self.commandQueue.addResidencySet(residencySet)
 
         RendererData.initialize(device: self.device,
                                 cmdQueue: self.commandQueue,
@@ -59,7 +59,9 @@ class Renderer: NSObject, MetalViewDelegate {
         view.sampleCount = 1
         view.delegate = self
         view.framebufferOnly = true
-        view.preferredFramesPerSecond = 60
+        view.preferredFramesPerSecond = 120
+        
+        self.commandQueue.addResidencySet(view.residencySet)
     }
 
     func mtkView(_ view: MTKView, drawableSizeWillChange size: CGSize) {

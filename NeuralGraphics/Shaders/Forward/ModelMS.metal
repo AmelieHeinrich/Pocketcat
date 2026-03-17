@@ -140,7 +140,6 @@ float4 forward_msfs(MSOut in [[stage_in]],
     intersector<triangle_data, instancing> i;
     i.accept_any_intersection(true);
     i.assume_geometry_type(geometry_type::triangle);
-    i.assume_identity_transforms(true);
     i.force_opacity(forced_opacity::opaque);
     
     ray ray;
