@@ -22,7 +22,7 @@ internal import QuartzCore
 //         → pass.render(context) for each pass in order
 
 class FrameManager {
-    private var frameIndex: Int = 0
+    private var frameIndex: UInt64 = 0
     private let maxFramesInFlight: Int = 3
     private var passes: [Pass]? = nil
     private var controller: RendererController
@@ -73,12 +73,15 @@ class FrameManager {
 
     func render(drawable: CAMetalDrawable) {
         resources.clear()
-
-        frameIndex += 1
-        let ringIndex = Int(frameIndex % maxFramesInFlight)
+        
+        let ringIndex = Int(frameIndex) % maxFramesInFlight
         let cmdBuffer = commandBuffers[ringIndex]
         let allocator = allocators[ringIndex]
+        
+        // Wait for cmdBuffer to be ready
+        RendererData.gpuTimeline.wait(value: frameIndex)
 
+        // Reset, record
         allocator.reset()
         cmdBuffer.begin()
 
@@ -109,14 +112,15 @@ class FrameManager {
             controller.render(timeline: pathtracedTimeline!, context: &context)
         }
         
+        // Commit
         cmdBuffer.end()
         cmdBuffer.commit()
 
-        if cmdBuffer.lastSignaledValue > 0 {
-            RendererData.gpuTimeline.wait(value: cmdBuffer.lastSignaledValue)
-        }
+        RendererData.cmdQueue.signalEvent(RendererData.gpuTimeline.event, value: frameIndex + 1)
+        RendererData.cmdQueue.waitForEvent(RendererData.gpuTimeline.event, value: frameIndex + 1)
+        frameIndex += 1
+        
         RendererData.cmdQueue.waitForDrawable(drawable)
-        cmdBuffer.lastSignaledValue = RendererData.gpuTimeline.signal()
         RendererData.cmdQueue.signalDrawable(drawable)
         drawable.present()
 
