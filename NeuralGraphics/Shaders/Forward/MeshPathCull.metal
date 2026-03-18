@@ -11,18 +11,23 @@ using namespace metal;
 using namespace simd;
 
 #include "../Common/Bindless.h"
+#include "../Common/DebugDraw.h"
 
 struct ICBWrapper {
     command_buffer CommandBuffer;
 };
 
 [[kernel]]
-void mesh_geometry_cull(const device SceneBuffer* scene [[buffer(0)]],
+void mesh_geometry_cull(device SceneBuffer* scene [[buffer(0)]],
                         device ICBWrapper& icb [[buffer(1)]],
                         constant uint& instanceCount [[buffer(2)]],
                         device uint* instanceIDs [[buffer(3)]],
                         uint threadID [[thread_position_in_grid]]) {
     if (threadID >= instanceCount) return;
+    
+    SceneInstance instance = scene->Instances[threadID];
+    SceneEntity entity = scene->Entities[instance.EntityIndex];
+    debug_draw_box(scene, instance.AABBMin, instance.AABBMax, float4(HashColor(threadID), 1.0f), entity.Transform);
     
     bool visible = true;
     if (visible) {

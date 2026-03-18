@@ -6,6 +6,7 @@
 //
 
 #include "../Common/Bindless.h"
+#include "../Common/DebugDraw.h"
 
 #include <metal_stdlib>
 using namespace metal;
@@ -25,23 +26,6 @@ struct MSOut {
     float3 MeshletColor;
     uint MaterialIndex [[flat]];
 };
-
-float3 HashColor(uint id)
-{
-    uint h = id;
-    h ^= h >> 16;
-    h *= 0x45d9f3b;
-    h ^= h >> 16;
-
-    float hue = float(h & 0xFFFF) / 65535.0;
-    hue = fmod(hue + 0.33, 1.0);
-
-    float s = 1.0;
-    float v = 1.0;
-
-    float3 rgb = clamp(abs(fmod(hue * 6.0 + float3(0, 4, 2), 6.0) - 3.0) - 1.0, 0.0, 1.0);
-    return v * mix(float3(1, 1, 1), rgb, s);
-}
 
 float3 barycentric_to_color(float2 uv) {
     float3 bary = float3(uv.x, uv.y, 1.0 - uv.x - uv.y);
@@ -69,7 +53,7 @@ void forward_os(const device SceneBuffer& scene [[buffer(0)]],
 }
 
 [[mesh]]
-void forward_ms(const device SceneBuffer& scene [[buffer(0)]],
+void forward_ms(device SceneBuffer& scene [[buffer(0)]],
                 object_data const Payload& payload [[payload]],
                 uint gtid [[thread_position_in_threadgroup]],
                 uint gid [[threadgroup_position_in_grid]],

@@ -125,7 +125,6 @@ class ForwardPass: Pass {
         let resetTgCountX = (Int(maxInstanceCount) + 63) / 64
         let cullTgCountX = (Int(instanceCount) + 63) / 64
         let vertexICB = vertexICBs[context.frameIndex]
-        let instanceIDBuffer = instanceIDBuffers[context.frameIndex]
 
         var rpDesc = RenderPassDescriptor()
         rpDesc.addAttachment(texture: self.colorTexture)

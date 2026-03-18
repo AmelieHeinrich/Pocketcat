@@ -66,9 +66,15 @@ private struct GPUSceneBufferHeader {
     var materialCount: UInt32
     var instanceCount: UInt32
     var entityCount: UInt32
+
+    var debugVerticesPtr:    UInt64
+    var debugVertexCountPtr: UInt64
+    var maxDebugVertices:    UInt32
 }
 
 class SceneBufferBuilder {
+
+    static let kMaxDebugVertices = 65536 * 2
 
     // The main GPU buffer holding the entire scene description
     private var buffers: [Buffer] = []
@@ -88,6 +94,9 @@ class SceneBufferBuilder {
     var entitiesBuffer: Buffer! {
         entitiesBuffers.isEmpty ? nil : entitiesBuffers[currentFrameIndex]
     }
+
+    private var debugVerticesBuffers:    [Buffer] = []
+    private var debugVertexCountBuffers: [Buffer] = []
 
     private var currentFrameIndex: Int = 2
 
@@ -260,6 +269,20 @@ class SceneBufferBuilder {
             }
         }
 
+        // ---- Build debug draw buffers ----
+        let debugVertexStride = MemoryLayout<Float>.stride * 7  // packed_float3 + packed_float4
+        debugVerticesBuffers = (0..<3).map { i in
+            let b = Buffer(size: debugVertexStride * SceneBufferBuilder.kMaxDebugVertices)
+            b.setName(name: "Debug Vertices \(i)")
+            return b
+        }
+        debugVertexCountBuffers = (0..<3).map { i in
+            let b = Buffer(size: MemoryLayout<UInt32>.size)
+            b.setName(name: "Debug Vertex Count \(i)")
+            b.contents().bindMemory(to: UInt32.self, capacity: 1).pointee = 0
+            return b
+        }
+
         // ---- Build root header ----
         let headerSize = MemoryLayout<GPUSceneBufferHeader>.stride
         buffers = (0..<3).map { i in
@@ -317,6 +340,23 @@ class SceneBufferBuilder {
         return buffer.getAddress()
     }
 
+    // MARK: - Debug Draw Accessors
+
+    func debugVerticesBuffer(forFrame index: Int) -> Buffer {
+        debugVerticesBuffers[index]
+    }
+
+    func readDebugVertexCount(forFrame index: Int) -> Int {
+        guard !debugVertexCountBuffers.isEmpty else { return 0 }
+        let ptr = debugVertexCountBuffers[index].contents().bindMemory(to: UInt32.self, capacity: 1)
+        return Int(ptr.pointee)
+    }
+
+    func resetDebugDraw(forFrame index: Int) {
+        guard !debugVertexCountBuffers.isEmpty else { return }
+        debugVertexCountBuffers[index].contents().bindMemory(to: UInt32.self, capacity: 1).pointee = 0
+    }
+
     // MARK: - Private Helpers
 
     private func updatePointers() {
@@ -329,6 +369,9 @@ class SceneBufferBuilder {
         ptr.pointee.materialsPtr = materialsBuffer.getAddress()
         ptr.pointee.instancesPtr = instancesBuffer.getAddress()
         ptr.pointee.entitiesPtr = entitiesBuffer.getAddress()
+        ptr.pointee.debugVerticesPtr    = debugVerticesBuffers[currentFrameIndex].getAddress()
+        ptr.pointee.debugVertexCountPtr = debugVertexCountBuffers[currentFrameIndex].getAddress()
+        ptr.pointee.maxDebugVertices    = UInt32(SceneBufferBuilder.kMaxDebugVertices)
     }
 
     private func textureID(_ tex: Texture?, flag: UInt32, flags: inout UInt32) -> UInt64 {

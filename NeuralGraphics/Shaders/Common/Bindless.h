@@ -111,17 +111,44 @@ struct SceneCamera
     float  GetFar()       const { return DirectionAndFar.w;    }
 };
 
+struct DebugVertex
+{
+    packed_float3 Position;
+    packed_float4 Color;
+};
+
 struct SceneBuffer
 {
     const device SceneMaterial* Materials;
     const device SceneInstance* Instances;
-    const device SceneEntity*  Entities;
+    const device SceneEntity*   Entities;
     instance_acceleration_structure AccelerationStructure;
-    
+
     SceneCamera Camera;
     uint MaterialCount;
     uint InstanceCount;
     uint EntityCount;
+
+    device DebugVertex* DebugVertices;
+    device atomic_uint* DebugVertexCount;
+    uint                MaxDebugVertices;
 };
+
+inline float3 HashColor(uint id)
+{
+    uint h = id;
+    h ^= h >> 16;
+    h *= 0x45d9f3b;
+    h ^= h >> 16;
+
+    float hue = float(h & 0xFFFF) / 65535.0;
+    hue = fmod(hue + 0.33, 1.0);
+
+    float s = 1.0;
+    float v = 1.0;
+
+    float3 rgb = clamp(abs(fmod(hue * 6.0 + float3(0, 4, 2), 6.0) - 3.0) - 1.0, 0.0, 1.0);
+    return v * mix(float3(1, 1, 1), rgb, s);
+}
 
 #endif
