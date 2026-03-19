@@ -27,12 +27,11 @@ struct MSOut {
     uint MaterialIndex [[flat]];
 };
 
-float3 barycentric_to_color(float2 uv) {
-    float3 bary = float3(uv.x, uv.y, 1.0 - uv.x - uv.y);
-    return bary; // RGB maps to (u, v, w)
-}
+struct MSTriOut {
+    bool Culled [[primitive_culled]];
+};
 
-using MeshOutput = metal::mesh<MSOut, void, 64, 128, topology::triangle>;
+using MeshOutput = mesh<MSOut, MSTriOut, 64, 128, topology::triangle>;
 
 [[object]]
 void forward_os(const device SceneBuffer& scene [[buffer(0)]],
@@ -79,6 +78,11 @@ void forward_ms(device SceneBuffer& scene [[buffer(0)]],
         outMesh.set_index(gtid * 3 + 0, lod.MeshletTriangles[triBase + 0]);
         outMesh.set_index(gtid * 3 + 1, lod.MeshletTriangles[triBase + 1]);
         outMesh.set_index(gtid * 3 + 2, lod.MeshletTriangles[triBase + 2]);
+        
+        MSTriOut tri;
+        tri.Culled = false;
+        
+        outMesh.set_primitive(gtid, tri);
     }
 
     // --- Vertex Processing ---
@@ -136,6 +140,5 @@ float4 forward_msfs(MSOut in [[stage_in]],
     result = i.intersect(ray, scene.AccelerationStructure, 0xFF);
     bool occluded = (result.type == intersection_type::none);
     
-    //float3 geometryColor = HashColor(result.geometry_id);
     return float4(in.MeshletColor * occluded, 1.0);
 }

@@ -25,8 +25,8 @@ void mesh_geometry_cull(device SceneBuffer* scene [[buffer(0)]],
                         uint threadID [[thread_position_in_grid]]) {
     if (threadID >= instanceCount) return;
 
-    SceneInstance instance = scene->Instances[threadID];
-    SceneEntity entity = scene->Entities[instance.EntityIndex];
+    //SceneInstance instance = scene->Instances[threadID];
+    //SceneEntity entity = scene->Entities[instance.EntityIndex];
     //debug_draw_box(scene, instance.AABBMin, instance.AABBMax, float4(HashColor(threadID), 1.0f), entity.Transform);
 
     bool visible = true;

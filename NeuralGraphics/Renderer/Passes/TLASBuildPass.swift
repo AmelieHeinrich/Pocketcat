@@ -8,16 +8,31 @@
 import Metal
 
 class TLASBuildPass : Pass {
+    var cullPipe: ComputePipeline
+    
+    override init() {
+        cullPipe = ComputePipeline(function: "cull_tlas")
+    }
+    
     override func render(context: FrameContext) {
         if let scene = context.scene {
-            scene.tlas.resetInstanceBuffer()
-            for entity in scene.entities {
-                scene.tlas.addInstance(blas: entity.mesh.blas, matrix: entity.transform)
+            let instanceCount = context.sceneBuffer.instanceCount
+            if instanceCount == 0 {
+                return
             }
-            scene.tlas.update()
             
             let cp = context.cmdBuffer.beginComputePass(name: "Build TLAS")
-            cp.buildTLAS(tlas: scene.tlas)
+            cp.resetBuffer(src: scene.tlas.instanceCountBuffer)
+            
+            cp.intraPassBarrier(before: .dispatch, after: .blit)
+            cp.setPipeline(pipeline: cullPipe)
+            cp.setBuffer(buf: context.sceneBuffer.buffer, index: 0)
+            cp.setBuffer(buf: scene.tlas.instanceBuffer, index: 1)
+            cp.setBuffer(buf: scene.tlas.instanceCountBuffer, index: 2)
+            cp.dispatch(threads: MTLSizeMake((instanceCount + 63) / 64, 1, 1), threadsPerGroup: MTLSizeMake(64, 1, 1))
+            
+            cp.intraPassBarrier(before: .accelerationStructure, after: .dispatch)
+            cp.buildTLASIndirect(tlas: scene.tlas)
             cp.end()
         }
     }

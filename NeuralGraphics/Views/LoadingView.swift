@@ -77,7 +77,7 @@ final class SceneLoader: ObservableObject {
                     cb.begin()
                     let cp = cb.beginComputePass(name: "Build BLASes")
                     for mesh in cache.values {
-                        if let blas = mesh.blas {
+                        for blas in mesh.blases {
                             cp.buildBLAS(blas: blas)
                         }
                     }
@@ -90,7 +90,9 @@ final class SceneLoader: ObservableObject {
                     RendererData.waitIdle()
                     if RendererData.device.supportsFamily(.apple9) {
                         for mesh in cache.values {
-                            mesh.blas?.destroyScratch()
+                            for blas in mesh.blases {
+                                blas.destroyScratch()
+                            }
                         }
                     }
 

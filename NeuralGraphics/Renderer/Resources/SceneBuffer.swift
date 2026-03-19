@@ -40,6 +40,7 @@ private struct GPUSceneInstanceLOD {
 
 private struct GPUSceneInstance {
     var vertexBuffer: UInt64
+    var blas: UInt64
     var materialIndex: UInt32
     var entityIndex: UInt32
     var lodCount: UInt32
@@ -215,7 +216,7 @@ class SceneBufferBuilder {
                 let vertexBase = mesh.vertexBuffer.getAddress()
                 let materialOffset = UInt32(entityMaterialOffsets[entityIdx])
 
-                for instance in mesh.instances {
+                for (instanceIdx, instance) in mesh.instances.enumerated() {
                     let vertexAddr = vertexBase + UInt64(instance.vertexOffset) * 48  // MeshVertex stride
 
                     var lods: [GPUSceneInstanceLOD] = []
@@ -255,8 +256,11 @@ class SceneBufferBuilder {
                         }
                     }
 
+                    let blasID: UInt64 = instanceIdx < mesh.blases.count
+                        ? mesh.blases[instanceIdx].accelerationStructure.gpuResourceID._impl : 0
                     instPtr[instIdx] = GPUSceneInstance(
                         vertexBuffer: vertexAddr,
+                        blas: blasID,
                         materialIndex: instance.materialIndex + materialOffset,
                         entityIndex: UInt32(entityIdx),
                         lodCount: UInt32(mesh.lodCount),

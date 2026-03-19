@@ -395,7 +395,7 @@ class DebugPass: Pass {
         cp.end()
 
         let rp = context.cmdBuffer.beginRenderPass(descriptor: rpDesc)
-        rp.consumerBarrier(before: .vertex, after: [.dispatch, .fragment])
+        rp.consumerBarrier(before: .vertex, after: .all)
         rp.setPipeline(pipeline: depthTex != nil ? pipelineDepth : pipelineNoDepth)
         rp.setBytes(
             allocator: context.allocator, index: 0, bytes: &data,

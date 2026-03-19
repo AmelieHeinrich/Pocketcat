@@ -81,6 +81,7 @@ struct SceneInstanceLOD
 struct SceneInstance
 {
     const device MeshVertex* VertexBuffer;
+    MTLResourceID blas;
     uint MaterialIndex;
     uint EntityIndex;
     uint LODCount;

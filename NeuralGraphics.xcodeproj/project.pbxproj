@@ -1738,6 +1738,11 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		136EE4CB2F6C2B58004E9246 /* CubeAndSphere */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = CubeAndSphere;
+			sourceTree = "<group>";
+		};
 		BA02D95B2F557A58009EBF35 /* AssetBaker */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = AssetBaker;
@@ -2177,6 +2182,7 @@
 		BA02D9F22F558F09009EBF35 /* BakedAssets */ = {
 			isa = PBXGroup;
 			children = (
+				136EE4CB2F6C2B58004E9246 /* CubeAndSphere */,
 				136A17832F5B811700BE5330 /* Buddha */,
 				136A17852F5B811700BE5330 /* LivingRoom */,
 				136A17872F5B811700BE5330 /* SanMiguel */,
@@ -2775,6 +2781,7 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
+				136EE4CB2F6C2B58004E9246 /* CubeAndSphere */,
 				BA87BC222F4B95BD00AC823E /* NeuralGraphics */,
 			);
 			name = "Neural Graphics";

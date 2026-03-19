@@ -137,6 +137,15 @@ extension SceneConfiguration {
             ])
         ),
         SceneConfiguration(
+            id: "cube_sphere",
+            name: "Cube And Sphere",
+            systemIcon: "cube.circle",
+            tags: ["RT Test"],
+            descriptor: SceneDescriptor(models: [
+                SceneModelDescriptor(resource: "CubeAndSphere")
+            ])
+        ),
+        SceneConfiguration(
             id: "buddha_storm",
             name: "Buddha Storm",
             systemIcon: "sparkles",

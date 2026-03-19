@@ -18,28 +18,25 @@ class BLAS {
     var scratchBuffer: Buffer!
     private var allocated: Bool = false
 
-    init(model: Mesh, makeResidentNow: Bool = true) {
-        for mesh in model.instances {
-            let geometry = MTL4AccelerationStructureTriangleGeometryDescriptor()
-            geometry.vertexBuffer = MTL4BufferRangeMake(
-                model.vertexBuffer.getAddress() + UInt64(mesh.vertexOffset)
-                    * UInt64(MemoryLayout<PackedVertex>.size),
-                UInt64(model.vertexBuffer.size) - UInt64(mesh.vertexOffset)
-                    * UInt64(MemoryLayout<PackedVertex>.size))
-            geometry.vertexStride = MemoryLayout<PackedVertex>.size
-            geometry.indexBuffer = MTL4BufferRangeMake(
-                model.indexBuffer.getAddress()
-                    + UInt64(Int(mesh.indexOffset[0]) * MemoryLayout<UInt32>.size),
-                UInt64(Int(mesh.indexCount[0]) * MemoryLayout<UInt32>.size))
-            geometry.triangleCount = Int(mesh.indexCount[0] / 3)
-            geometry.indexType = .uint32
-            geometry.opaque = true
-            if !model.materials.isEmpty {
-                geometry.opaque = model.materials[Int(mesh.materialIndex)].alphaMode == 1
-            }
-
-            geometries.append(geometry)
+    init(mesh: Mesh, instance: MeshInstance, makeResidentNow: Bool = true) {
+        let geometry = MTL4AccelerationStructureTriangleGeometryDescriptor()
+        geometry.vertexBuffer = MTL4BufferRangeMake(
+            mesh.vertexBuffer.getAddress() + UInt64(instance.vertexOffset)
+                * UInt64(MemoryLayout<PackedVertex>.size),
+            UInt64(mesh.vertexBuffer.size) - UInt64(instance.vertexOffset)
+                * UInt64(MemoryLayout<PackedVertex>.size))
+        geometry.vertexStride = MemoryLayout<PackedVertex>.size
+        geometry.indexBuffer = MTL4BufferRangeMake(
+            mesh.indexBuffer.getAddress()
+                + UInt64(Int(instance.indexOffset[0]) * MemoryLayout<UInt32>.size),
+            UInt64(Int(instance.indexCount[0]) * MemoryLayout<UInt32>.size))
+        geometry.triangleCount = Int(instance.indexCount[0] / 3)
+        geometry.indexType = .uint32
+        geometry.opaque = true
+        if !mesh.materials.isEmpty {
+            geometry.opaque = mesh.materials[Int(instance.materialIndex)].alphaMode == 1
         }
+        geometries.append(geometry)
 
         descriptor = MTL4PrimitiveAccelerationStructureDescriptor()
         descriptor.geometryDescriptors = geometries

@@ -72,7 +72,7 @@ class Mesh {
     // Instance buffer (raw bytes uploaded to GPU)
     var instanceBuffer: Buffer!
 
-    var blas: BLAS!
+    var blases: [BLAS] = []
 
     // Legacy accessors for LOD0 (convenience for code that doesn't care about LODs)
     var indexBuffer: Buffer! { lods.isEmpty ? nil : lods[0].indexBuffer }
@@ -372,8 +372,11 @@ class MeshLoader {
 
         // ---- Commit residency ----
         if RendererData.device.supportsFamily(.apple9) {
-            mesh.blas = BLAS(model: mesh, makeResidentNow: false)
-            mesh.blas.setName(name: "\(name) BLAS")
+            for (i, instance) in mesh.instances.enumerated() {
+                let blas = BLAS(mesh: mesh, instance: instance, makeResidentNow: false)
+                blas.setName(name: "\(name) BLAS[\(i)]")
+                mesh.blases.append(blas)
+            }
         }
 
         mesh.vertexBuffer.makeResident()
@@ -385,7 +388,7 @@ class MeshLoader {
             lod.meshletTrianglesBuffer.makeResident()
             lod.meshletBoundsBuffer.makeResident()
         }
-        mesh.blas?.makeResident()
+        for blas in mesh.blases { blas.makeResident() }
 
         progress?(1.00, "Done")
         print(
