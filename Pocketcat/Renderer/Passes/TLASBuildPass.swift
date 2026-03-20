@@ -31,7 +31,7 @@ class TLASBuildPass: Pass {
         for entity in scene.entities {
             for (blasIdx, blas) in entity.mesh.blases.enumerated() {
                 let materialIndex = Int(entity.mesh.instances[blasIdx].materialIndex)
-                let alphaMode = entity.mesh.materials[materialIndex].alphaMode
+                let alphaMode = entity.mesh.materials.count > 0 ? entity.mesh.materials[materialIndex].alphaMode : 0
                 scene.tlas.addInstance(
                     blas: blas,
                     matrix: entity.transform,

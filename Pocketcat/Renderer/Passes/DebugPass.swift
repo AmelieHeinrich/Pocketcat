@@ -371,7 +371,7 @@ class DebugPass: Pass {
         }
 
         let useDepth = settings?.debugDepthTest == true
-        let depthTex: Texture? = useDepth ? context.resources.get("Forward.Depth") : nil
+        let depthTex: Texture? = useDepth ? context.resources.get("GBuffer.Depth") : nil
 
         var rpDesc = RenderPassDescriptor()
         rpDesc.name = "Debug Pass"

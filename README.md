@@ -14,10 +14,10 @@ Just run the AssetBaker project first, then you can build and run the main proje
 - Raytraced hard shadows
 - Mesh shaders
 - GPU driven debug renderer
+- GPU driven TLAS build
+- Visibility buffer
 
 ## Work in progress
 
-- GPU driven TLAS build
 - GPU driven meshlet culling and LOD selection
-- Metal IO
-- Optimized alpha-tested raytracing with Metal per-primitive data
+- Pathtracing

@@ -53,9 +53,9 @@ float4 tonemap_fs(
     texture2d<float> input [[texture(0)]],
     constant Parameters& params [[buffer(0)]]
 ) {
-    constexpr sampler s(filter::linear, address::clamp_to_edge);
+    constexpr sampler s(filter::nearest, address::clamp_to_edge);
     float3 color = input.sample(s, in.uv).xyz;
     float3 mappedColor = Tonemap(color);
     mappedColor = pow(mappedColor, 1.0 / params.Gamma);
-    return float4(mappedColor, 1.0);
+    return float4(color, 1.0);
 }

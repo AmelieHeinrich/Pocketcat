@@ -129,19 +129,23 @@ class FrameManager {
     
     func setupTimelines(settings: RendererSettings) {
         // Initialize passes
-        let forward = ForwardPass(settings: settings)
+        let cullViewPass = CullViewPass(settings: settings)
+        let visibilityPass = VisibilityBufferPass(settings: settings)
+        let gbufferPass = GBufferPass()
         let tonemap = TonemapPass(settings: settings)
         let debug = DebugPass.shared
         let tlas = TLASBuildPass()
         let pathtracer = Pathtracer()
         debug.settings = settings
 
-        self.passes = [tlas, forward, pathtracer, tonemap, debug]
+        self.passes = [tlas, cullViewPass, visibilityPass, pathtracer, tonemap, debug, gbufferPass]
 
         // Desktop pipeline
         let desktopTimeline = RenderTimeline()
         desktopTimeline.addPass(tlas)
-        desktopTimeline.addPass(forward)
+        desktopTimeline.addPass(cullViewPass)
+        desktopTimeline.addPass(visibilityPass)
+        desktopTimeline.addPass(gbufferPass)
         desktopTimeline.addPass(tonemap)
         desktopTimeline.addPass(debug)
         
