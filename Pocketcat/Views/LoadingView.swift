@@ -20,6 +20,12 @@ final class SceneLoader: ObservableObject {
 
     var isLoaded: Bool { scene != nil }
 
+    func reset() {
+        scene = nil
+        progress = 0
+        status = "Initializing…"
+    }
+
     func beginLoading(descriptor: SceneDescriptor) {
         DispatchQueue.global(qos: .userInitiated).async { [weak self] in
             let models = descriptor.models

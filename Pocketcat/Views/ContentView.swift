@@ -345,9 +345,11 @@ private class AppState: ObservableObject {
 private struct RenderView: View {
     @ObservedObject var appState: AppState
     let scene: RenderScene
+    let onExit: () -> Void
 
     @State private var isHUDExpanded: Bool = false
     @State private var activePanels: Set<String> = []
+    @State private var escapeMonitor: Any?
 
     var body: some View {
         ZStack {
@@ -392,6 +394,20 @@ private struct RenderView: View {
         }
         .onAppear {
             appState.renderer.setScene(scene)
+            escapeMonitor = NSEvent.addLocalMonitorForEvents(matching: .keyDown) { event in
+                if event.keyCode == 53 {
+                    Input.shared.releaseAll()
+                    onExit()
+                    return nil
+                }
+                return event
+            }
+        }
+        .onDisappear {
+            if let monitor = escapeMonitor {
+                NSEvent.removeMonitor(monitor)
+                escapeMonitor = nil
+            }
         }
     }
 }
@@ -438,9 +454,14 @@ struct ContentView: View {
                 }
 
             case .rendering(let scene):
-                RenderView(appState: appState, scene: scene)
-                    .transition(.opacity)
-                    .zIndex(2)
+                RenderView(appState: appState, scene: scene) {
+                    withAnimation(.easeInOut(duration: 0.4)) {
+                        phase = .start
+                        sceneLoader.reset()
+                    }
+                }
+                .transition(.opacity)
+                .zIndex(2)
             }
         }
         .animation(.easeInOut(duration: 0.4), value: phaseKey)

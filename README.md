@@ -21,3 +21,4 @@ Just run the AssetBaker project first, then you can build and run the main proje
 
 - Nanite
 - Pathtracing
+- MetalFX upscaling

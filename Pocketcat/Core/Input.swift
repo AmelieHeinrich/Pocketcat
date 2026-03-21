@@ -77,6 +77,17 @@ class Input {
             CGDisplayShowCursor(CGMainDisplayID())
         }
     }
+
+    func releaseAll() {
+        keysDown.removeAll(keepingCapacity: true)
+        keysPressed.removeAll(keepingCapacity: true)
+        keysReleased.removeAll(keepingCapacity: true)
+        leftMouseDown = false
+        if rightMouseDown {
+            rightMouseDown = false
+            CGDisplayShowCursor(CGMainDisplayID())
+        }
+    }
 }
 
 // MARK: - Key codes (US layout, macOS virtual key codes)

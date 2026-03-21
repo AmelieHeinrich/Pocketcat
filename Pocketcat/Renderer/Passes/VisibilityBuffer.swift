@@ -8,6 +8,8 @@
 import Metal
 import simd
 
+// TODO: Generate motion vectors
+
 class VisibilityBufferPass: Pass {
     private let vertexPipe: RenderPipeline
     private let meshPipe: MeshPipeline
