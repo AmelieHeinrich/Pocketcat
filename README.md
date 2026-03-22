@@ -3,7 +3,7 @@
 ![](.github/reg.png)
 ![](.github/pt.png)
 
-This repository showcases various modern rendering techniques implemented using Metal 4 API, focused on GPU driven rendering, raytracing and Pocketcat.
+This repository showcases various modern rendering techniques implemented using Metal 4 API, focused on GPU driven rendering, raytracing and neural graphics.
 
 ## Building and running
 
