@@ -41,11 +41,11 @@ class GBufferPass: Pass {
         super.init()
     }
 
-    override func resize(width: Int, height: Int) {
-        albedoTexture.resize(width: width, height: height)
-        normalTexture.resize(width: width, height: height)
-        ormTexture.resize(width: width, height: height)
-        emissiveTexture.resize(width: width, height: height)
+    override func resize(renderWidth: Int, renderHeight: Int, outputWidth: Int, outputHeight: Int) {
+        albedoTexture.resize(width: renderWidth, height: renderHeight)
+        normalTexture.resize(width: renderWidth, height: renderHeight)
+        ormTexture.resize(width: renderWidth, height: renderHeight)
+        emissiveTexture.resize(width: renderWidth, height: renderHeight)
     }
 
     override func render(context: FrameContext) {

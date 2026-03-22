@@ -91,11 +91,10 @@ void visibility_ms(device scene_data& scene [[buffer(0)]],
         uint vertex_idx = m.vertex_offset + gtid;
         mesh_vertex v = lod.meshlet_vertices[vertex_idx];
         float4 world_pos = entity.transform * float4(v.position, 1.0f);
-        float4 clip_pos  = scene.camera.projection * scene.camera.view * world_pos;
 
         vs_out vtx;
-        vtx.position      = clip_pos;
-        vtx.curr_clip_pos = clip_pos;
+        vtx.position      = scene.camera.view_projection * world_pos;
+        vtx.curr_clip_pos = scene.camera.view_projection_no_jitter * world_pos;
         vtx.prev_clip_pos = scene.camera.previous_view_projection * world_pos;
         vtx.uv            = v.uv;
         vtx.instance_id   = instance_index;
@@ -119,7 +118,7 @@ vs_out visibility_vs(uint vid [[vertex_id]],
 
     vs_out out;
     out.position      = clip_pos;
-    out.curr_clip_pos = clip_pos;
+    out.curr_clip_pos = scene.camera.view_projection_no_jitter * world_pos;
     out.prev_clip_pos = scene.camera.previous_view_projection * world_pos;
     out.uv            = v.uv;
     out.instance_id   = instance_index;
@@ -130,8 +129,9 @@ vs_out visibility_vs(uint vid [[vertex_id]],
 static inline float2 compute_motion_vector(vs_out in) {
     float2 curr_ndc = in.curr_clip_pos.xy / in.curr_clip_pos.w;
     float2 prev_ndc = in.prev_clip_pos.xy / in.prev_clip_pos.w;
-    // Convert NDC delta to UV-space delta (flip Y: NDC +Y = UV -Y)
-    return (curr_ndc - prev_ndc) * float2(0.5f, -0.5f);
+    // Backward vector: where did this pixel come from in the previous frame?
+    // Convert NDC delta to UV-space (flip Y: NDC +Y = UV -Y)
+    return (prev_ndc - curr_ndc) * float2(0.5f, -0.5f);
 }
 
 [[fragment]]

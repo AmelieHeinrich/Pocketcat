@@ -59,7 +59,7 @@ class Renderer: NSObject, MetalViewDelegate {
         view.clearColor = .init(red: 0.0, green: 0.0, blue: 0.0, alpha: 1.0)
         view.sampleCount = 1
         view.delegate = self
-        view.framebufferOnly = true
+        view.framebufferOnly = false
         view.preferredFramesPerSecond = 120
 
         self.commandQueue.addResidencySet(view.residencySet)

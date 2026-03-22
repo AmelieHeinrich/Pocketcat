@@ -9,8 +9,13 @@ import Foundation
 
 class EditorRendererController: RendererController {
     let camera: Camera = Camera()
+    unowned let registry: SettingsRegistry
 
     private var lastFrameTime: CFAbsoluteTime = CFAbsoluteTimeGetCurrent()
+
+    init(registry: SettingsRegistry) {
+        self.registry = registry
+    }
 
     override func resize(width: Int, height: Int) {
         camera.resize(width: Float(width), height: Float(height))
@@ -20,6 +25,9 @@ class EditorRendererController: RendererController {
         let now = CFAbsoluteTimeGetCurrent()
         let dt = Float(now - lastFrameTime)
         lastFrameTime = now
+
+        let upscalerType = registry.enum("Upscaler.Type", as: UpscalerType.self, default: .Temporal)
+        camera.applyJitter = (upscalerType == .Temporal)
 
         camera.update(dt: dt)
         context.camera = camera.makeCameraData()

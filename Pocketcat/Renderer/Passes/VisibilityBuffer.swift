@@ -68,10 +68,10 @@ class VisibilityBufferPass: Pass {
         super.init()
     }
 
-    override func resize(width: Int, height: Int) {
-        visibilityTexture.resize(width: width, height: height)
-        motionVectorTexture.resize(width: width, height: height)
-        depthTexture.resize(width: width, height: height)
+    override func resize(renderWidth: Int, renderHeight: Int, outputWidth: Int, outputHeight: Int) {
+        visibilityTexture.resize(width: renderWidth, height: renderHeight)
+        motionVectorTexture.resize(width: renderWidth, height: renderHeight)
+        depthTexture.resize(width: renderWidth, height: renderHeight)
     }
 
     override func render(context: FrameContext) {

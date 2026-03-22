@@ -44,7 +44,7 @@ class FrameManager {
 
     init(registry: SettingsRegistry) {
         self.registry = registry
-        self.controller = EditorRendererController()
+        self.controller = EditorRendererController(registry: registry)
 
         self.commandBuffers = (0..<3).map { i in
             let cb = CommandBuffer()
@@ -77,7 +77,9 @@ class FrameManager {
         let scaledH = max(1, Int(Float(height) * scale))
         controller.resize(width: width, height: height)
         for pass in passes! {
-            pass.resize(width: scaledW, height: scaledH)
+            pass.resize(
+                renderWidth: scaledW, renderHeight: scaledH, outputWidth: width,
+                outputHeight: height)
         }
     }
 
@@ -88,7 +90,9 @@ class FrameManager {
             let scaledW = max(1, Int(Float(viewportWidth) * currentScale))
             let scaledH = max(1, Int(Float(viewportHeight) * currentScale))
             for pass in passes! {
-                pass.resize(width: scaledW, height: scaledH)
+                pass.resize(
+                    renderWidth: scaledW, renderHeight: scaledH, outputWidth: viewportWidth,
+                    outputHeight: viewportHeight)
             }
         }
 
@@ -123,7 +127,8 @@ class FrameManager {
             }
         }
 
-        switch registry.enum("Renderer.Timeline", as: RendererTimelineType.self, default: .Desktop) {
+        switch registry.enum("Renderer.Timeline", as: RendererTimelineType.self, default: .Desktop)
+        {
         case .Mobile:
             controller.render(timeline: mobileTimeline!, context: &context)
         case .Desktop:
@@ -146,11 +151,14 @@ class FrameManager {
 
         Input.shared.beginFrame()
     }
-    
+
     func setupTimelines(registry: SettingsRegistry) {
         // Register global settings first so they appear at the top of the UI
-        registry.register(enum: "Renderer.Timeline", label: "Timeline", default: RendererTimelineType.Desktop)
-        registry.register(float: "Renderer.RenderScale", label: "Render Scale", default: 1.0, range: 0.10...1.0, step: 0.05)
+        registry.register(
+            enum: "Renderer.Timeline", label: "Timeline", default: RendererTimelineType.Desktop)
+        registry.register(
+            float: "Renderer.RenderScale", label: "Render Scale", default: 0.5, range: 0.25...1.0,
+            step: 0.05)
 
         // Initialize passes
         let cullViewPass = CullViewPass(registry: registry)
@@ -158,13 +166,16 @@ class FrameManager {
         let gbufferPass = GBufferPass()
         let tonemap = TonemapPass(registry: registry)
         let debug = DebugPass.shared
+        let upscaler = MetalFXUpscalePass(registry: registry)
         let tlas = TLASBuildPass()
         let pathtracer = Pathtracer()
         let deferred = DeferredPass()
         registry.register(bool: "Debug.DepthTest", label: "Depth Test", default: false)
         debug.registry = registry
 
-        self.passes = [tlas, cullViewPass, visibilityPass, pathtracer, tonemap, debug, gbufferPass, deferred]
+        self.passes = [
+            tlas, cullViewPass, visibilityPass, pathtracer, tonemap, upscaler, debug, gbufferPass, deferred,
+        ]
 
         // Desktop pipeline
         let desktopTimeline = RenderTimeline()
@@ -174,13 +185,15 @@ class FrameManager {
         desktopTimeline.addPass(gbufferPass)
         desktopTimeline.addPass(deferred)
         desktopTimeline.addPass(tonemap)
+        desktopTimeline.addPass(upscaler)
         desktopTimeline.addPass(debug)
-        
+
         // Pathtrace pipeline
         let pathtraceTimeline = RenderTimeline()
         pathtraceTimeline.addPass(tlas)
         pathtraceTimeline.addPass(pathtracer)
         pathtraceTimeline.addPass(tonemap)
+        pathtraceTimeline.addPass(upscaler)
 
         self.desktopTimeline = desktopTimeline
         self.pathtracedTimeline = pathtraceTimeline

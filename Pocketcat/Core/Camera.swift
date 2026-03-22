@@ -33,6 +33,13 @@ class Camera {
     private(set) var viewMatrix: simd_float4x4 = .identity
     private(set) var projectionMatrix: simd_float4x4 = .identity
     private(set) var viewProjection: simd_float4x4 = .identity
+    private(set) var viewProjectionNoJitter: simd_float4x4 = .identity
+
+    // Jitter state (Halton sequence for TAA/MetalFX temporal)
+    var applyJitter: Bool = false
+    private var renderWidth: Float = 1
+    private var renderHeight: Float = 1
+    private(set) var jitterIndex: Int = 0
 
     init(
         position: SIMD3<Float> = .zero,
@@ -67,12 +74,16 @@ class Camera {
         handleMovement(dt: dt)
         handleLook(delta: input.mouseDelta)
         updateMatrices()
+        jitterIndex = (jitterIndex + 1) % 32
     }
 
     // MARK: - Resize
 
     func resize(width: Float, height: Float) {
         aspectRatio = width / height
+        renderWidth = width
+        renderHeight = height
+        jitterIndex = 0
         updateMatrices()
     }
 
@@ -121,7 +132,34 @@ class Camera {
 
         let target = position + forward
         viewMatrix = .lookAtRH(eye: position, center: target, up: SIMD3<Float>(0, 1, 0))
-        projectionMatrix = .perspectiveRH(fovY: fovY, aspect: aspectRatio, near: near, far: far)
-        viewProjection = projectionMatrix * viewMatrix
+
+        let projNoJitter = simd_float4x4.perspectiveRH(fovY: fovY, aspect: aspectRatio, near: near, far: far)
+        viewProjectionNoJitter = projNoJitter * viewMatrix
+
+        if applyJitter {
+            let idx = jitterIndex + 1
+            let pixelJitterX = halton(idx, base: 2) - 0.5
+            let pixelJitterY = halton(idx, base: 3) - 0.5
+            var jitteredProj = projNoJitter
+            jitteredProj.columns.2[0] += -2.0 * pixelJitterX / renderWidth
+            jitteredProj.columns.2[1] += -2.0 * pixelJitterY / renderHeight
+            projectionMatrix = jitteredProj
+            viewProjection = jitteredProj * viewMatrix
+        } else {
+            projectionMatrix = projNoJitter
+            viewProjection = viewProjectionNoJitter
+        }
+    }
+
+    private func halton(_ index: Int, base: Int) -> Float {
+        var result: Float = 0
+        var f: Float = 1
+        var i = index
+        while i > 0 {
+            f /= Float(base)
+            result += f * Float(i % base)
+            i /= base
+        }
+        return result
     }
 }

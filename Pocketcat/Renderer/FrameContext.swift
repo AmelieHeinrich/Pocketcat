@@ -12,6 +12,7 @@ struct CameraData {
     var view: simd_float4x4
     var projection: simd_float4x4
     var viewProjection: simd_float4x4
+    var viewProjectionNoJitter: simd_float4x4
     var inverseView: simd_float4x4
     var inverseProjection: simd_float4x4
     var inverseViewProjection: simd_float4x4
@@ -24,6 +25,7 @@ struct CameraData {
         view = .identity
         projection = .identity
         viewProjection = .identity
+        viewProjectionNoJitter = .identity
         inverseView = .identity
         inverseProjection = .identity
         inverseViewProjection = .identity
@@ -51,6 +53,7 @@ extension Camera {
         data.view = viewMatrix
         data.projection = projectionMatrix
         data.viewProjection = viewProjection
+        data.viewProjectionNoJitter = viewProjectionNoJitter
         data.inverseView = viewMatrix.inverse
         data.inverseProjection = projectionMatrix.inverse
         data.inverseViewProjection = viewProjection.inverse

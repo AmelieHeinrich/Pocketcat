@@ -100,6 +100,7 @@ struct camera
     float4x4 view;
     float4x4 projection;
     float4x4 view_projection;
+    float4x4 view_projection_no_jitter;
     float4x4 inverse_view;
     float4x4 inverse_projection;
     float4x4 inverse_view_projection;

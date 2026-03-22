@@ -7,6 +7,6 @@
 
 class Pass {
     func prepare() {}
-    func resize(width: Int, height: Int) {}
+    func resize(renderWidth: Int, renderHeight: Int, outputWidth: Int, outputHeight: Int) {}
     func render(context: FrameContext) {}
 }

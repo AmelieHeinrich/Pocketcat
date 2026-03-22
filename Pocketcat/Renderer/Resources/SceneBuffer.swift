@@ -12,6 +12,7 @@ private struct GPUSceneCamera {
     var view: simd_float4x4
     var projection: simd_float4x4
     var viewProjection: simd_float4x4
+    var viewProjectionNoJitter: simd_float4x4
     var inverseView: simd_float4x4
     var inverseProjection: simd_float4x4
     var inverseViewProjection: simd_float4x4
@@ -306,6 +307,7 @@ class SceneBufferBuilder {
                 view: matrix_identity_float4x4,
                 projection: matrix_identity_float4x4,
                 viewProjection: matrix_identity_float4x4,
+                viewProjectionNoJitter: matrix_identity_float4x4,
                 inverseView: matrix_identity_float4x4,
                 inverseProjection: matrix_identity_float4x4,
                 inverseViewProjection: matrix_identity_float4x4,
@@ -326,13 +328,14 @@ class SceneBufferBuilder {
             view: cam.view,
             projection: cam.projection,
             viewProjection: cam.viewProjection,
+            viewProjectionNoJitter: cam.viewProjectionNoJitter,
             inverseView: cam.inverseView,
             inverseProjection: cam.inverseProjection,
             inverseViewProjection: cam.inverseViewProjection,
             previousViewProjection: previousViewProjection,
             position: SIMD4<Float>(cam.position, cam.near),
             direction: SIMD4<Float>(cam.direction, cam.far))
-        previousViewProjection = cam.viewProjection
+        previousViewProjection = cam.viewProjectionNoJitter
     }
 
     /// Updates a single entity's transform. Use for per-frame animation.

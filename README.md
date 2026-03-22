@@ -16,9 +16,9 @@ Just run the AssetBaker project first, then you can build and run the main proje
 - GPU driven debug renderer
 - GPU driven TLAS build
 - Visibility buffer
+- MetalFX spatial/temporal upscaling
 
 ## Work in progress
 
 - Nanite
 - Pathtracing
-- MetalFX upscaling

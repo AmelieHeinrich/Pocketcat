@@ -26,8 +26,8 @@ class Pathtracer: Pass {
         super.init()
     }
 
-    override func resize(width: Int, height: Int) {
-        colorTexture.resize(width: width, height: height)
+    override func resize(renderWidth: Int, renderHeight: Int, outputWidth: Int, outputHeight: Int) {
+        colorTexture.resize(width: renderWidth, height: renderHeight)
     }
 
     override func render(context: FrameContext) {
