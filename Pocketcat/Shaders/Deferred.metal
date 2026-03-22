@@ -78,7 +78,7 @@ void deferred_kernel(const device scene_data& scene [[buffer(0)]],
     kD *= 1.0 - metallic;
     
     ray shadow_ray;
-    shadow_ray.origin  = world_pos + normal * 0.001;
+    shadow_ray.origin  = world_pos + normal * 0.01;
     shadow_ray.direction = -light_dir;
     shadow_ray.min_distance = 0.001;
     shadow_ray.max_distance = 10000;

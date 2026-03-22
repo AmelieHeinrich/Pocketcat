@@ -16,7 +16,7 @@ class MetalFXUpscalePass: Pass {
 
     init(registry: SettingsRegistry) {
         self.registry = registry
-        registry.register(enum: "Upscaler.Type", label: "Upscaler", default: UpscalerType.Temporal)
+        registry.register(enum: "Upscaler.Type", label: "Upscaler", default: UpscalerType.Spatial)
         super.init()
     }
 
@@ -48,7 +48,7 @@ class MetalFXUpscalePass: Pass {
     }
 
     override func render(context: FrameContext) {
-        let type = registry.enum("Upscaler.Type", as: UpscalerType.self, default: .Temporal)
+        let type = registry.enum("Upscaler.Type", as: UpscalerType.self, default: .Spatial)
         switch type {
         case .None: break
         case .Spatial:

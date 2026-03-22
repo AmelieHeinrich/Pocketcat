@@ -170,11 +170,12 @@ class FrameManager {
         let tlas = TLASBuildPass()
         let pathtracer = Pathtracer()
         let deferred = DeferredPass()
+        let accumulationDenoiser = AccumulationDenoiserPass()
         registry.register(bool: "Debug.DepthTest", label: "Depth Test", default: false)
         debug.registry = registry
 
         self.passes = [
-            tlas, cullViewPass, visibilityPass, pathtracer, tonemap, upscaler, debug, gbufferPass, deferred,
+            tlas, cullViewPass, visibilityPass, pathtracer, tonemap, upscaler, debug, gbufferPass, deferred, accumulationDenoiser,
         ]
 
         // Desktop pipeline
@@ -191,9 +192,14 @@ class FrameManager {
         // Pathtrace pipeline
         let pathtraceTimeline = RenderTimeline()
         pathtraceTimeline.addPass(tlas)
+        pathtraceTimeline.addPass(cullViewPass)
+        pathtraceTimeline.addPass(visibilityPass)
+        pathtraceTimeline.addPass(gbufferPass)
         pathtraceTimeline.addPass(pathtracer)
+        pathtraceTimeline.addPass(accumulationDenoiser)
         pathtraceTimeline.addPass(tonemap)
         pathtraceTimeline.addPass(upscaler)
+        pathtraceTimeline.addPass(debug)
 
         self.desktopTimeline = desktopTimeline
         self.pathtracedTimeline = pathtraceTimeline

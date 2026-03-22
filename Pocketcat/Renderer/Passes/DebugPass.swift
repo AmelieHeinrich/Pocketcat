@@ -386,7 +386,7 @@ class DebugPass: Pass {
 
         // Generate ICB
         let cp = context.cmdBuffer.beginComputePass(name: "Generate Debug ICB")
-        cp.consumerBarrier(before: .dispatch, after: [.fragment, .dispatch])
+        cp.consumerBarrier(before: .dispatch, after: [.all])
         cp.setPipeline(pipeline: icbPipe)
         cp.setBuffer(buf: context.sceneBuffer.buffer, index: 0)
         cp.setBuffer(buf: icb.buffer, index: 1)
