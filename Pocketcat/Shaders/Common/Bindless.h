@@ -120,6 +120,18 @@ struct debug_vertex
     packed_float4 color;
 };
 
+struct sun_light
+{
+    float4 direction_and_radius;   // xyz = direction (normalized toward light), w = angular radius
+    float4 color_and_intensity;    // xyz = color, w = intensity
+};
+
+struct point_light
+{
+    float4 position_and_radius;   // xyz = world position, w = influence radius
+    float4 color_and_intensity;   // xyz = color, w = intensity
+};
+
 struct scene_data
 {
     const device material* materials;
@@ -135,6 +147,12 @@ struct scene_data
     device debug_vertex* debug_vertices;
     device atomic_uint* debug_vertex_count;
     uint max_debug_vertices;
+
+    uint _pad_lights;
+    const device point_light* point_lights;
+    uint point_light_count;
+    uint _pad_lights2;
+    sun_light sun;
 };
 
 struct triangle {

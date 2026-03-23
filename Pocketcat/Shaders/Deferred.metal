@@ -24,8 +24,8 @@ void deferred_kernel(const device scene_data& scene [[buffer(0)]],
         return;
     }
 
-    const float3 light_dir = normalize(float3(0.3, -1.0, 0.2));
-    const float3 light_color = float3(1.0, 0.95, 0.85) * 3.0;
+    const float3 light_dir = scene.sun.direction_and_radius.xyz;
+    const float3 light_color = scene.sun.color_and_intensity.xyz * scene.sun.color_and_intensity.w;
 
     float depth = depth_texture.read(gtid).r;
     if (depth == 1.0) {

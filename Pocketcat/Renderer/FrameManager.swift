@@ -30,6 +30,7 @@ class FrameManager {
     private let resources: ResourceRegistry = ResourceRegistry()
     private let allocators: [GPULinearAllocator]
     private unowned let registry: SettingsRegistry
+    private unowned let lightState: LightState
 
     private var viewportWidth: Int = 1
     private var viewportHeight: Int = 1
@@ -42,8 +43,9 @@ class FrameManager {
 
     var scene: RenderScene?
 
-    init(registry: SettingsRegistry) {
+    init(registry: SettingsRegistry, lightState: LightState) {
         self.registry = registry
+        self.lightState = lightState
         self.controller = EditorRendererController(registry: registry)
 
         self.commandBuffers = (0..<3).map { i in
@@ -136,6 +138,11 @@ class FrameManager {
         case .Pathtraced:
             controller.render(timeline: pathtracedTimeline!, context: &context)
         }
+
+        // Update lights after updateCamera() has advanced currentFrameIndex
+        sceneBuffer.updateLights(
+            sun: lightState.gpuSun(),
+            pointLights: lightState.gpuPointLights())
 
         // Commit
         cmdBuffer.end()

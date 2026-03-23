@@ -53,8 +53,8 @@ void rtgi(texture2d<float, access::read_write> out [[texture(0)]],
     intersector<triangle_data, instancing> inter;
     inter.assume_geometry_type(geometry_type::triangle);
 
-    const float3 light_dir = normalize(float3(0.3, -1.0, 0.2));
-    const float3 light_color = float3(1.0, 0.95, 0.85) * 3.0;
+    const float3 light_dir = scene.sun.direction_and_radius.xyz;
+    const float3 light_color = scene.sun.color_and_intensity.xyz * scene.sun.color_and_intensity.w;
 
     float3 indirect = 0.0;
     for (uint i = 0; i < parameters.spp; i++) {

@@ -22,7 +22,7 @@ class Renderer: NSObject, MetalViewDelegate {
     private let compiler: MTL4Compiler
     private let frameManager: FrameManager
 
-    init(device: MTLDevice, registry: SettingsRegistry) {
+    init(device: MTLDevice, registry: SettingsRegistry, lightState: LightState) {
         self.device = device
 
         let cmdQueueDescriptor = MTL4CommandQueueDescriptor()
@@ -46,7 +46,7 @@ class Renderer: NSObject, MetalViewDelegate {
             residencySet: self.residencySet,
             compiler: self.compiler)
 
-        self.frameManager = FrameManager(registry: registry)
+        self.frameManager = FrameManager(registry: registry, lightState: lightState)
     }
 
     func setScene(_ scene: RenderScene) {

@@ -42,7 +42,7 @@ private let allPanels: [PanelDef] = [
     // Left column — top to bottom
     PanelDef(
         id: "training", icon: "brain.head.profile", label: "Training", color: .pink, side: .left),
-    PanelDef(id: "about", icon: "info.circle", label: "About", color: .cyan, side: .left),
+    PanelDef(id: "world", icon: "sun.max", label: "World", color: .yellow, side: .left),
     // Right column — top to bottom
     PanelDef(id: "stats", icon: "chart.bar.xaxis", label: "Stats", color: .orange, side: .right),
     PanelDef(id: "settings", icon: "gearshape", label: "Settings", color: .indigo, side: .right),
@@ -254,6 +254,7 @@ private struct PanelContainer<Content: View>: View {
 private struct SideColumn: View {
     let side: PanelSide
     let registry: SettingsRegistry
+    let lightState: LightState
     @Binding var activePanels: Set<String>
 
     private var visiblePanels: [PanelDef] {
@@ -282,7 +283,7 @@ private struct SideColumn: View {
                             isBottomInColumn: isBottom
                         ) {
                             switch panel.id {
-                            case "about": AboutView()
+                            case "world": WorldView(lightState: lightState)
                             case "settings": SettingsView(registry: registry)
                             default:
                                 PlaceholderPanelView(
@@ -310,8 +311,8 @@ private struct SideColumn: View {
     private func placeholderDescription(for id: String) -> String {
         switch id {
         case "training": return "Neural network training controls will appear here."
-        case "stats": return "GPU timing and frame statistics will appear here."
-        default: return ""
+        case "stats":    return "GPU timing and frame statistics will appear here."
+        default:         return ""
         }
     }
 }
@@ -329,14 +330,17 @@ enum AppPhase {
 private class AppState: ObservableObject {
     let registry: SettingsRegistry
     let renderer: Renderer
+    let lightState: LightState
 
     init() {
         guard let device = MTLCreateSystemDefaultDevice() else {
             fatalError("This device does not support Metal.")
         }
         let r = SettingsRegistry()
+        let lights = LightState()
         self.registry = r
-        self.renderer = Renderer(device: device, registry: r)
+        self.lightState = lights
+        self.renderer = Renderer(device: device, registry: r, lightState: lights)
     }
 }
 
@@ -356,8 +360,8 @@ private struct RenderView: View {
             MetalView(delegate: appState.renderer)
                 .ignoresSafeArea()
 
-            SideColumn(side: .left, registry: appState.registry, activePanels: $activePanels)
-            SideColumn(side: .right, registry: appState.registry, activePanels: $activePanels)
+            SideColumn(side: .left, registry: appState.registry, lightState: appState.lightState, activePanels: $activePanels)
+            SideColumn(side: .right, registry: appState.registry, lightState: appState.lightState, activePanels: $activePanels)
 
             VStack {
                 Spacer()

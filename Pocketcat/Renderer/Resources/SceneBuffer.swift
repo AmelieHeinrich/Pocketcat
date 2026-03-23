@@ -59,6 +59,16 @@ private struct GPUSceneEntity {
     var transform: simd_float4x4
 }
 
+struct GPUSunLight {
+    var directionAndRadius: simd_float4   // xyz = direction (normalized toward light), w = angular radius
+    var colorAndIntensity: simd_float4    // xyz = color, w = intensity
+}
+
+struct GPUPointLight {
+    var positionAndRadius: simd_float4   // xyz = world position, w = influence radius
+    var colorAndIntensity: simd_float4   // xyz = color, w = intensity
+}
+
 private struct GPUSceneBufferHeader {
     var materialsPtr: UInt64
     var instancesPtr: UInt64
@@ -73,6 +83,12 @@ private struct GPUSceneBufferHeader {
     var debugVerticesPtr: UInt64
     var debugVertexCountPtr: UInt64
     var maxDebugVertices: UInt32
+
+    var _padLights: UInt32
+    var pointLightsPtr: UInt64
+    var pointLightCount: UInt32
+    var _padLights2: UInt32
+    var sun: GPUSunLight
 }
 
 class SceneBufferBuilder {
@@ -100,6 +116,12 @@ class SceneBufferBuilder {
 
     private var debugVerticesBuffers: [Buffer] = []
     private var debugVertexCountBuffers: [Buffer] = []
+
+    static let kMaxPointLights = 64
+    private var pointLightsBuffers: [Buffer] = []
+    var pointLightsBuffer: Buffer! {
+        pointLightsBuffers.isEmpty ? nil : pointLightsBuffers[currentFrameIndex]
+    }
 
     private var currentFrameIndex: Int = 2
     private var previousViewProjection: simd_float4x4 = matrix_identity_float4x4
@@ -291,6 +313,14 @@ class SceneBufferBuilder {
             return b
         }
 
+        // ---- Build point lights buffers ----
+        let plStride = MemoryLayout<GPUPointLight>.stride
+        pointLightsBuffers = (0..<3).map { i in
+            let b = Buffer(size: plStride * SceneBufferBuilder.kMaxPointLights)
+            b.setName(name: "Point Lights \(i)")
+            return b
+        }
+
         // ---- Build root header ----
         let headerSize = MemoryLayout<GPUSceneBufferHeader>.stride
         buffers = (0..<3).map { i in
@@ -298,6 +328,10 @@ class SceneBufferBuilder {
             b.setName(name: "Scene Buffer \(i)")
             return b
         }
+
+        let defaultSun = GPUSunLight(
+            directionAndRadius: SIMD4<Float>(0.424, -0.848, 0.318, 0.05),
+            colorAndIntensity: SIMD4<Float>(1.0, 0.95, 0.85, 3.0))
 
         for i in 0..<3 {
             currentFrameIndex = i
@@ -314,6 +348,8 @@ class SceneBufferBuilder {
                 previousViewProjection: matrix_identity_float4x4,
                 position: .zero,
                 direction: .zero)
+            ptr.pointee.sun = defaultSun
+            ptr.pointee.pointLightCount = 0
             updatePointers()
         }
         currentFrameIndex = 2
@@ -371,6 +407,25 @@ class SceneBufferBuilder {
             0
     }
 
+    /// Updates sun and point lights in the scene buffer. Call every frame.
+    func updateLights(sun: GPUSunLight, pointLights: [GPUPointLight]) {
+        guard let buf = buffer else { return }
+        let ptr = buf.contents().bindMemory(to: GPUSceneBufferHeader.self, capacity: 1)
+        ptr.pointee.sun = sun
+
+        let count = min(pointLights.count, SceneBufferBuilder.kMaxPointLights)
+        ptr.pointee.pointLightCount = UInt32(count)
+        ptr.pointee.pointLightsPtr = pointLightsBuffer.getAddress()
+
+        if count > 0 {
+            let plPtr = pointLightsBuffer.contents().bindMemory(
+                to: GPUPointLight.self, capacity: count)
+            for i in 0..<count {
+                plPtr[i] = pointLights[i]
+            }
+        }
+    }
+
     // MARK: - Private Helpers
 
     private func updatePointers() {
@@ -386,6 +441,8 @@ class SceneBufferBuilder {
         ptr.pointee.debugVerticesPtr = debugVerticesBuffers[currentFrameIndex].getAddress()
         ptr.pointee.debugVertexCountPtr = debugVertexCountBuffers[currentFrameIndex].getAddress()
         ptr.pointee.maxDebugVertices = UInt32(SceneBufferBuilder.kMaxDebugVertices)
+        ptr.pointee.pointLightsPtr = pointLightsBuffers[currentFrameIndex].getAddress()
+        ptr.pointee.pointLightCount = 0
     }
 
     private func textureID(_ tex: Texture?, flag: UInt32, flags: inout UInt32) -> UInt64 {

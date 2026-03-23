@@ -32,8 +32,8 @@ void pathtracer(const device scene_data& scene [[buffer(0)]],
                 texture2d<float, access::write> output   [[texture(5)]],
                 uint2 pid [[thread_position_in_grid]])
 {
-    const float3 light_dir = normalize(float3(0.3, -1.0, 0.2));
-    const float3 light_color = float3(1.0, 0.95, 0.85) * 3.0;
+    const float3 light_dir = scene.sun.direction_and_radius.xyz;
+    const float3 light_color = scene.sun.color_and_intensity.xyz * scene.sun.color_and_intensity.w;
 
     uint width = output.get_width();
     uint height = output.get_height();
