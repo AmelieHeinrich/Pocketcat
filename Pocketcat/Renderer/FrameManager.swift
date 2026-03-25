@@ -86,77 +86,79 @@ class FrameManager {
     }
 
     func render(drawable: CAMetalDrawable) {
-        let currentScale = registry.float("Renderer.RenderScale", default: 1.0)
-        if currentScale != lastRenderScale {
-            lastRenderScale = currentScale
-            let scaledW = max(1, Int(Float(viewportWidth) * currentScale))
-            let scaledH = max(1, Int(Float(viewportHeight) * currentScale))
-            for pass in passes! {
-                pass.resize(
-                    renderWidth: scaledW, renderHeight: scaledH, outputWidth: viewportWidth,
-                    outputHeight: viewportHeight)
+        autoreleasepool {
+            let currentScale = registry.float("Renderer.RenderScale", default: 1.0)
+            if currentScale != lastRenderScale {
+                lastRenderScale = currentScale
+                let scaledW = max(1, Int(Float(viewportWidth) * currentScale))
+                let scaledH = max(1, Int(Float(viewportHeight) * currentScale))
+                for pass in passes! {
+                    pass.resize(
+                        renderWidth: scaledW, renderHeight: scaledH, outputWidth: viewportWidth,
+                        outputHeight: viewportHeight)
+                }
             }
-        }
 
-        resources.clear()
+            resources.clear()
 
-        let ringIndex = Int(frameIndex) % maxFramesInFlight
-        let cmdBuffer = commandBuffers[ringIndex]
-        let allocator = allocators[ringIndex]
+            let ringIndex = Int(frameIndex) % maxFramesInFlight
+            let cmdBuffer = commandBuffers[ringIndex]
+            let allocator = allocators[ringIndex]
 
-        // Wait for cmdBuffer to be ready
-        RendererData.gpuTimeline.wait(value: frameIndex)
+            // Wait for cmdBuffer to be ready
+            RendererData.gpuTimeline.wait(value: frameIndex)
 
-        // Reset, record
-        allocator.reset()
-        cmdBuffer.begin()
+            // Reset, record
+            allocator.reset()
+            cmdBuffer.begin()
 
-        var context = FrameContext(
-            camera: CameraData(),
-            cmdBuffer: cmdBuffer,
-            drawable: drawable,
-            resources: resources,
-            scene: scene,
-            sceneBuffer: sceneBuffer,
-            frameIndex: ringIndex,
-            allocator: allocator
-        )
+            var context = FrameContext(
+                camera: CameraData(),
+                cmdBuffer: cmdBuffer,
+                drawable: drawable,
+                resources: resources,
+                scene: scene,
+                sceneBuffer: sceneBuffer,
+                frameIndex: ringIndex,
+                allocator: allocator
+            )
 
-        // Update entity transforms before passes run
-        if let scene = scene {
-            for (i, entity) in scene.entities.enumerated() {
-                sceneBuffer.updateEntityTransform(i, transform: entity.transform)
+            // Update entity transforms before passes run
+            if let scene = scene {
+                for (i, entity) in scene.entities.enumerated() {
+                    sceneBuffer.updateEntityTransform(i, transform: entity.transform)
+                }
             }
+
+            switch registry.enum("Renderer.Timeline", as: RendererTimelineType.self, default: .Desktop)
+            {
+            case .Mobile:
+                controller.render(timeline: mobileTimeline!, context: &context)
+            case .Desktop:
+                controller.render(timeline: desktopTimeline!, context: &context)
+            case .Pathtraced:
+                controller.render(timeline: pathtracedTimeline!, context: &context)
+            }
+
+            // Update lights after updateCamera() has advanced currentFrameIndex
+            sceneBuffer.updateLights(
+                sun: lightState.gpuSun(),
+                pointLights: lightState.gpuPointLights())
+
+            // Commit
+            cmdBuffer.end()
+            cmdBuffer.commit()
+
+            RendererData.cmdQueue.signalEvent(RendererData.gpuTimeline.event, value: frameIndex + 1)
+            RendererData.cmdQueue.waitForEvent(RendererData.gpuTimeline.event, value: frameIndex + 1)
+            frameIndex += 1
+
+            RendererData.cmdQueue.waitForDrawable(drawable)
+            RendererData.cmdQueue.signalDrawable(drawable)
+            drawable.present()
+
+            Input.shared.beginFrame()
         }
-
-        switch registry.enum("Renderer.Timeline", as: RendererTimelineType.self, default: .Desktop)
-        {
-        case .Mobile:
-            controller.render(timeline: mobileTimeline!, context: &context)
-        case .Desktop:
-            controller.render(timeline: desktopTimeline!, context: &context)
-        case .Pathtraced:
-            controller.render(timeline: pathtracedTimeline!, context: &context)
-        }
-
-        // Update lights after updateCamera() has advanced currentFrameIndex
-        sceneBuffer.updateLights(
-            sun: lightState.gpuSun(),
-            pointLights: lightState.gpuPointLights())
-
-        // Commit
-        cmdBuffer.end()
-        cmdBuffer.commit()
-
-        RendererData.cmdQueue.signalEvent(RendererData.gpuTimeline.event, value: frameIndex + 1)
-        RendererData.cmdQueue.waitForEvent(RendererData.gpuTimeline.event, value: frameIndex + 1)
-        frameIndex += 1
-
-        RendererData.cmdQueue.waitForDrawable(drawable)
-        RendererData.cmdQueue.signalDrawable(drawable)
-        drawable.present()
-
-        Input.shared.beginFrame()
     }
 
     func setupTimelines(registry: SettingsRegistry) {
