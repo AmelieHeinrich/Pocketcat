@@ -152,42 +152,48 @@ struct StartView: View {
         ZStack {
             Color.black.ignoresSafeArea()
 
-            ScrollView(.vertical, showsIndicators: false) {
-                VStack(spacing: 48) {
-                    // Header
-                    VStack(spacing: 10) {
-                        Image(nsImage: NSApp.applicationIconImage)
-                            .resizable()
-                            .frame(width: 72, height: 72)
+            HStack(spacing: 0) {
+                // Scene picker
+                ScrollView(.vertical, showsIndicators: false) {
+                    VStack(spacing: 48) {
+                        // Header
+                        VStack(spacing: 10) {
+                            Image(nsImage: NSApp.applicationIconImage)
+                                .resizable()
+                                .frame(width: 72, height: 72)
 
-                        Text("Pocketcat")
-                            .font(.system(size: 28, weight: .light, design: .rounded))
-                            .foregroundStyle(.white)
+                            Text("Pocketcat")
+                                .font(.system(size: 28, weight: .light, design: .rounded))
+                                .foregroundStyle(.white)
 
-                        Text("Choose a scene to load")
-                            .font(.system(size: 13, weight: .regular))
-                            .foregroundStyle(.white.opacity(0.40))
+                            Text("Choose a scene to load")
+                                .font(.system(size: 13, weight: .regular))
+                                .foregroundStyle(.white.opacity(0.40))
 
-                        Picker("", selection: $selectedGroup) {
-                            ForEach(SceneGroup.allCases, id: \.self) { group in
-                                Text(group.rawValue).tag(group)
+                            Picker("", selection: $selectedGroup) {
+                                ForEach(SceneGroup.allCases, id: \.self) { group in
+                                    Text(group.rawValue).tag(group)
+                                }
+                            }
+                            .pickerStyle(.segmented)
+                            .frame(width: 280)
+                            .padding(.top, 6)
+                        }
+
+                        // Grid
+                        LazyVGrid(columns: columns, spacing: 20) {
+                            ForEach(visibleConfigs) { config in
+                                SceneCard(config: config, onPick: onScenePicked)
                             }
                         }
-                        .pickerStyle(.segmented)
-                        .frame(width: 280)
-                        .padding(.top, 6)
+                        .frame(maxWidth: 560)
                     }
-
-                    // Grid
-                    LazyVGrid(columns: columns, spacing: 20) {
-                        ForEach(visibleConfigs) { config in
-                            SceneCard(config: config, onPick: onScenePicked)
-                        }
-                    }
-                    .frame(maxWidth: 560)
+                    .padding(40)
+                    .frame(maxWidth: .infinity)
                 }
-                .padding(40)
-                .frame(maxWidth: .infinity)
+
+                // Changelog sidebar
+                ChangelogPanel()
             }
         }
     }
