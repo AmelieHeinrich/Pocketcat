@@ -27,7 +27,7 @@ struct vs_out {
 
 struct fs_out {
     uint2  tri_instance_id [[color(0)]];
-    float2 motion_vector   [[color(1)]];
+    float3 motion_vector   [[color(1)]];
 };
 
 using mesh_output = mesh<vs_out, void, 64, 128, topology::triangle>;
@@ -126,10 +126,12 @@ vs_out visibility_vs(uint vid [[vertex_id]],
     return out;
 }
 
-static inline float2 compute_motion_vector(vs_out in) {
+static inline float3 compute_motion_vector(vs_out in) {
     float2 curr_ndc = in.curr_clip_pos.xy / in.curr_clip_pos.w;
     float2 prev_ndc = in.prev_clip_pos.xy / in.prev_clip_pos.w;
-    return (prev_ndc - curr_ndc) * float2(0.5f, -0.5f);
+    float2 motion   = (prev_ndc - curr_ndc) * float2(0.5f, -0.5f);
+    float  depth    = in.curr_clip_pos.w;
+    return float3(motion, depth);
 }
 
 [[fragment]]

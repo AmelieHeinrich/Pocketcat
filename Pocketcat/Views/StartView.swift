@@ -152,6 +152,7 @@ struct StartView: View {
         ZStack {
             Color.black.ignoresSafeArea()
 
+
             HStack(spacing: 0) {
                 // Scene picker
                 ScrollView(.vertical, showsIndicators: false) {
@@ -196,5 +197,6 @@ struct StartView: View {
                 ChangelogPanel()
             }
         }
+        .preferredColorScheme(.dark)
     }
 }

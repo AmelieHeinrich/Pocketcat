@@ -47,7 +47,7 @@ class DeferredPass: Pass {
         let normal = context.resources.get("GBuffer.Normal") as Texture?
         let orm = context.resources.get("GBuffer.ORM") as Texture?
         let emissive = context.resources.get("GBuffer.Emissive") as Texture?
-        let mask = context.resources.get("VisibilityMask") as Texture?
+        let mask = context.resources.get("RTShadows.Output") as Texture?
         let ao = context.resources.get("RTAO.Mask") as Texture?
 
         guard let depth = depth else { return }
@@ -74,7 +74,7 @@ class DeferredPass: Pass {
         }
 
         let cp = context.cmdBuffer.beginComputePass(name: "Deferred")
-        cp.consumerBarrier(before: .dispatch, after: [.dispatch, .accelerationStructure])
+        cp.consumerBarrier(before: .dispatch, after: [.dispatch, .accelerationStructure, .blit])
         cp.setPipeline(pipeline: pipeline)
         cp.setBuffer(buf: context.sceneBuffer.buffer, index: 0)
         cp.setBytes(allocator: context.allocator, index: 2, bytes: &params, size: MemoryLayout<DeferredParameters>.size)

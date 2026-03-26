@@ -140,17 +140,24 @@ class FrameManager {
                 controller.render(timeline: pathtracedTimeline!, context: &context)
             }
 
+            // Post-render: let each pass copy current textures to history
+            let postEncoder = cmdBuffer.beginComputePass(name: "Post Render")
+            postEncoder.consumerBarrier(before: .blit, after: .all)
+            for pass in passes! {
+                pass.postRender(encoder: postEncoder)
+            }
+            postEncoder.end()
+
             // Update lights after updateCamera() has advanced currentFrameIndex
-            sceneBuffer.updateLights(
-                sun: lightState.gpuSun(),
-                pointLights: lightState.gpuPointLights())
+            sceneBuffer.updateLights(sun: lightState.gpuSun(), pointLights: lightState.gpuPointLights())
 
             // Commit
             cmdBuffer.end()
             cmdBuffer.commit()
 
             RendererData.cmdQueue.signalEvent(RendererData.gpuTimeline.event, value: frameIndex + 1)
-            RendererData.cmdQueue.waitForEvent(RendererData.gpuTimeline.event, value: frameIndex + 1)
+            RendererData.cmdQueue.waitForEvent(
+                RendererData.gpuTimeline.event, value: frameIndex + 1)
             frameIndex += 1
 
             RendererData.cmdQueue.waitForDrawable(drawable)
@@ -187,7 +194,8 @@ class FrameManager {
         debug.registry = registry
 
         self.passes = [
-            tlas, cullViewPass, visibilityPass, pathtracer, tonemap, upscaler, debug, gbufferPass, deferred, accumulationDenoiser, rtgi, rtshadows, rtao
+            tlas, cullViewPass, visibilityPass, pathtracer, tonemap, upscaler, debug, gbufferPass,
+            deferred, accumulationDenoiser, rtgi, rtshadows, rtao,
         ]
 
         // Desktop pipeline

@@ -12,8 +12,10 @@ class VisibilityBufferPass: Pass {
     private let vertexPipe: RenderPipeline
     private let meshPipe: MeshPipeline
     private var visibilityTexture: Texture
+    private var previousVisibilityTexture: Texture
     private var motionVectorTexture: Texture
     private var depthTexture: Texture
+    private var previousDepth: Texture
     private unowned let registry: SettingsRegistry
 
     init(registry: SettingsRegistry) {
@@ -46,7 +48,7 @@ class VisibilityBufferPass: Pass {
         let visDesc = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: .rg32Uint, width: 1, height: 1, mipmapped: false)
         visDesc.usage = [.shaderRead, .renderTarget, .shaderWrite]
 
-        let motionDesc = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: .rg16Float, width: 1, height: 1, mipmapped: false)
+        let motionDesc = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: .rgba16Float, width: 1, height: 1, mipmapped: false)
         motionDesc.usage = [.shaderRead, .renderTarget, .shaderWrite]
 
         let depthDesc = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: .depth32Float, width: 1, height: 1, mipmapped: false)
@@ -54,12 +56,18 @@ class VisibilityBufferPass: Pass {
 
         self.visibilityTexture = Texture(descriptor: visDesc)
         self.visibilityTexture.setLabel(name: "Visibility Texture")
+        
+        self.previousVisibilityTexture = Texture(descriptor: visDesc)
+        self.previousVisibilityTexture.setLabel(name: "PREVIOUS Visibility Texture")
 
         self.motionVectorTexture = Texture(descriptor: motionDesc)
         self.motionVectorTexture.setLabel(name: "Motion Vectors")
 
         self.depthTexture = Texture(descriptor: depthDesc)
         self.depthTexture.setLabel(name: "Visibility Depth")
+        
+        self.previousDepth = Texture(descriptor: depthDesc)
+        self.previousDepth.setLabel(name: "PREVIOUS Visibility Depth")
 
         self.registry = registry
         registry.register(bool: "Visibility.MeshShader", label: "Mesh Shaders", default: true)
@@ -72,6 +80,8 @@ class VisibilityBufferPass: Pass {
         visibilityTexture.resize(width: renderWidth, height: renderHeight)
         motionVectorTexture.resize(width: renderWidth, height: renderHeight)
         depthTexture.resize(width: renderWidth, height: renderHeight)
+        previousDepth.resize(width: renderWidth, height: renderHeight)
+        previousVisibilityTexture.resize(width: renderWidth, height: renderHeight)
     }
 
     override func render(context: FrameContext) {
@@ -93,9 +103,16 @@ class VisibilityBufferPass: Pass {
         }
         rp.executeIndirect(icb: icb, maxCommandCount: 65536)
         rp.end()
-
+    
         context.resources.register(visibilityTexture, for: "Visibility")
+        context.resources.register(previousVisibilityTexture, for: "History.Visibility")
+        context.resources.register(previousDepth, for: "History.GBuffer.Depth")
         context.resources.register(motionVectorTexture, for: "GBuffer.MotionVectors")
         context.resources.register(depthTexture, for: "GBuffer.Depth")
+    }
+    
+    override func postRender(encoder: ComputePass) {
+        encoder.copyTexture(src: self.visibilityTexture, dst: self.previousVisibilityTexture)
+        encoder.copyTexture(src: self.depthTexture, dst: self.previousDepth)
     }
 }

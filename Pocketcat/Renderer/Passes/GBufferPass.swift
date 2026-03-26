@@ -11,7 +11,9 @@ import simd
 class GBufferPass: Pass {
     private let pipe: ComputePipeline
     private var albedoTexture: Texture
+    private var previousAlbedo: Texture
     private var normalTexture: Texture
+    private var previousNormal: Texture
     private var ormTexture: Texture
     private var emissiveTexture: Texture
 
@@ -37,6 +39,12 @@ class GBufferPass: Pass {
         emissiveDesc.usage = [.shaderRead, .shaderWrite]
         self.emissiveTexture = Texture(descriptor: emissiveDesc)
         self.emissiveTexture.setLabel(name: "GBuffer Emissive")
+        
+        self.previousAlbedo = Texture(descriptor: albedoDesc)
+        self.previousAlbedo.setLabel(name: "PREVIOUS GBuffer Albedo")
+        
+        self.previousNormal = Texture(descriptor: normalDesc)
+        self.previousNormal.setLabel(name: "PREVIOUS GBuffer Normal")
 
         super.init()
     }
@@ -46,6 +54,8 @@ class GBufferPass: Pass {
         normalTexture.resize(width: renderWidth, height: renderHeight)
         ormTexture.resize(width: renderWidth, height: renderHeight)
         emissiveTexture.resize(width: renderWidth, height: renderHeight)
+        previousAlbedo.resize(width: renderWidth, height: renderHeight)
+        previousNormal.resize(width: renderWidth, height: renderHeight)
     }
 
     override func render(context: FrameContext) {
@@ -71,9 +81,16 @@ class GBufferPass: Pass {
         cp.dispatch(threads: MTLSizeMake(tgW, tgH, 1), threadsPerGroup: MTLSizeMake(8, 8, 1))
         cp.end()
 
+        context.resources.register(previousAlbedo, for: "History.GBuffer.Albedo")
+        context.resources.register(previousNormal, for: "History.GBuffer.Normal")
         context.resources.register(albedoTexture, for: "GBuffer.Albedo")
         context.resources.register(normalTexture, for: "GBuffer.Normal")
         context.resources.register(ormTexture, for: "GBuffer.ORM")
         context.resources.register(emissiveTexture, for: "GBuffer.Emissive")
+    }
+    
+    override func postRender(encoder: ComputePass) {
+        encoder.copyTexture(src: albedoTexture, dst: previousAlbedo)
+        encoder.copyTexture(src: normalTexture, dst: previousNormal)
     }
 }
