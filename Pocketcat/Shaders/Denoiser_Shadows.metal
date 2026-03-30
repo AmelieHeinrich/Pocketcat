@@ -189,12 +189,12 @@ void denoise_shadows_temporal(const device temporal_input& input [[buffer(0)]],
     history_length = min(32.0f, success ? history_length + 1.0f : 1.0f);
 
     if (success) {
-        // Compute spatial mean and standard deviation of the current frame in a 5x5 neighborhood
+        // Compute spatial mean and standard deviation of the current frame in a 3x3 neighborhood
         float m1 = 0.0f;
         float m2 = 0.0f;
         float weight = 0.0f;
-        for (int dx = -2; dx <= 2; dx++) {
-            for (int dy = -2; dy <= 2; dy++) {
+        for (int dx = -1; dx <= 1; dx++) {
+            for (int dy = -1; dy <= 1; dy++) {
                 int2 sample_coord = clamp(current_coord + int2(dx, dy), int2(0), int2(width - 1, height - 1));
                 float sample_color = input.shadow_mask.read(uint2(sample_coord)).r;
                 m1 += sample_color;

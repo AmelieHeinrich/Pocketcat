@@ -72,7 +72,7 @@ class RTShadows: Pass {
     private var accumulationFrame: UInt32 = 0
     private unowned var settings: SettingsRegistry
 
-    let atrousIterations = 5
+    let atrousIterations = 3
 
     init(settings: SettingsRegistry) {
         self.settings = settings
@@ -119,7 +119,7 @@ class RTShadows: Pass {
         ]
         prevFiltered = makeTex(.rg16Float, "RTShadows.Prev.Filtered")
         prevMoments = makeTex(.rgba16Float, "RTShadows.Prev.Moments")
-        historyLength = makeTex(.r8Unorm, "RTShadows.HistoryLength")
+        historyLength = makeTex(.r16Float, "RTShadows.HistoryLength")
 
         super.init()
     }
@@ -158,13 +158,10 @@ class RTShadows: Pass {
         ift.setBuffer(context.sceneBuffer.buffer.buffer, offset: 0, index: 0)
 
         let cp = context.cmdBuffer.beginComputePass(name: "RT Shadows: Trace")
-        cp.consumerBarrier(
-            before: .dispatch, after: [.dispatch, .accelerationStructure, .fragment])
+        cp.consumerBarrier(before: .dispatch, after: [.dispatch, .accelerationStructure, .fragment])
         cp.setPipeline(pipeline: tracePipeline)
         cp.setBuffer(buf: context.sceneBuffer.buffer, index: 0)
-        cp.setBytes(
-            allocator: context.allocator, index: 1, bytes: &parameters,
-            size: MemoryLayout<RTShadowParameters>.size)
+        cp.setBytes(allocator: context.allocator, index: 1, bytes: &parameters, size: MemoryLayout<RTShadowParameters>.size)
         cp.setIFT(ift, index: 2)
         cp.setTexture(texture: shadowMask, index: 0)
         cp.setTexture(texture: depth, index: 1)
@@ -213,9 +210,7 @@ class RTShadows: Pass {
         let cp = context.cmdBuffer.beginComputePass(name: "RT Shadows : Denoise")
         cp.consumerBarrier(before: .dispatch, after: .dispatch)
         cp.setPipeline(pipeline: temporalPipeline)
-        cp.setBytes(
-            allocator: context.allocator, index: 0, bytes: &temporalInput,
-            size: MemoryLayout<RTShadowTemporalDenoiseInput>.size)
+        cp.setBytes(allocator: context.allocator, index: 0, bytes: &temporalInput, size: MemoryLayout<RTShadowTemporalDenoiseInput>.size)
         cp.dispatch(
             threads: MTLSizeMake((w + 7) / 8, (h + 7) / 8, 1), threadsPerGroup: MTLSizeMake(8, 8, 1)
         )
@@ -263,7 +258,8 @@ class RTShadows: Pass {
                 size: MemoryLayout<RTShadowAtrousInput>.size)
             cp.dispatch(
                 threads: MTLSizeMake((w + 7) / 8, (h + 7) / 8, 1),
-                threadsPerGroup: MTLSizeMake(8, 8, 1))
+                threadsPerGroup: MTLSizeMake(8, 8, 1)
+            )
             swap(&readIdx, &writeIdx)
         }
         cp.end()

@@ -25,7 +25,6 @@ void rt_shadows(texture2d<float, access::write> out [[texture(0)]],
                 intersection_function_table<triangle_data, instancing> ift [[buffer(2)]],
                 uint2 pixel_id [[thread_position_in_grid]])
 {
-    // For this technique specifically we don't do alpha testing, not worth it
     uint width = out.get_width();
     uint height = out.get_height();
     if (pixel_id.x >= width || pixel_id.y >= height)
@@ -62,9 +61,10 @@ void rt_shadows(texture2d<float, access::write> out [[texture(0)]],
     
     float visibility = 0.0;
     for (uint i = 0; i < parameters.spp; i++) {
-        float2 rand_sample = float2(rng.next_f(), rng.next_f());
-        float point_radius = light_radius * sqrt(rng.next_f());
-        float point_angle = rand_sample.y * 2.0f * M_PI_F;
+        float r1 = rng.next_f();
+        float r2 = rng.next_f();
+        float point_radius = light_radius * sqrt(r1);
+        float point_angle = r2 * 2.0f * M_PI_F;
         float2 disk_point = float2(point_radius * cos(point_angle), point_radius * sin(point_angle));
         
         float3 wi = normalize(light_dir + disk_point.x * light_tangent + disk_point.y * light_bitangent);
