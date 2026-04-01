@@ -1,0 +1,2 @@
+Assets/BakedAssets/ShadowTest/ShadowTest.bin filter=lfs diff=lfs merge=lfs -text
+Assets/BakedAssets/ShadowTest/raw3.tex filter=lfs diff=lfs merge=lfs -text

@@ -169,5 +169,15 @@ extension SceneConfiguration {
                     )
                 })
         ),
+        SceneConfiguration(
+            id: "shadow_test",
+            name: "Shadow Test",
+            systemIcon: "sun.horizon",
+            tags: ["RT Test"],
+            group: .apiPerformance,
+            descriptor: SceneDescriptor(models: [
+                SceneModelDescriptor(resource: "ShadowTest")
+            ])
+        ),
     ]
 }

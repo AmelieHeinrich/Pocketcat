@@ -49,6 +49,9 @@ class FrameManager {
     private var lastFrameTime: CFAbsoluteTime = CFAbsoluteTimeGetCurrent()
     private var frameTimeMsAccum: Double = 0
     private var fpsAccum: Double = 0
+    private var prevCpuTimestamp: UInt64 = 0
+    private var prevGpuTimestamp: UInt64 = 0
+    private var gpuToCpuFactor: Double = 1.0
 
     init(registry: SettingsRegistry, lightState: LightState, frameStats: FrameStats) {
         self.registry = registry
@@ -96,6 +99,18 @@ class FrameManager {
 
     func render(drawable: CAMetalDrawable) {
         autoreleasepool {
+            // Calibrate GPU clock ticks → CPU nanoseconds via paired timestamp samples
+            var cpuTs: MTLTimestamp = 0
+            var gpuTs: MTLTimestamp = 0
+            (cpuTs, gpuTs) = RendererData.device.sampleTimestamps()
+            if prevGpuTimestamp != 0, gpuTs > prevGpuTimestamp {
+                let cpuDelta = Double(cpuTs - prevCpuTimestamp)
+                let gpuDelta = Double(gpuTs - prevGpuTimestamp)
+                if gpuDelta > 0 { gpuToCpuFactor = cpuDelta / gpuDelta }
+            }
+            prevCpuTimestamp = cpuTs
+            prevGpuTimestamp = gpuTs
+
             // CPU frame timing
             let now = CFAbsoluteTimeGetCurrent()
             let frameTimeMs = (now - lastFrameTime) * 1000.0
@@ -188,7 +203,8 @@ class FrameManager {
             let gpuTimings = resolveCounterHeap(
                 ringIndex: ringIndex,
                 accumulator: frameAccumSnapshot,
-                counterEntries: counterEntriesSnapshot)
+                counterEntries: counterEntriesSnapshot,
+                gpuToCpuFactor: gpuToCpuFactor)
 
             frameIndex += 1
 
@@ -246,7 +262,8 @@ class FrameManager {
     private func resolveCounterHeap(
         ringIndex: Int,
         accumulator: FrameAccumulator,
-        counterEntries: [(name: String, startSlot: Int, endSlot: Int)]
+        counterEntries: [(name: String, startSlot: Int, endSlot: Int)],
+        gpuToCpuFactor: Double
     ) -> [PassTimingSample] {
         let cpuOnly = accumulator.passRecords.map {
             PassTimingSample(name: $0.name, cpuMs: $0.cpuMs, gpuMs: 0)
@@ -259,9 +276,9 @@ class FrameManager {
 
         guard let data = try? heap.resolveCounterRange(slotRange) else { return cpuOnly }
 
-        // Timestamp counter heap data is an array of UInt64 GPU nanosecond values.
-        // MTL4CounterHeapType.timestamp entries are UInt64 (8 bytes each).
-        // On Apple Silicon, GPU ns are directly comparable; delta → ms via / 1_000_000.
+        // MTL4 timestamp heap entries are GPU clock ticks, not nanoseconds.
+        // gpuToCpuFactor (derived from device.sampleTimestamps) converts ticks → CPU ns;
+        // dividing by 1_000_000 then gives milliseconds.
         return data.withUnsafeBytes { rawPtr in
             let entries = rawPtr.bindMemory(to: MTL4TimestampHeapEntry.self)
             let invalid: UInt64 = 0xFFFF_FFFF_FFFF_FFFF
@@ -278,7 +295,7 @@ class FrameManager {
                     let startNs = entries[si].timestamp
                     let endNs   = entries[ei].timestamp
                     guard startNs != invalid, endNs != invalid, endNs > startNs else { continue }
-                    totalGpuMs += Double(endNs - startNs) / 1_000_000.0
+                    totalGpuMs += Double(endNs - startNs) * gpuToCpuFactor / 1_000_000.0
                 }
                 return PassTimingSample(name: record.name, cpuMs: record.cpuMs, gpuMs: totalGpuMs)
             }

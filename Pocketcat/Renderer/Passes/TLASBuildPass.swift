@@ -19,17 +19,17 @@ class TLASBuildPass: Pass {
     }
 
     override func render(context: FrameContext) {
-        if let scene = context.scene {
-            let instanceCount = context.sceneBuffer.instanceCount
-            if instanceCount == 0 {
-                return
-            }
+        guard let scene = context.scene else { return }
+        
+        let instanceCount = context.sceneBuffer.instanceCount
+        if instanceCount == 0 {
+            return
+        }
 
-            if registry.bool("TLAS.BuildIndirect") {
-                gpuBuild(context: context, scene: scene)
-            } else {
-                cpuBuild(context: context, scene: scene)
-            }
+        if registry.bool("TLAS.BuildIndirect") {
+            gpuBuild(context: context, scene: scene)
+        } else {
+            cpuBuild(context: context, scene: scene)
         }
     }
 

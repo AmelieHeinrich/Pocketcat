@@ -79,7 +79,7 @@ class RenderPass {
             let slot = RendererData.counterOffset
             RendererData.counterOffset += 1
             RendererData.counterEntries.append((name: descriptor.name, startSlot: slot, endSlot: -1))
-            self.encoder.writeTimestamp(granularity: .precise, after: .fragment, counterHeap: heap, index: slot)
+            self.encoder.writeTimestamp(granularity: .relaxed, after: .fragment, counterHeap: heap, index: slot)
         }
     }
 
@@ -90,7 +90,7 @@ class RenderPass {
             if !RendererData.counterEntries.isEmpty {
                 RendererData.counterEntries[RendererData.counterEntries.count - 1].endSlot = slot
             }
-            self.encoder.writeTimestamp(granularity: .precise, after: .fragment, counterHeap: heap, index: slot)
+            self.encoder.writeTimestamp(granularity: .relaxed, after: .fragment, counterHeap: heap, index: slot)
         }
         self.encoder.endEncoding()
     }

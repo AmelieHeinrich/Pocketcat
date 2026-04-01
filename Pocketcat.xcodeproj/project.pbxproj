@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1363D1CE2F7D0CBF00EC1628 /* raw3.tex in Resources */ = {isa = PBXBuildFile; fileRef = 1363D1CB2F7D0CBF00EC1628 /* raw3.tex */; };
+		1363D1CF2F7D0CBF00EC1628 /* ShadowTest.bin in Resources */ = {isa = PBXBuildFile; fileRef = 1363D1CC2F7D0CBF00EC1628 /* ShadowTest.bin */; };
 		136A178A2F5B811700BE5330 /* Buddha.bin in Resources */ = {isa = PBXBuildFile; fileRef = 136A17822F5B811700BE5330 /* Buddha.bin */; };
 		BA02D9F32F558F09009EBF35 /* 8006627369776289000.tex in Resources */ = {isa = PBXBuildFile; fileRef = BA02D9CF2F558F09009EBF35 /* 8006627369776289000.tex */; };
 		BA02D9F42F558F09009EBF35 /* 3628158980083700836.tex in Resources */ = {isa = PBXBuildFile; fileRef = BA02D9BA2F558F09009EBF35 /* 3628158980083700836.tex */; };
@@ -592,6 +594,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		1363D1CB2F7D0CBF00EC1628 /* raw3.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = raw3.tex; sourceTree = "<group>"; };
+		1363D1CC2F7D0CBF00EC1628 /* ShadowTest.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = ShadowTest.bin; sourceTree = "<group>"; };
 		136A17822F5B811700BE5330 /* Buddha.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = Buddha.bin; sourceTree = "<group>"; };
 		BA02D95A2F557A58009EBF35 /* AssetBaker */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = AssetBaker; sourceTree = BUILT_PRODUCTS_DIR; };
 		BA02D9942F557EB0009EBF35 /* libate.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libate.tbd; path = usr/lib/libate.tbd; sourceTree = SDKROOT; };
@@ -1210,6 +1214,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1363D1CD2F7D0CBF00EC1628 /* ShadowTest */ = {
+			isa = PBXGroup;
+			children = (
+				1363D1CB2F7D0CBF00EC1628 /* raw3.tex */,
+				1363D1CC2F7D0CBF00EC1628 /* ShadowTest.bin */,
+			);
+			path = ShadowTest;
+			sourceTree = "<group>";
+		};
 		136A17832F5B811700BE5330 /* Buddha */ = {
 			isa = PBXGroup;
 			children = (
@@ -1313,6 +1326,7 @@
 		BA02D9F22F558F09009EBF35 /* BakedAssets */ = {
 			isa = PBXGroup;
 			children = (
+				1363D1CD2F7D0CBF00EC1628 /* ShadowTest */,
 				136EE4CB2F6C2B58004E9246 /* CubeAndSphere */,
 				136A17832F5B811700BE5330 /* Buddha */,
 				BA82AC602F55C5D50052AFC5 /* Bistro */,
@@ -2249,6 +2263,8 @@
 				BA82AD552F55C5D60052AFC5 /* Antenna_Plastic_Specular.tex in Resources */,
 				BA82AD562F55C5D60052AFC5 /* Paris_StringLights_01_Blue_Color_Emissive_Emissive.tex in Resources */,
 				BA82AD572F55C5D60052AFC5 /* Awnings_Hotel_Fabric_BaseColor.tex in Resources */,
+				1363D1CE2F7D0CBF00EC1628 /* raw3.tex in Resources */,
+				1363D1CF2F7D0CBF00EC1628 /* ShadowTest.bin in Resources */,
 				BA82AD582F55C5D60052AFC5 /* MASTER_Concrete_Smooth_Specular.tex in Resources */,
 				BA82AD592F55C5D60052AFC5 /* Balcony_Ornaments_Specular.tex in Resources */,
 				BA82AD5A2F55C5D60052AFC5 /* Pavement_Manhole_Cover_Specular.tex in Resources */,

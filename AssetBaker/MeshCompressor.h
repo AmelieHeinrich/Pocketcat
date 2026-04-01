@@ -10,7 +10,7 @@
 #include <string>
 #include <vector>
 
-#define SKIP_TEXTURES 1
+#define SKIP_TEXTURES 0
 
 // Maximum number of LOD levels exported per primitive.
 // LOD0 = full detail, LOD1..kMaxLODs-1 = progressively simplified.

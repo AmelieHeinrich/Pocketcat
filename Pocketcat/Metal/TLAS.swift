@@ -18,7 +18,6 @@ class TLAS {
     var instanceBuffers: [Buffer] = []
     var instanceCountBuffers: [Buffer] = []
     var scratchBuffer: Buffer! = nil
-    var blasMap: [UInt64] = []
     private var allocated: Bool = false
 
     init(makeResidentNow: Bool = true) {
@@ -88,7 +87,6 @@ class TLAS {
 
     func resetInstanceBuffer() {
         instanceDescriptors.removeAll()
-        blasMap.removeAll()
     }
 
     func addInstance(

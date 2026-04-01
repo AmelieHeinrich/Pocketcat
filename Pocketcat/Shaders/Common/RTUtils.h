@@ -23,14 +23,14 @@ inline SurfaceHit trace_and_get(
     if (intersection.type == intersection_type::none)
         return result;
 
-    constexpr sampler s(mag_filter::linear, min_filter::linear,
-                        address::repeat, mip_filter::linear);
-
     uint instance_id  = intersection.instance_id;
     uint primitive_id = intersection.primitive_id;
     float2 bary       = intersection.triangle_barycentric_coord;
     float3 ray_dir    = r.direction;
 
+    constexpr sampler s(mag_filter::linear, min_filter::linear,
+                        address::repeat, mip_filter::linear);
+    
     instance inst = scene.instances[instance_id];
     material mat  = scene.materials[inst.material_index];
     triangle tri  = fetch_triangle(scene, instance_id, primitive_id);

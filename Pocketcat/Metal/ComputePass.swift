@@ -18,7 +18,7 @@ class ComputePass {
             let slot = RendererData.counterOffset
             RendererData.counterOffset += 1
             RendererData.counterEntries.append((name: label, startSlot: slot, endSlot: -1))
-            self.encoder.writeTimestamp(granularity: .precise, counterHeap: heap, index: slot)
+            self.encoder.writeTimestamp(granularity: .relaxed, counterHeap: heap, index: slot)
         }
     }
 
@@ -29,7 +29,7 @@ class ComputePass {
             if !RendererData.counterEntries.isEmpty {
                 RendererData.counterEntries[RendererData.counterEntries.count - 1].endSlot = slot
             }
-            self.encoder.writeTimestamp(granularity: .precise, counterHeap: heap, index: slot)
+            self.encoder.writeTimestamp(granularity: .relaxed, counterHeap: heap, index: slot)
         }
         self.encoder.endEncoding()
     }
