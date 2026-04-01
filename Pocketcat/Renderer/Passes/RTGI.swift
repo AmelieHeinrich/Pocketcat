@@ -109,6 +109,8 @@ class RTGI: Pass {
         cp.end()
         
         context.resources.register(self.diffuseTexture, for: "RTGI.Texture")
+        context.resources.addVisualizer(texture: diffuseTexture, label: "RTGI",
+            fragmentFunction: "texviz_hdr_fs")
 
         accumulationFrame &+= 1
     }

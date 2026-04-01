@@ -164,6 +164,19 @@ class RTShadows: Pass {
             context.resources.register(shadowMask, for: "RTShadows.Output")
         }
 
+        context.resources.addVisualizer(texture: shadowMask, label: "RTShadows.Raw",
+            fragmentFunction: "texviz_single_channel_fs")
+        if temporalEnabled || spatialEnabled {
+            if let filtered: Texture = context.resources.get("RTShadows.Output") {
+                context.resources.addVisualizer(texture: filtered, label: "RTShadows.Filtered",
+                    fragmentFunction: "texviz_single_channel_fs")
+            }
+            context.resources.addVisualizer(texture: historyLength, label: "RTShadows.HistoryLength",
+                fragmentFunction: "texviz_shadow_history_length_fs")
+            context.resources.addVisualizer(texture: historyLength, label: "RTShadows.HistoryAcceptance",
+                fragmentFunction: "texviz_shadow_history_acceptance_fs")
+        }
+
         accumulationFrame &+= 1
     }
 

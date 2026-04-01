@@ -109,6 +109,17 @@ class VisibilityBufferPass: Pass {
         context.resources.register(previousDepth, for: "History.GBuffer.Depth")
         context.resources.register(motionVectorTexture, for: "GBuffer.MotionVectors")
         context.resources.register(depthTexture, for: "GBuffer.Depth")
+
+        context.resources.addVisualizer(texture: visibilityTexture, label: "Visibility.InstanceID",
+            fragmentFunction: "texviz_visibility_instance_id_fs")
+        context.resources.addVisualizer(texture: visibilityTexture, label: "Visibility.MeshletID",
+            fragmentFunction: "texviz_visibility_meshlet_id_fs")
+        context.resources.addVisualizer(texture: visibilityTexture, label: "Visibility.PrimitiveID",
+            fragmentFunction: "texviz_visibility_primitive_id_fs")
+        context.resources.addVisualizer(texture: depthTexture, label: "GBuffer.Depth",
+            fragmentFunction: "texviz_depth_fs")
+        context.resources.addVisualizer(texture: motionVectorTexture, label: "GBuffer.MotionVectors",
+            fragmentFunction: "texviz_motion_vectors_fs")
     }
     
     override func postRender(encoder: ComputePass) {

@@ -84,6 +84,24 @@ final class SettingsRegistry: ObservableObject {
         insert(entry)
     }
 
+    func register(dynamicPicker key: String, label: String? = nil) {
+        guard entries[key] == nil else { return }
+        let entry = SettingEntry(
+            key: key, label: label ?? labelFromKey(key), section: sectionFromKey(key),
+            value: .enumCase(0, ["(none)"]),
+            metadata: .enumType(caseCount: 1))
+        insert(entry)
+    }
+
+    // Call from main thread only. Clamps selection if options shrink.
+    func updatePickerOptions(_ key: String, options: [String]) {
+        guard case .enumCase(let idx, _) = entries[key]?.value else { return }
+        let labels = options.isEmpty ? ["(none)"] : options
+        let clampedIdx = min(idx, labels.count - 1)
+        entries[key]?.value = .enumCase(clampedIdx, labels)
+        objectWillChange.send()
+    }
+
     // MARK: - Read
 
     func bool(_ key: String, default fallback: Bool = false) -> Bool {
@@ -107,6 +125,11 @@ final class SettingsRegistry: ObservableObject {
         guard case .enumCase(let idx, _) = entries[key]?.value,
               let v = E(rawValue: idx) else { return fallback }
         return v
+    }
+
+    func pickerIndex(_ key: String, default fallback: Int = 0) -> Int {
+        guard case .enumCase(let idx, _) = entries[key]?.value else { return fallback }
+        return idx
     }
 
     // MARK: - Bindings

@@ -20,8 +20,15 @@
 // FrameManager clears the registry at the top of each frame so there is never
 // any bleed-through of stale resources from a prior frame.
 
+struct VisualizerEntry {
+    var texture: Texture
+    var label: String
+    var fragmentFunction: String
+}
+
 class ResourceRegistry {
     private var resources: [String: Any] = [:]
+    private var visualizers: [VisualizerEntry] = []
 
     func register<T>(_ resource: T, for key: String) {
         resources[key] = resource
@@ -31,7 +38,14 @@ class ResourceRegistry {
         resources[key] as? T
     }
 
+    func addVisualizer(texture: Texture, label: String, fragmentFunction: String = "texviz_passthrough_fs") {
+        visualizers.append(VisualizerEntry(texture: texture, label: label, fragmentFunction: fragmentFunction))
+    }
+
+    func getVisualizers() -> [VisualizerEntry] { visualizers }
+
     func clear() {
         resources.removeAll(keepingCapacity: true)
+        visualizers.removeAll(keepingCapacity: true)
     }
 }

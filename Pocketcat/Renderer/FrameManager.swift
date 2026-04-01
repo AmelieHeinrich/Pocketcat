@@ -327,12 +327,13 @@ class FrameManager {
         let rtshadows = RTShadows(settings: registry)
         let rtao = RTAO(settings: registry)
         let rtreflections = RTReflections(settings: registry)
-        registry.register(bool: "Debug.DepthTest", label: "Depth Test", default: false)
+        let texViz = TextureVisualizerPass(registry: registry)
+        registry.register(bool: "Debug.DepthTest", label: "Use depth on debug draw", default: false)
         debug.registry = registry
 
         self.passes = [
             tlas, cullViewPass, visibilityPass, pathtracer, tonemap, upscaler, debug, gbufferPass,
-            deferred, accumulationDenoiser, rtgi, rtshadows, rtao, rtreflections,
+            deferred, accumulationDenoiser, rtgi, rtshadows, rtao, rtreflections, texViz,
         ]
 
         // Desktop pipeline
@@ -349,6 +350,7 @@ class FrameManager {
         desktopTimeline.addPass(tonemap)
         desktopTimeline.addPass(upscaler)
         desktopTimeline.addPass(debug)
+        desktopTimeline.addPass(texViz)
 
         // Pathtrace pipeline
         let pathtraceTimeline = RenderTimeline()
@@ -361,6 +363,7 @@ class FrameManager {
         pathtraceTimeline.addPass(tonemap)
         pathtraceTimeline.addPass(upscaler)
         pathtraceTimeline.addPass(debug)
+        pathtraceTimeline.addPass(texViz)
 
         self.desktopTimeline = desktopTimeline
         self.pathtracedTimeline = pathtraceTimeline

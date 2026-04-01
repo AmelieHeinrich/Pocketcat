@@ -103,6 +103,8 @@ class RTAO: Pass {
         cp.end()
         
         context.resources.register(self.visibilityMask, for: "RTAO.Mask")
+        context.resources.addVisualizer(texture: visibilityMask, label: "RTAO",
+            fragmentFunction: "texviz_single_channel_fs")
 
         accumulationFrame &+= 1
     }

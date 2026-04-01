@@ -105,6 +105,8 @@ class RTReflections: Pass {
         cp.end()
 
         context.resources.register(self.specularTexture, for: "RTReflections.Texture")
+        context.resources.addVisualizer(texture: specularTexture, label: "RTReflections",
+            fragmentFunction: "texviz_hdr_fs")
 
         accumulationFrame &+= 1
     }

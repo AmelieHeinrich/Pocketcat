@@ -87,6 +87,15 @@ class GBufferPass: Pass {
         context.resources.register(normalTexture, for: "GBuffer.Normal")
         context.resources.register(ormTexture, for: "GBuffer.ORM")
         context.resources.register(emissiveTexture, for: "GBuffer.Emissive")
+
+        context.resources.addVisualizer(texture: albedoTexture,   label: "GBuffer.Albedo")
+        context.resources.addVisualizer(texture: normalTexture,   label: "GBuffer.Normal",
+            fragmentFunction: "texviz_gbuffer_normal_fs")
+        context.resources.addVisualizer(texture: ormTexture,      label: "GBuffer.Roughness",
+            fragmentFunction: "texviz_gbuffer_roughness_fs")
+        context.resources.addVisualizer(texture: ormTexture,      label: "GBuffer.Metallic",
+            fragmentFunction: "texviz_gbuffer_metallic_fs")
+        context.resources.addVisualizer(texture: emissiveTexture, label: "GBuffer.Emissive")
     }
     
     override func postRender(encoder: ComputePass) {
