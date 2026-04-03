@@ -10,7 +10,7 @@ This repository showcases various modern rendering techniques implemented using 
 
 This project works on any M3+ GPU. Anything below is not supported due to lack of support for indirect mesh ICB and Metal 4 raytracing.\
 To build, just open the project in Xcode and run the Pocketcat scheme.\
-The project provides 3 baked meshes by default: cube, cube+sphere, and Crytek Sponza. To add more meshes, you can add any GLTF model in SourceAssets and run the AssetBaker program to bake everything. The engine does not support runtime creation of scenes, you have to declare them programmatically in Pocketcat/Core/Scene.swift.
+To add more meshes, you can add any GLTF model in SourceAssets and run the AssetBaker program to bake everything. The engine does not support runtime creation of scenes yet, you have to declare them programmatically in Pocketcat/Core/Scene.swift.
 
 ## Current features
 
@@ -36,6 +36,7 @@ All of these features are complete on the raytracing part but are missing the de
 - SSAO + NNAO
 - Point lights in raster and PT
 - Clustered light culling
-- Procedural atmospheric sky
+- Volumetric clouds
+- Neural sky model?
 - Auto-exposure
 - Wavefront pathtracer with custom materials
