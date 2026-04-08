@@ -13,6 +13,7 @@ struct temporal_input
     texture2d<float> motion_vectors;
     texture2d<float> current_normals;
     texture2d<float> previous_normals;
+    texture2d<float> previous_depth;
     texture2d<float, access::read_write> filtered;
     texture2d<float> previous_filtered;
     texture2d<float, access::read_write> moments;
@@ -21,6 +22,8 @@ struct temporal_input
     float depth_threshold;
     float normal_threshold;
     float alpha;
+    float std_dev_scale;
+    float disocclusion_threshold;
 };
 
 // Weight functions used for à-trous
@@ -55,10 +58,10 @@ float normal_depth_disocclusion_check(float3 normal, float3 history_normal, floa
 }
 
 // Validates if a historical sample can be reused based on screen bounds and normal/depth similarity
-bool is_reprojection_valid(int2 coord, int2 size, float current_linear_depth, float history_linear_depth, float3 current_normal, float3 history_normal)
+bool is_reprojection_valid(int2 coord, int2 size, float current_linear_depth, float history_linear_depth, float3 current_normal, float3 history_normal, float threshold)
 {
     if (out_of_frame_disocclusion_check(coord, size)) return false;
-    if (normal_depth_disocclusion_check(current_normal, history_normal, current_linear_depth, history_linear_depth) < 0.9) return false;
+    if (normal_depth_disocclusion_check(current_normal, history_normal, current_linear_depth, history_linear_depth) < threshold) return false;
     return true;
 }
 
@@ -91,9 +94,9 @@ bool load_prev_data(const device temporal_input& input, int2 frag_coord, float2 
     bool valid = false;
     for (int sampleIdx = 0; sampleIdx < 4; sampleIdx++) {
         int2 loc = int2(posPrev) + offset[sampleIdx];
-        float history_linear_depth = input.motion_vectors.read(uint2(clamp(loc, int2(0), size - 1))).z;
+        float history_linear_depth = input.previous_depth.read(uint2(clamp(loc, int2(0), size - 1))).z;
         float3 history_normal = input.previous_normals.read(uint2(clamp(loc, int2(0), size - 1))).rgb;
-        v[sampleIdx] = is_reprojection_valid(ipos_prev, size, depth, history_linear_depth, current_normal, history_normal);
+        v[sampleIdx] = is_reprojection_valid(ipos_prev, size, depth, history_linear_depth, current_normal, history_normal, input.disocclusion_threshold);
         valid = valid || v[sampleIdx];
     }
 
@@ -129,10 +132,10 @@ bool load_prev_data(const device temporal_input& input, int2 frag_coord, float2 
             for (int xx = -1; xx <= 1; xx++) {
                 int2 p = ipos_prev + int2(xx, yy);
                 uint2 up = uint2(clamp(p, int2(0), size - 1));
-                float history_linear_depth = input.motion_vectors.read(up).z;
+                float history_linear_depth = input.previous_depth.read(up).z;
                 float3 history_normal = input.previous_normals.read(up).rgb;
 
-                if (is_reprojection_valid(ipos_prev, size, depth, history_linear_depth, current_normal, history_normal)) {
+                if (is_reprojection_valid(ipos_prev, size, depth, history_linear_depth, current_normal, history_normal, input.disocclusion_threshold)) {
                     history_shadow += input.previous_filtered.read(up).r;
                     history_moments += input.previous_moments.read(up).rg;
                     cnt += 1.0;
@@ -207,14 +210,14 @@ void denoise_shadows_temporal(const device temporal_input& input [[buffer(0)]],
         float variance = (m2 / weight) - (mean * mean);
         float std_dev = sqrt(max(variance, 0.0f));
 
-        float radiance_min = mean - (1.0f * std_dev);
-        float radiance_max = mean + (1.0f * std_dev);
+        float radiance_min = mean - (input.std_dev_scale * std_dev);
+        float radiance_max = mean + (input.std_dev_scale * std_dev);
 
         // Clip the history shadow to the current frame's valid local variance range (AABB)
         history_shadow = clip_aabb(radiance_min, radiance_max, history_shadow);
     }
 
-    float alpha = success ? input.alpha : 1.0f;
+    float alpha = success ? max(input.alpha, 1.0f / history_length) : 1.0f;
 
     // Compute first two moments of luminance for variance estimation and temporally integrate
     float2 moments = float2(shadow, shadow * shadow);

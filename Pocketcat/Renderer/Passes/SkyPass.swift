@@ -40,6 +40,7 @@ class SkyPass: Pass {
     private let multipleScatteringLUT: Texture  // 32×32
     private let skyViewLUT: Texture  // 200×100
     private let skyCubemap: Texture  // cube 128×128
+    private var lutBaked: Bool = false
 
     private unowned var settings: SettingsRegistry
 
@@ -59,27 +60,22 @@ class SkyPass: Pass {
             float: "Sky.SunDiskSize", label: "Sun Disk Size (deg)", default: 2.0, range: 0.5...20.0,
             step: 0.1)
 
-        transmittancePipeline = ComputePipeline(
-            function: "transmittance_lut", name: "Sky Transmittance LUT")
-        multipleScatteringPipeline = ComputePipeline(
-            function: "multiple_scattering_lut", name: "Sky Multiple Scattering LUT")
+        transmittancePipeline = ComputePipeline(function: "transmittance_lut", name: "Sky Transmittance LUT")
+        multipleScatteringPipeline = ComputePipeline(function: "multiple_scattering_lut", name: "Sky Multiple Scattering LUT")
         skyViewPipeline = ComputePipeline(function: "sky_view_lut", name: "Sky View LUT")
         cubemapPipeline = ComputePipeline(function: "bake_skybox_cubemap", name: "Sky Cubemap Bake")
 
-        let tlutDesc = MTLTextureDescriptor.texture2DDescriptor(
-            pixelFormat: .rgba16Float, width: 256, height: 64, mipmapped: false)
+        let tlutDesc = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: .rgba16Float, width: 256, height: 64, mipmapped: false)
         tlutDesc.usage = [.shaderRead, .shaderWrite]
         transmittanceLUT = Texture(descriptor: tlutDesc)
         transmittanceLUT.setLabel(name: "Sky Transmittance LUT")
 
-        let msDesc = MTLTextureDescriptor.texture2DDescriptor(
-            pixelFormat: .rgba16Float, width: 32, height: 32, mipmapped: false)
+        let msDesc = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: .rgba16Float, width: 32, height: 32, mipmapped: false)
         msDesc.usage = [.shaderRead, .shaderWrite]
         multipleScatteringLUT = Texture(descriptor: msDesc)
         multipleScatteringLUT.setLabel(name: "Sky Multiple Scattering LUT")
 
-        let svDesc = MTLTextureDescriptor.texture2DDescriptor(
-            pixelFormat: .rgba16Float, width: 200, height: 100, mipmapped: false)
+        let svDesc = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: .rgba16Float, width: 200, height: 100, mipmapped: false)
         svDesc.usage = [.shaderRead, .shaderWrite]
         skyViewLUT = Texture(descriptor: svDesc)
         skyViewLUT.setLabel(name: "Sky View LUT")
@@ -109,27 +105,31 @@ class SkyPass: Pass {
         let cp = context.cmdBuffer.beginComputePass(name: "Sky")
 
         // 1. Transmittance LUT — buffer(0) = atmosphere_parameters, texture(0) = output
-        cp.pushMarker(name: "Transmittance LUT")
-        cp.setPipeline(pipeline: transmittancePipeline)
-        cp.setBytes(allocator: context.allocator, index: 0, bytes: &params, size: MemoryLayout<AtmosphereParameters>.size)
-        cp.setTexture(texture: transmittanceLUT, index: 0)
-        cp.dispatch(threads: MTLSizeMake((256 + 15) / 16, (64 + 7) / 8, 1), threadsPerGroup: MTLSizeMake(16, 8, 1))
-        cp.popMarker()
+        if !lutBaked {
+            cp.pushMarker(name: "Transmittance LUT")
+            cp.setPipeline(pipeline: transmittancePipeline)
+            cp.setBytes(allocator: context.allocator, index: 0, bytes: &params, size: MemoryLayout<AtmosphereParameters>.size)
+            cp.setTexture(texture: transmittanceLUT, index: 0)
+            cp.dispatch(threads: MTLSizeMake((256 + 15) / 16, (64 + 7) / 8, 1), threadsPerGroup: MTLSizeMake(16, 8, 1))
+            cp.popMarker()
 
-        // 2. Multiple Scattering LUT — texture(0) = tlut, texture(1) = output, buffer(0) = params
-        cp.intraPassBarrier(before: .dispatch, after: .dispatch)
-        cp.pushMarker(name: "Multiple Scattering LUT")
-        cp.setPipeline(pipeline: multipleScatteringPipeline)
-        cp.setBytes(allocator: context.allocator, index: 0, bytes: &params, size: MemoryLayout<AtmosphereParameters>.size)
-        cp.setBuffer(buf: context.sceneBuffer.buffer, index: 1)
-        cp.setTexture(texture: transmittanceLUT, index: 0)
-        cp.setTexture(texture: multipleScatteringLUT, index: 1)
-        cp.dispatch(threads: MTLSizeMake((32 + 7) / 8, (32 + 7) / 8, 1), threadsPerGroup: MTLSizeMake(8, 8, 1))
-        cp.popMarker()
+            // 2. Multiple Scattering LUT — texture(0) = tlut, texture(1) = output, buffer(0) = params
+            cp.intraPassBarrier(before: .dispatch, after: .dispatch)
+            cp.pushMarker(name: "Multiple Scattering LUT")
+            cp.setPipeline(pipeline: multipleScatteringPipeline)
+            cp.setBytes(allocator: context.allocator, index: 0, bytes: &params, size: MemoryLayout<AtmosphereParameters>.size)
+            cp.setBuffer(buf: context.sceneBuffer.buffer, index: 1)
+            cp.setTexture(texture: transmittanceLUT, index: 0)
+            cp.setTexture(texture: multipleScatteringLUT, index: 1)
+            cp.dispatch(threads: MTLSizeMake((32 + 7) / 8, (32 + 7) / 8, 1), threadsPerGroup: MTLSizeMake(8, 8, 1))
+            cp.popMarker()
+            cp.intraPassBarrier(before: .dispatch, after: .dispatch)
+            
+            lutBaked = true
+        }
 
         // 3. Sky View LUT — texture(0) = tlut, texture(1) = mslut, texture(2) = output
         //                   buffer(0) = scene_data, buffer(1) = atmosphere_parameters
-        cp.intraPassBarrier(before: .dispatch, after: .dispatch)
         cp.pushMarker(name: "Sky View LUT")
         cp.setPipeline(pipeline: skyViewPipeline)
         cp.setBuffer(buf: context.sceneBuffer.buffer, index: 0)

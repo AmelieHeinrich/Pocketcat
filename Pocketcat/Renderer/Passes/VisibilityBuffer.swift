@@ -14,6 +14,7 @@ class VisibilityBufferPass: Pass {
     private var visibilityTexture: Texture
     private var previousVisibilityTexture: Texture
     private var motionVectorTexture: Texture
+    private var previousMotionVectorTexture: Texture
     private var depthTexture: Texture
     private var previousDepth: Texture
     private unowned let registry: SettingsRegistry
@@ -63,6 +64,9 @@ class VisibilityBufferPass: Pass {
         self.motionVectorTexture = Texture(descriptor: motionDesc)
         self.motionVectorTexture.setLabel(name: "Motion Vectors")
 
+        self.previousMotionVectorTexture = Texture(descriptor: motionDesc)
+        self.previousMotionVectorTexture.setLabel(name: "PREVIOUS Motion Vectors")
+
         self.depthTexture = Texture(descriptor: depthDesc)
         self.depthTexture.setLabel(name: "Visibility Depth")
         
@@ -79,6 +83,7 @@ class VisibilityBufferPass: Pass {
     override func resize(renderWidth: Int, renderHeight: Int, outputWidth: Int, outputHeight: Int) {
         visibilityTexture.resize(width: renderWidth, height: renderHeight)
         motionVectorTexture.resize(width: renderWidth, height: renderHeight)
+        previousMotionVectorTexture.resize(width: renderWidth, height: renderHeight)
         depthTexture.resize(width: renderWidth, height: renderHeight)
         previousDepth.resize(width: renderWidth, height: renderHeight)
         previousVisibilityTexture.resize(width: renderWidth, height: renderHeight)
@@ -108,6 +113,7 @@ class VisibilityBufferPass: Pass {
         context.resources.register(previousVisibilityTexture, for: "History.Visibility")
         context.resources.register(previousDepth, for: "History.GBuffer.Depth")
         context.resources.register(motionVectorTexture, for: "GBuffer.MotionVectors")
+        context.resources.register(previousMotionVectorTexture, for: "History.GBuffer.MotionVectors")
         context.resources.register(depthTexture, for: "GBuffer.Depth")
 
         context.resources.addVisualizer(texture: visibilityTexture, label: "Visibility.InstanceID",
@@ -125,5 +131,6 @@ class VisibilityBufferPass: Pass {
     override func postRender(encoder: ComputePass) {
         encoder.copyTexture(src: self.visibilityTexture, dst: self.previousVisibilityTexture)
         encoder.copyTexture(src: self.depthTexture, dst: self.previousDepth)
+        encoder.copyTexture(src: self.motionVectorTexture, dst: self.previousMotionVectorTexture)
     }
 }

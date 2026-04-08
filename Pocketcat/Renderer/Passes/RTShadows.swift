@@ -18,6 +18,7 @@ struct RTShadowTemporalDenoiseInput {
     var motion_vectors: MTLResourceID
     var current_normals: MTLResourceID
     var previous_normals: MTLResourceID
+    var previous_depth: MTLResourceID
     var filtered: MTLResourceID
     var previous_filtered: MTLResourceID
     var moments: MTLResourceID
@@ -26,6 +27,8 @@ struct RTShadowTemporalDenoiseInput {
     var depth_threshold: Float
     var normal_threshold: Float
     var alpha: Float
+    var std_dev_scale: Float
+    var disocclusion_threshold: Float
 }
 
 struct RTShadowVarianceEstimationInput {
@@ -98,6 +101,12 @@ class RTShadows: Pass {
         self.settings.register(
             float: "RTShadows.Denoiser.Alpha", label: "Temporal Alpha", default: 0.05,
             range: 0.01...1.0, step: 0.01)
+        self.settings.register(
+            float: "RTShadows.Denoiser.StdDevScale", label: "AABB Std Dev Scale",
+            default: 2.0, range: 0.5...8.0, step: 0.5)
+        self.settings.register(
+            float: "RTShadows.Denoiser.DisocclusionThreshold", label: "Disocclusion Threshold",
+            default: 0.7, range: 0.1...0.95, step: 0.05)
         self.settings.register(
             int: "RTShadows.Denoiser.AtrousIterations", label: "À-Trous Iterations", default: 3, range: 1...8)
 
@@ -215,8 +224,9 @@ class RTShadows: Pass {
         let motionVectors = context.resources.get("GBuffer.MotionVectors") as Texture?
         let normals = context.resources.get("GBuffer.Normal") as Texture?
         let previousNormals = context.resources.get("History.GBuffer.Normal") as Texture?
+        let previousMotionVectors = context.resources.get("History.GBuffer.MotionVectors") as Texture?
         guard let motionVectors = motionVectors, let normals = normals,
-            let previousNormals = previousNormals
+            let previousNormals = previousNormals, let previousMotionVectors = previousMotionVectors
         else { return shadowMask }
 
         if temporalEnabled {
@@ -225,6 +235,7 @@ class RTShadows: Pass {
                 motion_vectors: motionVectors.texture.gpuResourceID,
                 current_normals: normals.texture.gpuResourceID,
                 previous_normals: previousNormals.texture.gpuResourceID,
+                previous_depth: previousMotionVectors.texture.gpuResourceID,
                 filtered: filtered[ping].texture.gpuResourceID,
                 previous_filtered: prevFiltered.texture.gpuResourceID,
                 moments: moments[ping].texture.gpuResourceID,
@@ -232,7 +243,9 @@ class RTShadows: Pass {
                 history: historyLength.texture.gpuResourceID,
                 depth_threshold: settings.float("RTShadows.Denoiser.DepthThreshold", default: 0.15),
                 normal_threshold: settings.float("RTShadows.Denoiser.NormalThreshold", default: 0.36),
-                alpha: settings.float("RTShadows.Denoiser.Alpha", default: 0.05)
+                alpha: settings.float("RTShadows.Denoiser.Alpha", default: 0.05),
+                std_dev_scale: settings.float("RTShadows.Denoiser.StdDevScale", default: 2.0),
+                disocclusion_threshold: settings.float("RTShadows.Denoiser.DisocclusionThreshold", default: 0.7)
             )
             cp.setPipeline(pipeline: temporalPipeline)
             cp.setBytes(allocator: context.allocator, index: 0, bytes: &temporalInput, size: MemoryLayout<RTShadowTemporalDenoiseInput>.size)
