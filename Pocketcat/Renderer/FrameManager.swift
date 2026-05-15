@@ -32,6 +32,7 @@ class FrameManager {
     private unowned let registry: SettingsRegistry
     private unowned let lightState: LightState
 
+    private let appStartTime: Double = CACurrentMediaTime()
     private var viewportWidth: Int = 1
     private var viewportHeight: Int = 1
     private var lastRenderScale: Float = -1.0
@@ -157,7 +158,8 @@ class FrameManager {
                 sceneBuffer: sceneBuffer,
                 frameIndex: ringIndex,
                 allocator: allocator,
-                sunElevationDegrees: lightState.sunElevationDegrees
+                sunElevationDegrees: lightState.sunElevationDegrees,
+                elapsedTime: Float(CACurrentMediaTime() - appStartTime)
             )
 
             // Update entity transforms before passes run

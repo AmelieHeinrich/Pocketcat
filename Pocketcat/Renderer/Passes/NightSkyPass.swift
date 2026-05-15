@@ -11,6 +11,8 @@ import simd
 private struct NightStarParams {
     var starBrightness: Float
     var cubemapSize: UInt32
+    var elapsedTime: Float
+    var twinkleStrength: Float
 }
 
 private struct MilkyWayBakeParams {
@@ -39,6 +41,7 @@ class NightSkyPass: Pass {
         settings.register(bool:  "NightSky.Enabled",          label: "Night Sky Enabled",  default: true)
         settings.register(float: "NightSky.MilkyWayExposure", label: "Milky Way Exposure", default: 0.03,  range: 0.001...1.0,   step: 0.001)
         settings.register(float: "NightSky.StarBrightness",   label: "Star Brightness",    default: 500.0, range: 1.0...5000.0,  step: 10.0)
+        settings.register(float: "NightSky.TwinkleStrength",  label: "Twinkle Strength",   default: 0.35,  range: 0.0...2.0,     step: 0.05)
 
         milkywayBakePipeline = ComputePipeline(function: "nightsky_bake_milkyway", name: "NightSky Milky Way Bake")
 
@@ -97,6 +100,8 @@ class NightSkyPass: Pass {
         let enc = cmdBuf.makeComputeCommandEncoder()!
         enc.setComputePipelineState(milkywayBakePipeline.pipelineState)
         withUnsafeBytes(of: &bakeParams) { enc.setBytes($0.baseAddress!, length: $0.count, index: 0) }
+        var cubeSize = UInt32(s)
+        withUnsafeBytes(of: &cubeSize) { enc.setBytes($0.baseAddress!, length: $0.count, index: 1) }
         enc.setTexture(milkywayTex.texture, index: 0)
         enc.setTexture(milkywayCubemap.texture, index: 1)
         let tg = MTLSizeMake(8, 8, 1)
@@ -127,7 +132,9 @@ class NightSkyPass: Pass {
         // selects the face via [[render_target_array_index]])
         var starParams = NightStarParams(
             starBrightness: settings.float("NightSky.StarBrightness", default: 500.0),
-            cubemapSize: UInt32(s)
+            cubemapSize: UInt32(s),
+            elapsedTime: context.elapsedTime,
+            twinkleStrength: settings.float("NightSky.TwinkleStrength", default: 0.35)
         )
 
         var rpDesc = RenderPassDescriptor()

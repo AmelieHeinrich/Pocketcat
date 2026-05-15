@@ -46,6 +46,7 @@ struct FrameContext {
     var frameIndex: Int
     var allocator: GPULinearAllocator
     var sunElevationDegrees: Float = 0.0
+    var elapsedTime: Float = 0.0
 }
 
 extension Camera {

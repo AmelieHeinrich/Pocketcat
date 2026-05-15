@@ -19,8 +19,8 @@ To add more meshes, you can add any GLTF model in SourceAssets and run the Asset
 - GPU driven visibility buffer with mesh shaders
 - MetalFX spatial/temporal upscaling
 - Stochastic reference pathtracer
-- Hillaire sky model
-- AgX tonemapping
+- Hillaire sky model and custom night sky model rendered using astronomical data
+- Tonemapping suite (AgX/ACES/Reindhart/Uncharted2)
 
 ## WIP
 
@@ -30,15 +30,10 @@ All of these features are complete on the raytracing part but are missing the de
 - Raytraced global illumination
 - Raytraced reflections
 
-- Procedural night sky
-
 ## TODO
 
 - Proper meshlet culling and LOD selection
-- Inference engine
-- SSAO + NNAO
 - Point lights in raster and PT
 - Clustered light culling
 - Volumetric clouds
 - Auto-exposure
-- Wavefront pathtracer with custom materials

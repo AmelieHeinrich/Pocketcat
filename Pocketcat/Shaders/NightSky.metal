@@ -71,12 +71,13 @@ struct NightSkyBakeParams {
 
 kernel void nightsky_bake_milkyway(
     const device NightSkyBakeParams& params [[buffer(0)]],
+    constant uint&                           cube_size [[buffer(1)]],
     texture2d<float, access::sample>         milkyway [[texture(0)]],
     texturecube<float, access::write>        output   [[texture(1)]],
     uint3 gid [[thread_position_in_grid]])
 {
     uint face = gid.z;
-    uint size = output.get_width();
+    uint size = cube_size;
     if (gid.x >= size || gid.y >= size) return;
 
     // Reconstruct world direction for this texel
@@ -119,6 +120,8 @@ kernel void nightsky_bake_milkyway(
 struct NightStarParams {
     float star_brightness;
     uint  cubemap_size;
+    float elapsed_time;
+    float twinkle_strength;
 };
 
 struct StarVsOut {
@@ -188,6 +191,11 @@ inline float3 bv_to_rgb(float bv)
     return max(float3(r, g, b), float3(0.0));
 }
 
+// Pseudo-random float in [0,1) from a float seed.
+inline float hash1(float x) {
+    return fract(sin(x * 127.1) * 43758.5453);
+}
+
 [[fragment]]
 float4 nightsky_stars_fs(
     StarVsOut                     in     [[stage_in]],
@@ -198,8 +206,24 @@ float4 nightsky_stars_fs(
     constexpr sampler smp(filter::linear, address::clamp_to_zero);
     float alpha = sprite.sample(smp, in.uv).r;
 
-    Star  star       = stars[in.star_index];
-    float mag        = clamp(star.mag, -1.5, 7.5);
+    Star  star = stars[in.star_index];
+    float mag  = clamp(star.mag, -1.5, 7.5);
+
+    // Twinkling: atmospheric scintillation, physically strongest on bright stars.
+    // Stars brighter than mag 3 twinkle fully; mag 3–5 fade out; dimmer stars are steady.
+    float star_twinkle = (1.0 - smoothstep(-1.5, 3.0, mag)) * params.twinkle_strength;
+    if (star_twinkle > 0.0) {
+        // Unique per-star phases derived from position — no extra memory needed.
+        float seed  = hash1(star.ra * 3.1 + star.dec * 7.9);
+        float phase = seed * 6.2831853;
+        float t     = params.elapsed_time;
+
+        // Two overlapping sine waves at slightly different frequencies give irregular flicker.
+        float flicker = 0.5 * sin(t * 3.7 + phase)
+                      + 0.5 * sin(t * 5.3 + phase * 1.7 + 1.1);  // [-1, 1]
+        alpha *= 1.0 + star_twinkle * flicker;
+    }
+
     float brightness = pow(10.0, -0.4 * mag) * params.star_brightness;
     float3 col       = bv_to_rgb(star.bv);
 
