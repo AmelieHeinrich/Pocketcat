@@ -27,6 +27,8 @@ struct AtmosphereParameters {
     var skyIntensity: Float = 5.0
     var sunDiskIntensity: Float = 20.0
     var sunDiskSize: Float = 2.0  // degrees
+    var nightBlendFactor: Float = 1.0  // 0=full night, 1=full day
+    var milkywayExposure: Float = 0.03
 }
 
 class SkyPass: Pass {
@@ -34,12 +36,14 @@ class SkyPass: Pass {
     private let multipleScatteringPipeline: ComputePipeline
     private let skyViewPipeline: ComputePipeline
     private let cubemapPipeline: ComputePipeline
+    private let compositePipeline: ComputePipeline
 
     // Fixed-size LUT textures (not viewport-dependent)
-    private let transmittanceLUT: Texture  // 256×64
-    private let multipleScatteringLUT: Texture  // 32×32
-    private let skyViewLUT: Texture  // 200×100
-    private let skyCubemap: Texture  // cube 128×128
+    private let transmittanceLUT: Texture      // 256×64
+    private let multipleScatteringLUT: Texture // 32×32
+    private let skyViewLUT: Texture            // 200×100
+    private let atmosphereCubemap: Texture     // cube 128×128, atmosphere + sun disk only
+    private let skyCubemap: Texture            // cube 2048×2048, composite (atmo + stars + milky way)
     private var lutBaked: Bool = false
 
     private unowned var settings: SettingsRegistry
@@ -60,10 +64,11 @@ class SkyPass: Pass {
             float: "Sky.SunDiskSize", label: "Sun Disk Size (deg)", default: 2.0, range: 0.5...20.0,
             step: 0.1)
 
-        transmittancePipeline = ComputePipeline(function: "transmittance_lut", name: "Sky Transmittance LUT")
+        transmittancePipeline    = ComputePipeline(function: "transmittance_lut",        name: "Sky Transmittance LUT")
         multipleScatteringPipeline = ComputePipeline(function: "multiple_scattering_lut", name: "Sky Multiple Scattering LUT")
-        skyViewPipeline = ComputePipeline(function: "sky_view_lut", name: "Sky View LUT")
-        cubemapPipeline = ComputePipeline(function: "bake_skybox_cubemap", name: "Sky Cubemap Bake")
+        skyViewPipeline          = ComputePipeline(function: "sky_view_lut",             name: "Sky View LUT")
+        cubemapPipeline          = ComputePipeline(function: "bake_skybox_cubemap",      name: "Sky Atmosphere Cubemap Bake")
+        compositePipeline        = ComputePipeline(function: "composite_sky_cubemap",    name: "Sky Composite Cubemap")
 
         let tlutDesc = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: .rgba16Float, width: 256, height: 64, mipmapped: false)
         tlutDesc.usage = [.shaderRead, .shaderWrite]
@@ -80,12 +85,23 @@ class SkyPass: Pass {
         skyViewLUT = Texture(descriptor: svDesc)
         skyViewLUT.setLabel(name: "Sky View LUT")
 
+        // Small atmosphere-only cubemap (ALU-heavy bake, low-res is fine for atmospheric gradients)
+        let atmoDesc = MTLTextureDescriptor()
+        atmoDesc.textureType = .typeCube
+        atmoDesc.pixelFormat = .rgba16Float
+        atmoDesc.width  = 128
+        atmoDesc.height = 128
+        atmoDesc.usage  = [.shaderRead, .shaderWrite]
+        atmosphereCubemap = Texture(descriptor: atmoDesc)
+        atmosphereCubemap.setLabel(name: "Sky Atmosphere Cubemap")
+
+        // Full-res composite cubemap used by sky_draw and reflections/IBL
         let cubeDesc = MTLTextureDescriptor()
         cubeDesc.textureType = .typeCube
         cubeDesc.pixelFormat = .rgba16Float
-        cubeDesc.width = 128
-        cubeDesc.height = 128
-        cubeDesc.usage = [.shaderRead, .shaderWrite]
+        cubeDesc.width  = 1024
+        cubeDesc.height = 1024
+        cubeDesc.usage  = [.shaderRead, .shaderWrite]
         skyCubemap = Texture(descriptor: cubeDesc)
         skyCubemap.setLabel(name: "Sky Cubemap")
 
@@ -97,10 +113,15 @@ class SkyPass: Pass {
         guard settings.bool("Sky.Enabled", default: true) else { return }
 
         var params = AtmosphereParameters()
-        params.miePhaseG = settings.float("Sky.MiePhaseG", default: 0.8)
-        params.skyIntensity = settings.float("Sky.Intensity", default: 5.0)
+        params.miePhaseG       = settings.float("Sky.MiePhaseG",       default: 0.8)
+        params.skyIntensity    = settings.float("Sky.Intensity",        default: 5.0)
         params.sunDiskIntensity = settings.float("Sky.SunDiskIntensity", default: 20.0)
-        params.sunDiskSize = settings.float("Sky.SunDiskSize", default: 2.0)
+        params.sunDiskSize     = settings.float("Sky.SunDiskSize",      default: 2.0)
+        params.milkywayExposure = settings.float("NightSky.MilkyWayExposure", default: 0.03)
+
+        // Smooth blend zone: -10° (full night) → +10° (full day)
+        let elevation = context.sunElevationDegrees
+        params.nightBlendFactor = max(0.0, min(1.0, (elevation + 10.0) / 20.0))
 
         let cp = context.cmdBuffer.beginComputePass(name: "Sky")
 
@@ -113,7 +134,7 @@ class SkyPass: Pass {
             cp.dispatch(threads: MTLSizeMake((256 + 15) / 16, (64 + 7) / 8, 1), threadsPerGroup: MTLSizeMake(16, 8, 1))
             cp.popMarker()
 
-            // 2. Multiple Scattering LUT — texture(0) = tlut, texture(1) = output, buffer(0) = params
+            // 2. Multiple Scattering LUT
             cp.intraPassBarrier(before: .dispatch, after: .dispatch)
             cp.pushMarker(name: "Multiple Scattering LUT")
             cp.setPipeline(pipeline: multipleScatteringPipeline)
@@ -124,12 +145,11 @@ class SkyPass: Pass {
             cp.dispatch(threads: MTLSizeMake((32 + 7) / 8, (32 + 7) / 8, 1), threadsPerGroup: MTLSizeMake(8, 8, 1))
             cp.popMarker()
             cp.intraPassBarrier(before: .dispatch, after: .dispatch)
-            
+
             lutBaked = true
         }
 
-        // 3. Sky View LUT — texture(0) = tlut, texture(1) = mslut, texture(2) = output
-        //                   buffer(0) = scene_data, buffer(1) = atmosphere_parameters
+        // 3. Sky View LUT
         cp.pushMarker(name: "Sky View LUT")
         cp.setPipeline(pipeline: skyViewPipeline)
         cp.setBuffer(buf: context.sceneBuffer.buffer, index: 0)
@@ -141,23 +161,49 @@ class SkyPass: Pass {
         cp.popMarker()
 
         cp.intraPassBarrier(before: .dispatch, after: .dispatch)
-        cp.pushMarker(name: "Cubemap Bake")
+
+        // 4. Atmosphere bake → 128×128 cubemap (ALU-heavy LUT sampling, small dispatch)
+        cp.pushMarker(name: "Atmosphere Cubemap Bake")
         cp.setPipeline(pipeline: cubemapPipeline)
         cp.setBuffer(buf: context.sceneBuffer.buffer, index: 0)
         cp.setBytes(allocator: context.allocator, index: 1, bytes: &params, size: MemoryLayout<AtmosphereParameters>.size)
+        var atmoSize: UInt32 = 128
+        cp.setBytes(allocator: context.allocator, index: 2, bytes: &atmoSize, size: MemoryLayout<UInt32>.size)
         cp.setTexture(texture: skyViewLUT, index: 0)
-        cp.setTexture(texture: skyCubemap, index: 1)
+        cp.setTexture(texture: atmosphereCubemap, index: 1)
         cp.setTexture(texture: transmittanceLUT, index: 2)
         cp.dispatch(threads: MTLSizeMake((128 + 7) / 8, (128 + 7) / 8, 6), threadsPerGroup: MTLSizeMake(8, 8, 1))
         cp.popMarker()
 
+        cp.intraPassBarrier(before: .dispatch, after: .dispatch)
+
+        // 5. Composite → 2048×2048 cubemap (cheap: all cubemap fetches + lerp, no ALU LUT math)
+        cp.pushMarker(name: "Sky Composite Cubemap")
+        cp.consumerBarrier(before: .dispatch, after: .fragment)
+        cp.setPipeline(pipeline: compositePipeline)
+        cp.setBytes(allocator: context.allocator, index: 0, bytes: &params, size: MemoryLayout<AtmosphereParameters>.size)
+        var compositeSize: UInt32 = 1024
+        cp.setBytes(allocator: context.allocator, index: 1, bytes: &compositeSize, size: MemoryLayout<UInt32>.size)
+        cp.setTexture(texture: atmosphereCubemap, index: 0)
+        cp.setTexture(texture: skyCubemap, index: 1)
+        if let nightCubemap: Texture = context.resources.get("Night.Cubemap") {
+            cp.setTexture(texture: nightCubemap, index: 2)
+        }
+        if let mwCubemap: Texture = context.resources.get("Night.MilkyWayCubemap") {
+            cp.setTexture(texture: mwCubemap, index: 3)
+        }
+        cp.dispatch(threads: MTLSizeMake((1024 + 7) / 8, (1024 + 7) / 8, 6), threadsPerGroup: MTLSizeMake(8, 8, 1))
+        cp.popMarker()
+
         cp.end()
 
-        context.resources.register(skyViewLUT, for: "Sky.ViewLUT")
-        context.resources.register(skyCubemap, for: "Sky.Cubemap")
-        context.resources.register(transmittanceLUT, for: "Sky.TransmittanceLUT")
+        context.resources.register(skyViewLUT,        for: "Sky.ViewLUT")
+        context.resources.register(atmosphereCubemap, for: "Sky.AtmosphereCubemap")
+        context.resources.register(skyCubemap,        for: "Sky.Cubemap")
+        context.resources.register(transmittanceLUT,  for: "Sky.TransmittanceLUT")
         context.sceneBuffer.setSkybox(skyCubemap)
-        
-        context.resources.addCubemapVisualizer(texture: skyCubemap, label: "Sky Cubemap")
+
+        context.resources.addCubemapVisualizer(texture: atmosphereCubemap, label: "Sky Atmosphere Cubemap")
+        context.resources.addCubemapVisualizer(texture: skyCubemap,        label: "Sky Cubemap")
     }
 }

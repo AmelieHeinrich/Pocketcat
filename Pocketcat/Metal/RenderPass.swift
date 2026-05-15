@@ -18,6 +18,11 @@ struct RenderPassDescriptor {
     var shouldClearDepth: Bool = true
     var shouldStoreDepth: Bool = true
 
+    // Non-zero enables layered rendering (e.g. cubemap: 6). Must set renderTargetSize too.
+    var renderTargetArrayLength: Int = 0
+    var renderTargetWidth: Int = 0
+    var renderTargetHeight: Int = 0
+
     mutating func setName(name: String) {
         self.name = name
     }
@@ -72,6 +77,16 @@ class RenderPass {
             rpd.depthAttachment.storeAction = descriptor.shouldStoreDepth ? .store : .dontCare
         }
 
+        if descriptor.renderTargetArrayLength > 0 {
+            rpd.renderTargetArrayLength = descriptor.renderTargetArrayLength
+            if descriptor.renderTargetWidth > 0 {
+                rpd.renderTargetWidth = descriptor.renderTargetWidth
+            }
+            if descriptor.renderTargetHeight > 0 {
+                rpd.renderTargetHeight = descriptor.renderTargetHeight
+            }
+        }
+
         self.encoder = cmdBuffer.makeRenderCommandEncoder(descriptor: rpd)!
         self.encoder.label = descriptor.name
 
@@ -118,6 +133,15 @@ class RenderPass {
         FrameAccumulator.current.directDrawCount += 1
         self.encoder.drawPrimitives(
             primitiveType: primitiveType, vertexStart: vertexOffset, vertexCount: vertexCount)
+    }
+
+    func drawInstanced(primitiveType: MTLPrimitiveType, vertexCount: Int, instanceCount: Int) {
+        FrameAccumulator.current.directDrawCount += 1
+        self.encoder.drawPrimitives(
+            primitiveType: primitiveType,
+            vertexStart: 0,
+            vertexCount: vertexCount,
+            instanceCount: instanceCount)
     }
 
     func drawIndexed(

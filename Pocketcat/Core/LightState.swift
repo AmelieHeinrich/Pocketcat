@@ -67,6 +67,19 @@ class LightState: ObservableObject {
 
     // MARK: - Computed sun direction
 
+    var sunElevationDegrees: Float {
+        switch sunMode {
+        case .manual:
+            return sunElevation
+        case .timeOfDay:
+            let cal = Calendar.current
+            let hour = Float(cal.component(.hour, from: Date()))
+            let minute = Float(cal.component(.minute, from: Date()))
+            let t = (hour + minute / 60.0) / 24.0
+            return sin((t - 0.25) * 2.0 * Float.pi) * 80.0
+        }
+    }
+
     var sunDirection: SIMD3<Float> {
         switch sunMode {
         case .manual:

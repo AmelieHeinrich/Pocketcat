@@ -62,8 +62,8 @@ private struct SunArcballGizmo: View {
 
             // Sun dot position: azimuth rotates around ring, elevation shrinks radius
             let az = CGFloat(azimuth) * .pi / 180.0
-            let el = CGFloat(elevation) / 90.0  // 0=horizon, 1=zenith
-            let dotR = r * (1.0 - max(0, el))
+            let el = CGFloat(elevation) / 90.0  // 0=horizon, 1=zenith, negative=below horizon
+            let dotR = r * (1.0 - el)
             let dotX = cx + dotR * sin(az)
             let dotY = cy - dotR * cos(az)
 
@@ -93,9 +93,9 @@ private struct SunArcballGizmo: View {
                     let angle = atan2(dx, -dy) * 180.0 / .pi
                     azimuth = Float((angle + 360).truncatingRemainder(dividingBy: 360))
 
-                    // Elevation from distance: center=zenith(90°), rim=horizon(0°)
-                    let frac = min(dist / r, 1.0)
-                    elevation = Float((1.0 - frac) * 90.0)
+                    // Elevation: center=zenith(90°), rim=horizon(0°), beyond rim=below horizon(<0°)
+                    let frac = dist / r
+                    elevation = Float(max(-90.0, (1.0 - frac) * 90.0))
                 }
         )
         .help("Drag to set sun direction")
@@ -221,7 +221,7 @@ struct WorldView: View {
 
                 LabeledSlider(label: "Azimuth", value: $lightState.sunAzimuth, range: 0...360,
                               format: "%.0f°")
-                LabeledSlider(label: "Elevation", value: $lightState.sunElevation, range: -10...90,
+                LabeledSlider(label: "Elevation", value: $lightState.sunElevation, range: -90...90,
                               format: "%.0f°")
             } else {
                 HStack(spacing: 6) {

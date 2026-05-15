@@ -92,7 +92,7 @@ void pathtracer(const device scene_data& scene [[buffer(0)]],
         float3 path_ray_dir = v0;
 
         for (uint bounce = 0; bounce < parameters.bounce_count; bounce++) {
-            path_radiance += throughput * hit.emissive;
+            path_radiance += throughput * (hit.emissive * 50);
 
             // Directional Light NEE
             float3 l_dir = -light_dir;

@@ -156,7 +156,8 @@ class FrameManager {
                 scene: scene,
                 sceneBuffer: sceneBuffer,
                 frameIndex: ringIndex,
-                allocator: allocator
+                allocator: allocator,
+                sunElevationDegrees: lightState.sunElevationDegrees
             )
 
             // Update entity transforms before passes run
@@ -313,6 +314,7 @@ class FrameManager {
             step: 0.05)
 
         // Initialize passes
+        let nightSkyPass = NightSkyPass(settings: registry)
         let skyPass = SkyPass(settings: registry)
         let skyDrawPass = SkyDrawPass(settings: registry)
         let cullViewPass = CullViewPass(registry: registry)
@@ -334,13 +336,14 @@ class FrameManager {
         debug.registry = registry
 
         self.passes = [
-            skyPass, skyDrawPass, tlas, cullViewPass, visibilityPass, pathtracer, tonemap, upscaler,
-            debug, gbufferPass, deferred, accumulationDenoiser, rtgi, rtshadows, rtao, rtreflections,
-            texViz,
+            nightSkyPass, skyPass, skyDrawPass, tlas, cullViewPass, visibilityPass, pathtracer, tonemap,
+            upscaler, debug, gbufferPass, deferred, accumulationDenoiser, rtgi, rtshadows, rtao,
+            rtreflections, texViz,
         ]
 
         // Desktop pipeline
         let desktopTimeline = RenderTimeline()
+        desktopTimeline.addPass(nightSkyPass)
         desktopTimeline.addPass(skyPass)
         desktopTimeline.addPass(tlas)
         desktopTimeline.addPass(cullViewPass)
@@ -359,6 +362,7 @@ class FrameManager {
 
         // Pathtrace pipeline
         let pathtraceTimeline = RenderTimeline()
+        pathtraceTimeline.addPass(nightSkyPass)
         pathtraceTimeline.addPass(skyPass)
         pathtraceTimeline.addPass(tlas)
         pathtraceTimeline.addPass(cullViewPass)

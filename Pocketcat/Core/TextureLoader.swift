@@ -74,7 +74,7 @@ class TextureLoader {
         )
         desc.mipmapLevelCount = mips
         desc.storageMode = .shared
-        desc.usage = .shaderRead
+        desc.usage = [.shaderRead, .shaderWrite, .renderTarget]
 
         // Don't add to the residency set here — TextureLoader may be called
         // from a background thread. The caller is responsible for calling

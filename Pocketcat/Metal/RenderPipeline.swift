@@ -14,6 +14,7 @@ struct RenderPipelineDescriptor {
     var fragmentFunction: String? = nil
 
     var blendingEnabled: Bool = false
+    var additiveBlending: Bool = false  // src=sourceAlpha, dst=one
     var pixelFormats: [MTLPixelFormat] = []
 
     var depthFormat: MTLPixelFormat = .invalid
@@ -59,6 +60,14 @@ class RenderPipeline {
                 pipelineDesc.colorAttachments[i].sourceAlphaBlendFactor = .sourceAlpha
                 pipelineDesc.colorAttachments[i].destinationRGBBlendFactor = .oneMinusSourceAlpha
                 pipelineDesc.colorAttachments[i].destinationAlphaBlendFactor = .oneMinusSourceAlpha
+            } else if descriptor.additiveBlending {
+                pipelineDesc.colorAttachments[i].isBlendingEnabled = true
+                pipelineDesc.colorAttachments[i].rgbBlendOperation = .add
+                pipelineDesc.colorAttachments[i].alphaBlendOperation = .add
+                pipelineDesc.colorAttachments[i].sourceRGBBlendFactor = .sourceAlpha
+                pipelineDesc.colorAttachments[i].sourceAlphaBlendFactor = .one
+                pipelineDesc.colorAttachments[i].destinationRGBBlendFactor = .one
+                pipelineDesc.colorAttachments[i].destinationAlphaBlendFactor = .one
             }
         }
         if descriptor.depthEnabled {
@@ -72,6 +81,7 @@ class RenderPipeline {
         if descriptor.supportsIndirect {
             pipelineDesc.supportIndirectCommandBuffers = true
         }
+        pipelineDesc.inputPrimitiveTopology = descriptor.primitiveTopologyClass
 
         if descriptor.depthEnabled {
             let depthDescriptor = MTLDepthStencilDescriptor()
@@ -81,8 +91,7 @@ class RenderPipeline {
                 descriptor: depthDescriptor)!
         }
 
-        self.pipelineState = try! RendererData.device.makeRenderPipelineState(
-            descriptor: pipelineDesc)
+        self.pipelineState = try! RendererData.device.makeRenderPipelineState(descriptor: pipelineDesc)
         self.linkedFunctions = mtlFunctions
     }
 

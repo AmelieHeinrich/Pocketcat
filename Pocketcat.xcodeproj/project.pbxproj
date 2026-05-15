@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		1363D1CE2F7D0CBF00EC1628 /* raw3.tex in Resources */ = {isa = PBXBuildFile; fileRef = 1363D1CB2F7D0CBF00EC1628 /* raw3.tex */; };
 		1363D1CF2F7D0CBF00EC1628 /* ShadowTest.bin in Resources */ = {isa = PBXBuildFile; fileRef = 1363D1CC2F7D0CBF00EC1628 /* ShadowTest.bin */; };
+		136769812FB7375E00D038A7 /* hyg_v42.star in Resources */ = {isa = PBXBuildFile; fileRef = 1367697D2FB7375E00D038A7 /* hyg_v42.star */; };
+		136769822FB7375E00D038A7 /* MilkyWayEquiRectangular.tex in Resources */ = {isa = PBXBuildFile; fileRef = 1367697E2FB7375E00D038A7 /* MilkyWayEquiRectangular.tex */; };
+		136769832FB7375E00D038A7 /* star_airy_disk_sprite.tex in Resources */ = {isa = PBXBuildFile; fileRef = 1367697F2FB7375E00D038A7 /* star_airy_disk_sprite.tex */; };
 		136A178A2F5B811700BE5330 /* Buddha.bin in Resources */ = {isa = PBXBuildFile; fileRef = 136A17822F5B811700BE5330 /* Buddha.bin */; };
 		13DCA3832F7FBEC00024D096 /* PBRSpheres.bin in Resources */ = {isa = PBXBuildFile; fileRef = 13DCA37F2F7FBEC00024D096 /* PBRSpheres.bin */; };
 		13DCA3842F7FBEC00024D096 /* Spheres_BaseColor.tex in Resources */ = {isa = PBXBuildFile; fileRef = 13DCA3802F7FBEC00024D096 /* Spheres_BaseColor.tex */; };
@@ -599,6 +602,9 @@
 /* Begin PBXFileReference section */
 		1363D1CB2F7D0CBF00EC1628 /* raw3.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = raw3.tex; sourceTree = "<group>"; };
 		1363D1CC2F7D0CBF00EC1628 /* ShadowTest.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = ShadowTest.bin; sourceTree = "<group>"; };
+		1367697D2FB7375E00D038A7 /* hyg_v42.star */ = {isa = PBXFileReference; lastKnownFileType = file; path = hyg_v42.star; sourceTree = "<group>"; };
+		1367697E2FB7375E00D038A7 /* MilkyWayEquiRectangular.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = MilkyWayEquiRectangular.tex; sourceTree = "<group>"; };
+		1367697F2FB7375E00D038A7 /* star_airy_disk_sprite.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = star_airy_disk_sprite.tex; sourceTree = "<group>"; };
 		136A17822F5B811700BE5330 /* Buddha.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = Buddha.bin; sourceTree = "<group>"; };
 		13DCA37F2F7FBEC00024D096 /* PBRSpheres.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = PBRSpheres.bin; sourceTree = "<group>"; };
 		13DCA3802F7FBEC00024D096 /* Spheres_BaseColor.tex */ = {isa = PBXFileReference; lastKnownFileType = file; path = Spheres_BaseColor.tex; sourceTree = "<group>"; };
@@ -1229,6 +1235,16 @@
 			path = ShadowTest;
 			sourceTree = "<group>";
 		};
+		136769802FB7375E00D038A7 /* Astronomy */ = {
+			isa = PBXGroup;
+			children = (
+				1367697D2FB7375E00D038A7 /* hyg_v42.star */,
+				1367697E2FB7375E00D038A7 /* MilkyWayEquiRectangular.tex */,
+				1367697F2FB7375E00D038A7 /* star_airy_disk_sprite.tex */,
+			);
+			path = Astronomy;
+			sourceTree = "<group>";
+		};
 		136A17832F5B811700BE5330 /* Buddha */ = {
 			isa = PBXGroup;
 			children = (
@@ -1342,6 +1358,7 @@
 		BA02D9F22F558F09009EBF35 /* BakedAssets */ = {
 			isa = PBXGroup;
 			children = (
+				136769802FB7375E00D038A7 /* Astronomy */,
 				13DCA3822F7FBEC00024D096 /* PBRSpheres */,
 				1363D1CD2F7D0CBF00EC1628 /* ShadowTest */,
 				136EE4CB2F6C2B58004E9246 /* CubeAndSphere */,
@@ -2289,6 +2306,9 @@
 				BA82AD5C2F55C5D60052AFC5 /* MASTER_Building_Details_Normal.tex in Resources */,
 				BA82AD5D2F55C5D60052AFC5 /* Pavement_Cobblestone_Wet_BLENDSHADER_Normal.tex in Resources */,
 				BA82AD5E2F55C5D60052AFC5 /* Paris_StringLights_01_White_Color_Emissive_Emissive.tex in Resources */,
+				136769812FB7375E00D038A7 /* hyg_v42.star in Resources */,
+				136769822FB7375E00D038A7 /* MilkyWayEquiRectangular.tex in Resources */,
+				136769832FB7375E00D038A7 /* star_airy_disk_sprite.tex in Resources */,
 				BA82AD5F2F55C5D60052AFC5 /* MenuSign_01_Normal.tex in Resources */,
 				BA82AD602F55C5D60052AFC5 /* Concrete2_BaseColor.tex in Resources */,
 				BA82AD612F55C5D60052AFC5 /* MASTER_Forge_Metal_Specular.tex in Resources */,
