@@ -41,7 +41,7 @@ class LightState: ObservableObject {
     // Shared sun properties
     @Published var sunColor: Color = Color(red: 1.0, green: 0.95, blue: 0.85)
     @Published var sunIntensity: Float = 3.0
-    @Published var sunRadius: Float = 0.05     // angular radius for soft shadows
+    @Published var sunRadius: Float = 0     // angular radius for soft shadows
 
     // Point lights
     @Published var pointLights: [PointLightEntry] = []
@@ -97,7 +97,8 @@ class LightState: ObservableObject {
 
         return GPUSunLight(
             directionAndRadius: SIMD4<Float>(dir, sunRadius),
-            colorAndIntensity: SIMD4<Float>(col, intensity))
+            colorAndIntensity: SIMD4<Float>(col, intensity)
+        )
     }
 
     func gpuPointLights() -> [GPUPointLight] {

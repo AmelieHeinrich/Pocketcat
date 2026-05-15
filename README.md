@@ -30,6 +30,8 @@ All of these features are complete on the raytracing part but are missing the de
 - Raytraced global illumination
 - Raytraced reflections
 
+- Procedural night sky
+
 ## TODO
 
 - Proper meshlet culling and LOD selection
@@ -38,6 +40,5 @@ All of these features are complete on the raytracing part but are missing the de
 - Point lights in raster and PT
 - Clustered light culling
 - Volumetric clouds
-- Neural sky model?
 - Auto-exposure
 - Wavefront pathtracer with custom materials

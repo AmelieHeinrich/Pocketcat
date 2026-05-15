@@ -2,6 +2,19 @@ import Metal
 internal import QuartzCore
 import simd
 
+enum TonemapMode: Int, CaseIterable {
+    case AGX       = 0
+    case ACES      = 1
+    case Reinhard  = 2
+    case Uncharted2 = 3
+    case None      = 4
+}
+
+private struct TonemapParams {
+    var gamma: Float
+    var mode: Int32
+}
+
 class TonemapPass: Pass {
     private let pipeline: RenderPipeline
     private unowned let registry: SettingsRegistry
@@ -16,6 +29,7 @@ class TonemapPass: Pass {
 
         self.pipeline = RenderPipeline(descriptor: pipelineDesc)
         self.registry = registry
+        registry.register(enum: "Tonemap.Mode", label: "Algorithm", default: TonemapMode.ACES)
         registry.register(float: "Tonemap.Gamma", label: "Gamma", default: 1.4, range: 1.0...3.0)
 
         super.init()
@@ -31,7 +45,8 @@ class TonemapPass: Pass {
         let forward = context.resources.get("HDR") as Texture?
         guard let forward = forward else { return }
 
-        var gamma = registry.float("Tonemap.Gamma")
+        let mode = registry.enum("Tonemap.Mode", as: TonemapMode.self, default: .AGX)
+        var params = TonemapParams(gamma: registry.float("Tonemap.Gamma"), mode: Int32(mode.rawValue))
         var rpDesc = RenderPassDescriptor()
         rpDesc.setName(name: "Tonemap")
         
@@ -52,7 +67,7 @@ class TonemapPass: Pass {
         rp.consumerBarrier(before: .vertex, after: [.vertex, .fragment, .mesh, .object, .dispatch])
         rp.setPipeline(pipeline: self.pipeline)
         rp.setTexture(texture: forward, index: 0, stages: .fragment)
-        rp.setBytes(allocator: context.allocator, index: 0, bytes: &gamma, size: MemoryLayout<Float>.size, stages: .fragment)
+        rp.setBytes(allocator: context.allocator, index: 0, bytes: &params, size: MemoryLayout<TonemapParams>.size, stages: .fragment)
         rp.draw(primitiveType: .triangle, vertexCount: 3, vertexOffset: 0)
         rp.end()
     }
