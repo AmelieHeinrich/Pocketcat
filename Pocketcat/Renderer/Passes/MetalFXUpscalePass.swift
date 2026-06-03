@@ -11,6 +11,7 @@ enum UpscalerType: Int, CaseIterable {
 class MetalFXUpscalePass: Pass {
     var spatialUpscaler: MTL4FXSpatialScaler!
     var temporalUpscaler: MTL4FXTemporalScaler!
+    var upscaleDenoiser: MTL4FXTemporalDenoisedScaler!
     unowned let registry: SettingsRegistry
     var firstFrameTemporal = true
 
@@ -41,10 +42,11 @@ class MetalFXUpscalePass: Pass {
         temporalDesc.inputHeight = renderHeight
         temporalDesc.outputWidth = outputWidth
         temporalDesc.outputHeight = outputHeight
-        temporalDesc.requiresSynchronousInitialization = true
         
         self.temporalUpscaler = temporalDesc.makeTemporalScaler(device: RendererData.device, compiler: RendererData.compiler)!
         firstFrameTemporal = true
+        
+        // TODO: Denoiser
     }
 
     override func render(context: FrameContext) {
@@ -75,8 +77,8 @@ class MetalFXUpscalePass: Pass {
             temporalUpscaler.depthTexture = depth.texture
             temporalUpscaler.motionTexture = mv.texture
             temporalUpscaler.reset = firstFrameTemporal
-            temporalUpscaler.motionVectorScaleX = 1.0
-            temporalUpscaler.motionVectorScaleY = 1.0
+            temporalUpscaler.motionVectorScaleX = Float(ldr.texture.width)
+            temporalUpscaler.motionVectorScaleY = Float(ldr.texture.height)
             
             context.cmdBuffer.pushMarker(name: "MetalFX Temporal")
             temporalUpscaler.encode(commandBuffer: context.cmdBuffer.commandBuffer)

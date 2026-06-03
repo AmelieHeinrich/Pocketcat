@@ -69,6 +69,7 @@ class TonemapPass: Pass {
         rp.setTexture(texture: forward, index: 0, stages: .fragment)
         rp.setBytes(allocator: context.allocator, index: 0, bytes: &params, size: MemoryLayout<TonemapParams>.size, stages: .fragment)
         rp.draw(primitiveType: .triangle, vertexCount: 3, vertexOffset: 0)
+        rp.producerBarrier(before: [.dispatch, .vertex, .fragment], after: .fragment)
         rp.end()
     }
 }
