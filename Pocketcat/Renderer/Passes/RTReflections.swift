@@ -25,7 +25,7 @@ class RTReflections: Pass {
         self.settings = settings
         self.settings.register(bool: "RTReflections.Enabled", label: "Enabled", default: false)
         self.settings.register(int: "RTReflections.SamplesPerPixel", label: "Samples per pixel", default: 1, range: 1...32)
-        self.settings.register(enum: "RTReflections.TracingResolution", label: "Tracing Resolution", default: TracingResolution.Half)
+        self.settings.register(enum: "RTReflections.TracingResolution", label: "Tracing Resolution", default: TracingResolution.Native)
         self.settings.register(float: "RTReflections.MetallicThreshold", label: "Metallic Threshold", default: 0.9, range: 0.0...1.0)
 
         pipeline = ComputePipeline(function: "rt_reflections")

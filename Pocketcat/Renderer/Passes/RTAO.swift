@@ -25,7 +25,7 @@ class RTAO: Pass {
         self.settings = settings
         self.settings.register(int: "RTAO.SamplesPerPixel", label: "Samples per pixel", default: 1, range: 1...32)
         self.settings.register(bool: "RTAO.Enabled", label: "Enabled", default: false)
-        self.settings.register(enum: "RTAO.TracingResolution", label: "Tracing Resolution", default: TracingResolution.Quarter)
+        self.settings.register(enum: "RTAO.TracingResolution", label: "Tracing Resolution", default: TracingResolution.Native)
         self.settings.register(float: "RTAO.Radius", label: "AO Radius", default: 0.50, range: 0.1...10.0)
 
         pipeline = ComputePipeline(function: "rtao")

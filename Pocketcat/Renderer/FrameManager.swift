@@ -312,7 +312,7 @@ class FrameManager {
         registry.register(
             enum: "Renderer.Timeline", label: "Timeline", default: RendererTimelineType.Desktop)
         registry.register(
-            float: "Renderer.RenderScale", label: "Render Scale", default: 0.5, range: 0.25...1.0,
+            float: "Renderer.RenderScale", label: "Render Scale", default: 0.35, range: 0.25...1.0,
             step: 0.05)
 
         // Initialize passes

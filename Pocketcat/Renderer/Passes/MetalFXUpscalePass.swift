@@ -11,6 +11,7 @@ enum UpscalerType: Int, CaseIterable {
 class MetalFXUpscalePass: Pass {
     var spatialUpscaler: MTL4FXSpatialScaler!
     var temporalUpscaler: MTL4FXTemporalScaler!
+    var denoisedUpscaler: MTL4FXTemporalDenoisedScaler!
     unowned let registry: SettingsRegistry
     var firstFrameTemporal = true
 
@@ -29,6 +30,7 @@ class MetalFXUpscalePass: Pass {
         spatialDesc.inputHeight = renderHeight
         spatialDesc.outputWidth = outputWidth
         spatialDesc.outputHeight = outputHeight
+        assert(MTLFXSpatialScalerDescriptor.supportsMetal4FX(RendererData.device))
 
         self.spatialUpscaler = spatialDesc.makeSpatialScaler(device: RendererData.device, compiler: RendererData.compiler)!
         
@@ -41,8 +43,25 @@ class MetalFXUpscalePass: Pass {
         temporalDesc.inputHeight = renderHeight
         temporalDesc.outputWidth = outputWidth
         temporalDesc.outputHeight = outputHeight
+        assert(MTLFXTemporalScalerDescriptor.supportsMetal4FX(RendererData.device))
         
         self.temporalUpscaler = temporalDesc.makeTemporalScaler(device: RendererData.device, compiler: RendererData.compiler)!
+        
+        let upscalerDesc = MTLFXTemporalDenoisedScalerDescriptor()
+        upscalerDesc.colorTextureFormat = .bgra8Unorm
+        upscalerDesc.outputTextureFormat = .bgra8Unorm
+        upscalerDesc.depthTextureFormat = .depth32Float
+        upscalerDesc.motionTextureFormat = .rg16Float
+        upscalerDesc.normalTextureFormat = .rgba16Float
+        upscalerDesc.inputWidth = renderWidth
+        upscalerDesc.inputHeight = renderHeight
+        upscalerDesc.outputWidth = outputWidth
+        upscalerDesc.outputHeight = outputHeight
+        upscalerDesc.diffuseAlbedoTextureFormat = .bgra8Unorm
+        upscalerDesc.specularAlbedoTextureFormat = .bgra8Unorm
+        assert(MTLFXTemporalDenoisedScalerDescriptor.supportsMetal4FX(RendererData.device))
+        
+        //self.denoisedUpscaler = upscalerDesc.makeTemporalDenoisedScaler(device: RendererData.device, compiler: RendererData.compiler)!
         
         firstFrameTemporal = true
     }
