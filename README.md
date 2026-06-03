@@ -24,7 +24,7 @@ To add more meshes, you can add any GLTF model in SourceAssets and run the Asset
 
 ## WIP
 
-All of these features are complete on the raytracing part but are missing the denoiser I am currently working on:
+All of these features are complete on the raytracing part and will be ready once I implemented the MetalFX denoiser:
 - Raytraced sun shadows
 - Raytraced ambient occlusion
 - Raytraced global illumination

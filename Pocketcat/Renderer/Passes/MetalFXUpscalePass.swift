@@ -11,13 +11,12 @@ enum UpscalerType: Int, CaseIterable {
 class MetalFXUpscalePass: Pass {
     var spatialUpscaler: MTL4FXSpatialScaler!
     var temporalUpscaler: MTL4FXTemporalScaler!
-    var upscaleDenoiser: MTL4FXTemporalDenoisedScaler!
     unowned let registry: SettingsRegistry
     var firstFrameTemporal = true
 
     init(registry: SettingsRegistry) {
         self.registry = registry
-        registry.register(enum: "Upscaler.Type", label: "Upscaler", default: UpscalerType.Spatial)
+        registry.register(enum: "Upscaler.Type", label: "Upscaler", default: UpscalerType.Temporal)
         super.init()
     }
 
@@ -44,9 +43,8 @@ class MetalFXUpscalePass: Pass {
         temporalDesc.outputHeight = outputHeight
         
         self.temporalUpscaler = temporalDesc.makeTemporalScaler(device: RendererData.device, compiler: RendererData.compiler)!
-        firstFrameTemporal = true
         
-        // TODO: Denoiser
+        firstFrameTemporal = true
     }
 
     override func render(context: FrameContext) {
