@@ -250,7 +250,7 @@ class TextureVisualizerPass: Pass {
         desc.name = "TexViz[\(fragmentFunction)]"
         desc.vertexFunction = "texviz_vs"
         desc.fragmentFunction = fragmentFunction
-        desc.pixelFormats = [.bgra8Unorm]
+        desc.pixelFormats = [RendererData.getPixelFormat()]
         let p = RenderPipeline(descriptor: desc)
         pipelineCache[fragmentFunction] = p
         return p
@@ -262,7 +262,7 @@ class TextureVisualizerPass: Pass {
         desc.name = "CubemapViz[\(fragmentFunction)]"
         desc.vertexFunction = "texviz_cubemap_vs"
         desc.fragmentFunction = fragmentFunction
-        desc.pixelFormats = [.bgra8Unorm]
+        desc.pixelFormats = [RendererData.getPixelFormat()]
         desc.depthFormat = .depth32Float
         desc.depthEnabled = true
         desc.depthWriteEnabled = true

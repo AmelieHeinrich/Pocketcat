@@ -46,7 +46,7 @@ class DebugPass: Pass {
         descNoDepth.name = "Debug Line Pipeline"
         descNoDepth.vertexFunction = "debug_vs"
         descNoDepth.fragmentFunction = "debug_fs"
-        descNoDepth.pixelFormats.append(.bgra8Unorm)
+        descNoDepth.pixelFormats.append(RendererData.getPixelFormat())
         descNoDepth.supportsIndirect = true
         self.pipelineNoDepth = RenderPipeline(descriptor: descNoDepth)
 
@@ -54,7 +54,7 @@ class DebugPass: Pass {
         descDepth.name = "Debug Line Pipeline (Depth)"
         descDepth.vertexFunction = "debug_vs"
         descDepth.fragmentFunction = "debug_fs"
-        descDepth.pixelFormats.append(.bgra8Unorm)
+        descDepth.pixelFormats.append(RendererData.getPixelFormat())
         descDepth.depthFormat = .depth32Float
         descDepth.depthEnabled = true
         descDepth.depthWriteEnabled = false  // read-only: don't corrupt the forward depth buffer

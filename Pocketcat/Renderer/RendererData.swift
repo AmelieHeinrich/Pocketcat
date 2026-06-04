@@ -6,6 +6,7 @@
 //
 
 import Metal
+import AppKit
 
 struct RendererData {
     static var device: MTLDevice!
@@ -16,6 +17,11 @@ struct RendererData {
 
     static var mtl3commandQueue: MTLCommandQueue!
     static var mtl3commandBuffer: MTLCommandBuffer!
+    
+    static func getPixelFormat() -> MTLPixelFormat {
+        let supportsHDR = (NSScreen.main?.maximumPotentialExtendedDynamicRangeColorComponentValue ?? 1.0) > 1.0
+        return supportsHDR ? .rgba16Float : .bgra8Unorm
+    }
 
     static func addResidentAllocation(_ allocation: some MTLAllocation) {
         residencyLock.withLock { residencySet.addAllocation(allocation) }

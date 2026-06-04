@@ -56,13 +56,18 @@ class Renderer: NSObject, MetalViewDelegate {
     }
 
     func configure(_ view: MTKView) {
+        let supportsHDR = (NSScreen.main?.maximumPotentialExtendedDynamicRangeColorComponentValue ?? 1.0) > 1.0
+            
         view.device = device
-        view.colorPixelFormat = .bgra8Unorm
+        view.colorPixelFormat = supportsHDR ? .rgba16Float : .bgra8Unorm
         view.clearColor = .init(red: 0.0, green: 0.0, blue: 0.0, alpha: 1.0)
         view.sampleCount = 1
         view.delegate = self
         view.framebufferOnly = false
         view.preferredFramesPerSecond = 120
+        if supportsHDR {
+            view.colorspace = CGColorSpace(name: CGColorSpace.extendedLinearDisplayP3)
+        }
 
         self.commandQueue.addResidencySet(view.residencySet)
     }

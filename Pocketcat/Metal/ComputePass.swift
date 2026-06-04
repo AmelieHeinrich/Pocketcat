@@ -107,6 +107,10 @@ class ComputePass {
     func copyTexture(src: Texture, dst: Texture) {
         self.encoder.copy(sourceTexture: src.texture, destinationTexture: dst.texture)
     }
+    
+    func copyTexture(src: Texture, dst: MTLTexture) {
+        self.encoder.copy(sourceTexture: src.texture, destinationTexture: dst)
+    }
 
     func resetBuffer(src: Buffer) {
         self.encoder.fill(buffer: src.buffer, range: 0..<src.size, value: 0)

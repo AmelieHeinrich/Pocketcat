@@ -38,10 +38,21 @@ struct ChangelogEntry {
 
 let changelogEntries: [ChangelogEntry] = [
     ChangelogEntry(
+        version: "0.0.2",
+        date: "June 2026",
+        items: [
+            ChangelogItem(tag: .added,   text: "Experimental: RT reflections"),
+            ChangelogItem(tag: .added,   text: "Proper HDR rendering with P3 color support"),
+            ChangelogItem(tag: .added,   text: "Night sky model based on astronomical data"),
+            ChangelogItem(tag: .fixed,   text: "MetalFX temporal now works no problem"),
+            ChangelogItem(tag: .fixed,   text: "The renderer does not leak memory anymore")
+        ]
+    ),
+    ChangelogEntry(
         version: "0.0.1",
         date: "March 2026",
         items: [
-            ChangelogItem(tag: .added,   text: "Experimental: RTAO, Stochastic RT shadows, RTGI"),
+            ChangelogItem(tag: .added,   text: "Experimental: RTAO, Stochastic RT shadows, RTGI, RT reflections"),
             ChangelogItem(tag: .known,   text: "Metal4FX temporal upscaling currently has barrier issues that causes flickering and stomps when used"),
             ChangelogItem(tag: .known,   text: "The renderer leaks memory even with an autoreleasepool"),
             ChangelogItem(tag: .known,   text: "Indirect TLAS builds are broken"),

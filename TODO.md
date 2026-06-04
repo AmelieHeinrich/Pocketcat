@@ -1,6 +1,7 @@
 TODO
 
 - Fix race when changing trace resolution for RTAO/RTR/RTGI
-- MetalFX denoiser
+- Port NRD
 - Continue nanite
 - Auto-exposure
+- ReSTIR DI/GI

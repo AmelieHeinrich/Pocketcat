@@ -322,6 +322,7 @@ class FrameManager {
         let cullViewPass = CullViewPass(registry: registry)
         let visibilityPass = VisibilityBufferPass(registry: registry)
         let gbufferPass = GBufferPass()
+        let colorCorrection = ColorCorrectionPass(registry: registry)
         let tonemap = TonemapPass(registry: registry)
         let debug = DebugPass.shared
         let upscaler = MetalFXUpscalePass(registry: registry)
@@ -338,8 +339,8 @@ class FrameManager {
         debug.registry = registry
 
         self.passes = [
-            nightSkyPass, skyPass, skyDrawPass, tlas, cullViewPass, visibilityPass, pathtracer, tonemap,
-            upscaler, debug, gbufferPass, deferred, accumulationDenoiser, rtgi, rtshadows, rtao,
+            nightSkyPass, skyPass, skyDrawPass, tlas, cullViewPass, visibilityPass, pathtracer, colorCorrection,
+            tonemap, upscaler, debug, gbufferPass, deferred, accumulationDenoiser, rtgi, rtshadows, rtao,
             rtreflections, texViz,
         ]
 
@@ -357,6 +358,7 @@ class FrameManager {
         desktopTimeline.addPass(rtreflections)
         desktopTimeline.addPass(deferred)
         desktopTimeline.addPass(skyDrawPass)
+        desktopTimeline.addPass(colorCorrection)
         desktopTimeline.addPass(tonemap)
         desktopTimeline.addPass(upscaler)
         desktopTimeline.addPass(debug)
@@ -373,6 +375,7 @@ class FrameManager {
         pathtraceTimeline.addPass(pathtracer)
         pathtraceTimeline.addPass(accumulationDenoiser)
         pathtraceTimeline.addPass(skyDrawPass)
+        pathtraceTimeline.addPass(colorCorrection)
         pathtraceTimeline.addPass(tonemap)
         pathtraceTimeline.addPass(upscaler)
         pathtraceTimeline.addPass(debug)

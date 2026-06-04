@@ -25,7 +25,7 @@ class TonemapPass: Pass {
         pipelineDesc.name = "Tonemap"
         pipelineDesc.vertexFunction = "tonemap_vs"
         pipelineDesc.fragmentFunction = "tonemap_fs"
-        pipelineDesc.pixelFormats = [.bgra8Unorm]
+        pipelineDesc.pixelFormats = [RendererData.getPixelFormat()]
 
         self.pipeline = RenderPipeline(descriptor: pipelineDesc)
         self.registry = registry
@@ -36,7 +36,7 @@ class TonemapPass: Pass {
     }
 
     override func resize(renderWidth: Int, renderHeight: Int, outputWidth: Int, outputHeight: Int) {
-        let desc = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: .bgra8Unorm, width: renderWidth, height: renderHeight, mipmapped: false)
+        let desc = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: RendererData.getPixelFormat(), width: renderWidth, height: renderHeight, mipmapped: false)
         desc.usage = [.renderTarget, .shaderRead]
         ldrTexture = Texture(descriptor: desc)
     }
@@ -46,22 +46,29 @@ class TonemapPass: Pass {
         guard let forward = forward else { return }
 
         let mode = registry.enum("Tonemap.Mode", as: TonemapMode.self, default: .AGX)
-        var params = TonemapParams(gamma: registry.float("Tonemap.Gamma"), mode: Int32(mode.rawValue))
-        var rpDesc = RenderPassDescriptor()
-        rpDesc.setName(name: "Tonemap")
-        
         let upscalerType = registry.enum("Upscaler.Type", as: UpscalerType.self, default: .None)
-        
+
+        // In HDR mode the display handles its own tone curve; pass through unchanged.
+        let isHDR = RendererData.getPixelFormat() == .rgba16Float
+        var params = isHDR
+            ? TonemapParams(gamma: 1.0, mode: Int32(TonemapMode.None.rawValue))
+            : TonemapParams(gamma: registry.float("Tonemap.Gamma"), mode: Int32(mode.rawValue))
+
+        let textureToAdd: MTLTexture
         if upscalerType == .None {
-            rpDesc.addAttachment(texture: context.drawable.texture, shouldClear: false)
+            textureToAdd = context.drawable.texture
         } else {
             if let ldrTexture = ldrTexture {
-                rpDesc.addAttachment(texture: ldrTexture.texture, shouldClear: false)
                 context.resources.register(ldrTexture, for: "LDR")
+                textureToAdd = ldrTexture.texture
             } else {
-                rpDesc.addAttachment(texture: context.drawable.texture, shouldClear: false)
+                textureToAdd = context.drawable.texture
             }
         }
+
+        var rpDesc = RenderPassDescriptor()
+        rpDesc.setName(name: "Tonemap")
+        rpDesc.addAttachment(texture: textureToAdd, shouldClear: false)
 
         let rp = context.cmdBuffer.beginRenderPass(descriptor: rpDesc)
         rp.consumerBarrier(before: .vertex, after: [.vertex, .fragment, .mesh, .object, .dispatch])
