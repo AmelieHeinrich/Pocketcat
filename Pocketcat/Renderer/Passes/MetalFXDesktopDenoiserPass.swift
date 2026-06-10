@@ -8,7 +8,7 @@
 //  denoising and upscaling to output resolution in a single step. Active only when
 //  the "Upscaler.Type" setting is .TemporalDenoised. The RTGI texture is fed as the
 //  diffuse albedo and the RTReflections texture as the specular albedo; the renderer
-//  forces RTAO/RTGI/RTReflections on at Native tracing resolution while this mode is
+//  forces RTGI/RTReflections on at Native tracing resolution while this mode is
 //  selected (see EditorRendererController), so those resources always exist and match
 //  the denoiser's input resolution.
 //

@@ -33,7 +33,6 @@ class EditorRendererController: RendererController {
         // albedo, so all RT effects must be enabled at Native tracing resolution to exist and
         // match the denoiser's input resolution.
         if upscalerType == .TemporalDenoised {
-            registry.set(bool: "RTAO.Enabled", true)
             registry.set(bool: "RTGI.Enabled", true)
             registry.set(bool: "RTReflections.Enabled", true)
             registry.set(pickerIndex: "RTGI.TracingResolution", TracingResolution.Native.rawValue)

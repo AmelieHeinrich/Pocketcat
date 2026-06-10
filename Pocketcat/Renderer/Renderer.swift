@@ -66,7 +66,7 @@ class Renderer: NSObject, MetalViewDelegate {
         view.framebufferOnly = false
         view.preferredFramesPerSecond = 120
         if supportsHDR {
-            view.colorspace = CGColorSpace(name: CGColorSpace.extendedLinearDisplayP3)
+            view.colorspace = CGColorSpace(name: CGColorSpace.extendedLinearSRGB)
             view.layer?.preferredDynamicRange = .high
         }
 
