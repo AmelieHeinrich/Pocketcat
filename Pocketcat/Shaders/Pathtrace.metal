@@ -90,10 +90,10 @@ void pathtracer(const device scene_data& scene [[buffer(0)]],
         float3 throughput = float3(1.0);
         float3 path_radiance = float3(0.0);
         float3 path_ray_dir = v0;
+        
+        path_radiance += hit.emissive;
 
         for (uint bounce = 0; bounce < parameters.bounce_count; bounce++) {
-            path_radiance += throughput * (hit.emissive * 50);
-
             // Directional Light NEE
             float3 l_dir = -light_dir;
             if (dot(hit.n, l_dir) > 0.0) {
@@ -101,6 +101,42 @@ void pathtracer(const device scene_data& scene [[buffer(0)]],
                 if (vis > 0.0) {
                     float3 brdf_light = eval_brdf(hit, -path_ray_dir, l_dir);
                     path_radiance += throughput * brdf_light * light_color * vis;
+                }
+            }
+
+            // Emissive Mesh Light NEE
+            if (scene.emissive_light_count > 0) {
+                // Pick one emissive light uniformly: map [0,1) -> [0, count-1].
+                uint idx = min(uint(rng.next_f() * float(scene.emissive_light_count)),
+                               scene.emissive_light_count - 1);
+                emissive_light el = scene.emissive_lights[idx];
+
+                float3 to_light = el.position_and_radius.xyz - hit.pos;
+                float dist2     = dot(to_light, to_light);
+                float dist      = sqrt(dist2);
+                float3 l        = to_light / max(dist, 1e-4);
+                float  r        = el.position_and_radius.w;
+                float  cos_theta = dot(hit.n, l);
+
+                // Only add this light's contribution when it is in front of the
+                // surface and unoccluded. Crucially, a failed light must NOT skip
+                // the diffuse bounce below, so this is a nested if — not a continue.
+                if (dist > 1e-4 && cos_theta > 0.0 && dist > r) {
+                    float vis = visibility(hit.pos + hit.n * 0.001, l, dist - r * 0.5, scene, ift);
+                    if (vis > 0.0) {
+                        constexpr sampler es(filter::linear, address::repeat);
+                        material em_mat = scene.materials[el.material_index];
+                        // Sample the atlas at this light's own UV so each bulb keeps its true color.
+                        float3 emissive_color = em_mat.has_emissive()
+                            ? em_mat.emissive.sample(es, el.uv, level(0)).rgb
+                            : float3(1.0);
+
+                        // eval_brdf already includes the N·L cosine term.
+                        float3 brdf_v = eval_brdf(hit, -path_ray_dir, l);
+                        float3 Li     = emissive_color * el.intensity / dist2;
+                        float  pdf    = 1.0 / float(scene.emissive_light_count);
+                        path_radiance += throughput * brdf_v * Li / pdf;
+                    }
                 }
             }
 
@@ -130,9 +166,18 @@ void pathtracer(const device scene_data& scene [[buffer(0)]],
                 break;
             }
 
-            float3 hit_pos = hit.pos + wi * result.distance;
-            hit = fetch_secondary_hit(scene, result.instance_id, result.primitive_id,
-                                      result.triangle_barycentric_coord, hit_pos, wi);
+            float3 hit_pos = next.origin + next.direction * result.distance;
+            hit = fetch_secondary_hit(
+                scene,
+                result.instance_id,
+                result.primitive_id,
+                result.triangle_barycentric_coord,
+                hit_pos,
+                wi
+            );
+            // Emission from bounce-hit surfaces is intentionally NOT added here:
+            // emissive lights are already accounted for by the NEE step above, so
+            // adding it again would double-count their contribution.
             path_ray_dir = wi;
         }
 
@@ -140,7 +185,7 @@ void pathtracer(const device scene_data& scene [[buffer(0)]],
     }
     radiance /= parameters.spp;
 
-    float3 color = current_hit.emissive + radiance;
+    float3 color = radiance;
     float lum = dot(color, float3(0.2126, 0.7152, 0.0722));
     if (lum > 10.0) color *= 10.0 / lum;
 

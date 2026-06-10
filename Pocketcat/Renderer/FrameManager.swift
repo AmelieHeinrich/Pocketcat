@@ -7,6 +7,7 @@
 
 import Metal
 internal import QuartzCore
+import simd
 
 // FrameManager is the top-level owner of the render graph.
 //
@@ -50,9 +51,11 @@ class FrameManager {
     private var lastFrameTime: CFAbsoluteTime = CFAbsoluteTimeGetCurrent()
     private var frameTimeMsAccum: Double = 0
     private var fpsAccum: Double = 0
-    private var prevCpuTimestamp: UInt64 = 0
-    private var prevGpuTimestamp: UInt64 = 0
-    private var gpuToCpuFactor: Double = 1.0
+    private let gpuToCpuFactor: Double = {
+        var timebase = mach_timebase_info_data_t()
+        mach_timebase_info(&timebase)
+        return Double(timebase.numer) / Double(timebase.denom)
+    }()
 
     init(registry: SettingsRegistry, lightState: LightState, frameStats: FrameStats) {
         self.registry = registry
@@ -78,9 +81,77 @@ class FrameManager {
     func setScene(_ scene: RenderScene) {
         self.scene = scene
         self.sceneBuffer.build(scene: scene)
-        RendererData.residencySet.commit()
 
+        // Build emissive light list: one sphere light per emissive mesh instance
+        var emissiveLights: [GPUEmissiveLight] = []
+        var globalMaterialOffset = 0
+        for entity in scene.entities {
+            let mesh = entity.mesh
+            for instance in mesh.instances {
+                let matIdx = Int(instance.materialIndex)
+                guard matIdx < mesh.materials.count,
+                      mesh.materials[matIdx].emissive != nil else { continue }
+
+                let localCenter = (instance.aabbMin + instance.aabbMax) * 0.5
+                let w4 = entity.transform * simd_float4(localCenter, 1.0)
+                let worldCenter = simd_float3(w4.x, w4.y, w4.z)
+
+                let localRadius = simd_length(instance.aabbMax - instance.aabbMin) * 0.5
+                let col0 = simd_float3(
+                    entity.transform.columns.0.x,
+                    entity.transform.columns.0.y,
+                    entity.transform.columns.0.z)
+                let worldRadius = max(localRadius * simd_length(col0), 0.05)
+
+                let globalMatIdx = globalMaterialOffset + matIdx
+                let uv = Self.averageInstanceUV(mesh: mesh, instance: instance)
+                emissiveLights.append(GPUEmissiveLight(
+                    positionAndRadius: simd_float4(worldCenter, worldRadius),
+                    materialIndex: UInt32(globalMatIdx),
+                    intensity: 50.0,
+                    uv: uv))
+            }
+            globalMaterialOffset += mesh.materials.count
+        }
+        sceneBuffer.updateEmissiveLights(emissiveLights)
+
+        RendererData.residencySet.commit()
         RendererData.waitIdle()
+    }
+
+    /// Computes a representative UV for an emissive mesh instance by averaging the UVs
+    /// of the vertices referenced by its LOD0 geometry. Emissive bulbs in scenes like
+    /// Bistro share a single material whose emissive texture is an atlas, so this UV
+    /// lands inside the bulb's own colored region and lets the pathtracer use its true
+    /// color instead of a random texel sampled from across the whole atlas.
+    private static func averageInstanceUV(mesh: Mesh, instance: MeshInstance) -> simd_float2 {
+        guard let lod0 = mesh.lods.first,
+              let indexBuffer = lod0.indexBuffer,
+              let vertexBuffer = mesh.vertexBuffer
+        else { return .zero }
+
+        let idxCount = Int(instance.indexCount[0])
+        guard idxCount > 0 else { return .zero }
+
+        let vertexStride = 48          // MeshVertex byte stride
+        let uvByteOffset = 24          // float3 position + float3 normal
+        let idxBase = Int(instance.indexOffset[0])
+        let vertexBase = Int(instance.vertexOffset)
+
+        let idxPtr = indexBuffer.contents()
+        let vtxPtr = vertexBuffer.contents()
+
+        var sum = simd_float2(0, 0)
+        for k in 0..<idxCount {
+            let localIdx = idxPtr.loadUnaligned(
+                fromByteOffset: (idxBase + k) * 4, as: UInt32.self)
+            let vtx = vertexBase + Int(localIdx)
+            let off = vtx * vertexStride + uvByteOffset
+            let u = vtxPtr.loadUnaligned(fromByteOffset: off, as: Float.self)
+            let v = vtxPtr.loadUnaligned(fromByteOffset: off + 4, as: Float.self)
+            sum += simd_float2(u, v)
+        }
+        return sum / Float(idxCount)
     }
 
     func resize(width: Int, height: Int) {
@@ -100,18 +171,6 @@ class FrameManager {
 
     func render(drawable: CAMetalDrawable) {
         autoreleasepool {
-            // Calibrate GPU clock ticks → CPU nanoseconds via paired timestamp samples
-            var cpuTs: MTLTimestamp = 0
-            var gpuTs: MTLTimestamp = 0
-            (cpuTs, gpuTs) = RendererData.device.sampleTimestamps()
-            if prevGpuTimestamp != 0, gpuTs > prevGpuTimestamp {
-                let cpuDelta = Double(cpuTs - prevCpuTimestamp)
-                let gpuDelta = Double(gpuTs - prevGpuTimestamp)
-                if gpuDelta > 0 { gpuToCpuFactor = cpuDelta / gpuDelta }
-            }
-            prevCpuTimestamp = cpuTs
-            prevGpuTimestamp = gpuTs
-
             // CPU frame timing
             let now = CFAbsoluteTimeGetCurrent()
             let frameTimeMs = (now - lastFrameTime) * 1000.0
@@ -139,6 +198,9 @@ class FrameManager {
 
             // Wait for cmdBuffer to be ready
             RendererData.gpuTimeline.wait(value: frameIndex)
+            
+            RendererData.residencySet.addAllocation(drawable.texture)
+            RendererData.residencySet.commit()
 
             // Reset per-frame stats accumulation
             FrameAccumulator.current = FrameAccumulator()
@@ -312,7 +374,7 @@ class FrameManager {
         registry.register(
             enum: "Renderer.Timeline", label: "Timeline", default: RendererTimelineType.Desktop)
         registry.register(
-            float: "Renderer.RenderScale", label: "Render Scale", default: 0.35, range: 0.25...1.0,
+            float: "Renderer.RenderScale", label: "Render Scale", default: 0.50, range: 0.25...1.0,
             step: 0.05)
 
         // Initialize passes
@@ -326,10 +388,11 @@ class FrameManager {
         let tonemap = TonemapPass(registry: registry)
         let debug = DebugPass.shared
         let upscaler = MetalFXUpscalePass(registry: registry)
+        let desktopDenoiser = MetalFXDesktopDenoiserPass(registry: registry)
         let tlas = TLASBuildPass(settings: registry)
         let pathtracer = Pathtracer(settings: registry)
         let deferred = DeferredPass()
-        let accumulationDenoiser = AccumulationDenoiserPass()
+        let metalFXDenoiser = MetalFXDenoiserPass()
         let rtgi = RTGI(settings: registry)
         let rtshadows = RTShadows(settings: registry)
         let rtao = RTAO(settings: registry)
@@ -340,8 +403,8 @@ class FrameManager {
 
         self.passes = [
             nightSkyPass, skyPass, skyDrawPass, tlas, cullViewPass, visibilityPass, pathtracer, colorCorrection,
-            tonemap, upscaler, debug, gbufferPass, deferred, accumulationDenoiser, rtgi, rtshadows, rtao,
-            rtreflections, texViz,
+            tonemap, upscaler, desktopDenoiser, debug, gbufferPass, deferred, metalFXDenoiser, rtgi, rtshadows,
+            rtao, rtreflections, texViz,
         ]
 
         // Desktop pipeline
@@ -359,6 +422,7 @@ class FrameManager {
         desktopTimeline.addPass(deferred)
         desktopTimeline.addPass(skyDrawPass)
         desktopTimeline.addPass(colorCorrection)
+        desktopTimeline.addPass(desktopDenoiser)
         desktopTimeline.addPass(tonemap)
         desktopTimeline.addPass(upscaler)
         desktopTimeline.addPass(debug)
@@ -373,13 +437,9 @@ class FrameManager {
         pathtraceTimeline.addPass(visibilityPass)
         pathtraceTimeline.addPass(gbufferPass)
         pathtraceTimeline.addPass(pathtracer)
-        pathtraceTimeline.addPass(accumulationDenoiser)
-        pathtraceTimeline.addPass(skyDrawPass)
-        pathtraceTimeline.addPass(colorCorrection)
+        pathtraceTimeline.addPass(metalFXDenoiser)
         pathtraceTimeline.addPass(tonemap)
-        pathtraceTimeline.addPass(upscaler)
         pathtraceTimeline.addPass(debug)
-        pathtraceTimeline.addPass(texViz)
 
         self.desktopTimeline = desktopTimeline
         self.pathtracedTimeline = pathtraceTimeline

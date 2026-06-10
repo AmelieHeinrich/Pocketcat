@@ -6,6 +6,7 @@ enum UpscalerType: Int, CaseIterable {
     case None = 0
     case Spatial = 1
     case Temporal = 2
+    case TemporalDenoised = 3
 }
 
 class MetalFXUpscalePass: Pass {
@@ -16,7 +17,7 @@ class MetalFXUpscalePass: Pass {
 
     init(registry: SettingsRegistry) {
         self.registry = registry
-        registry.register(enum: "Upscaler.Type", label: "Upscaler", default: UpscalerType.Temporal)
+        registry.register(enum: "Upscaler.Type", label: "Upscaler", default: UpscalerType.None)
         super.init()
     }
 
@@ -50,7 +51,7 @@ class MetalFXUpscalePass: Pass {
     }
 
     override func render(context: FrameContext) {
-        let type = registry.enum("Upscaler.Type", as: UpscalerType.self, default: .Spatial)
+        let type = registry.enum("Upscaler.Type", as: UpscalerType.self, default: .None)
         switch type {
         case .None: break
         case .Spatial:
@@ -85,6 +86,9 @@ class MetalFXUpscalePass: Pass {
             context.cmdBuffer.popMarker()
             
             firstFrameTemporal = false
+            break
+        case .TemporalDenoised:
+            // Handled by MetalFXDesktopDenoiserPass before tonemap; nothing to do here.
             break
         }
     }

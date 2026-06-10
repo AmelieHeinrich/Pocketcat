@@ -51,6 +51,14 @@
             ReferencedContainer = "container:Pocketcat.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
+      <MetalAPIValidationSettings
+         isEnabled = "No"
+         validateLoadAndStoreActions = "Yes">
+      </MetalAPIValidationSettings>
+      <MetalShaderValidationSettings
+         isEnabled = "No"
+         logAllocationStacktrace = "No">
+      </MetalShaderValidationSettings>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"

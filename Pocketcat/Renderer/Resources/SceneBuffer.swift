@@ -69,6 +69,13 @@ struct GPUPointLight {
     var colorAndIntensity: simd_float4   // xyz = color, w = intensity
 }
 
+struct GPUEmissiveLight {
+    var positionAndRadius: simd_float4
+    var materialIndex: UInt32
+    var intensity: Float
+    var uv: simd_float2 = .zero   // representative UV into the emissive atlas for this light's color
+}
+
 private struct GPUSceneBufferHeader {
     var materialsPtr: UInt64
     var instancesPtr: UInt64
@@ -90,6 +97,9 @@ private struct GPUSceneBufferHeader {
     var _padLights2: UInt32
     var sun: GPUSunLight
     var skyCubemapID: UInt64 = 0
+    var emissiveLightsPtr: UInt64 = 0
+    var emissiveLightCount: UInt32 = 0
+    var _padEmissive: UInt32 = 0
 }
 
 class SceneBufferBuilder {
@@ -122,6 +132,12 @@ class SceneBufferBuilder {
     private var pointLightsBuffers: [Buffer] = []
     var pointLightsBuffer: Buffer! {
         pointLightsBuffers.isEmpty ? nil : pointLightsBuffers[currentFrameIndex]
+    }
+
+    static let kMaxEmissiveLights = 4096
+    private var emissiveLightsBuffers: [Buffer] = []
+    var emissiveLightsBuffer: Buffer! {
+        emissiveLightsBuffers.isEmpty ? nil : emissiveLightsBuffers[currentFrameIndex]
     }
 
     private var currentFrameIndex: Int = 2
@@ -322,6 +338,14 @@ class SceneBufferBuilder {
             return b
         }
 
+        // ---- Build emissive lights buffers ----
+        let elStride = MemoryLayout<GPUEmissiveLight>.stride
+        emissiveLightsBuffers = (0..<3).map { i in
+            let b = Buffer(size: elStride * SceneBufferBuilder.kMaxEmissiveLights)
+            b.setName(name: "Emissive Lights \(i)")
+            return b
+        }
+
         // ---- Build root header ----
         let headerSize = MemoryLayout<GPUSceneBufferHeader>.stride
         buffers = (0..<3).map { i in
@@ -427,6 +451,26 @@ class SceneBufferBuilder {
         }
     }
 
+    func updateEmissiveLights(_ lights: [GPUEmissiveLight]) {
+        guard !buffers.isEmpty else { return }
+        let count = min(lights.count, SceneBufferBuilder.kMaxEmissiveLights)
+        if lights.count > count {
+            print("[SceneBuffer] Emissive light count \(lights.count) exceeds cap \(SceneBufferBuilder.kMaxEmissiveLights); dropping \(lights.count - count) lights")
+        }
+        // Write to all 3 frame buffers — emissive lights are static per scene load
+        for frameIdx in 0..<3 {
+            let buf = buffers[frameIdx]
+            let ptr = buf.contents().bindMemory(to: GPUSceneBufferHeader.self, capacity: 1)
+            ptr.pointee.emissiveLightCount = UInt32(count)
+            ptr.pointee.emissiveLightsPtr = emissiveLightsBuffers[frameIdx].getAddress()
+            if count > 0 {
+                let lPtr = emissiveLightsBuffers[frameIdx].contents().bindMemory(
+                    to: GPUEmissiveLight.self, capacity: count)
+                for i in 0..<count { lPtr[i] = lights[i] }
+            }
+        }
+    }
+
     /// Updates the sky cubemap handle in the current frame's scene buffer. Call each frame from SkyPass.
     func setSkybox(_ texture: Texture?) {
         guard let buf = buffer else { return }
@@ -451,6 +495,8 @@ class SceneBufferBuilder {
         ptr.pointee.maxDebugVertices = UInt32(SceneBufferBuilder.kMaxDebugVertices)
         ptr.pointee.pointLightsPtr = pointLightsBuffers[currentFrameIndex].getAddress()
         ptr.pointee.pointLightCount = 0
+        ptr.pointee.emissiveLightsPtr = emissiveLightsBuffers[currentFrameIndex].getAddress()
+        ptr.pointee.emissiveLightCount = 0
     }
 
     private func textureID(_ tex: Texture?, flag: UInt32, flags: inout UInt32) -> UInt64 {

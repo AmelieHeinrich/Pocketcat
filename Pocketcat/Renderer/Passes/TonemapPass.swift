@@ -38,6 +38,8 @@ class TonemapPass: Pass {
     override func resize(renderWidth: Int, renderHeight: Int, outputWidth: Int, outputHeight: Int) {
         let desc = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: RendererData.getPixelFormat(), width: renderWidth, height: renderHeight, mipmapped: false)
         desc.usage = [.renderTarget, .shaderRead]
+        desc.storageMode = .private
+        
         ldrTexture = Texture(descriptor: desc)
     }
 
@@ -54,8 +56,9 @@ class TonemapPass: Pass {
             ? TonemapParams(gamma: 1.0, mode: Int32(TonemapMode.None.rawValue))
             : TonemapParams(gamma: registry.float("Tonemap.Gamma"), mode: Int32(mode.rawValue))
 
+        let denoiserUpscaled = context.resources.get("Denoiser.Upscaled") as Texture? != nil
         let textureToAdd: MTLTexture
-        if upscalerType == .None {
+        if upscalerType == .None || denoiserUpscaled {
             textureToAdd = context.drawable.texture
         } else {
             if let ldrTexture = ldrTexture {

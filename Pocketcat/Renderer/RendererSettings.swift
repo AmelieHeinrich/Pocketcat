@@ -132,6 +132,20 @@ final class SettingsRegistry: ObservableObject {
         return idx
     }
 
+    // MARK: - Write
+
+    func set(bool key: String, _ value: Bool) {
+        guard case .bool = entries[key]?.value else { return }
+        objectWillChange.send()
+        entries[key]?.value = .bool(value)
+    }
+
+    func set(pickerIndex key: String, _ index: Int) {
+        guard case .enumCase(_, let labels) = entries[key]?.value else { return }
+        objectWillChange.send()
+        entries[key]?.value = .enumCase(index, labels)
+    }
+
     // MARK: - Bindings
 
     func binding(bool key: String) -> Binding<Bool> {

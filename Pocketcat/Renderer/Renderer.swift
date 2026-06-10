@@ -67,6 +67,7 @@ class Renderer: NSObject, MetalViewDelegate {
         view.preferredFramesPerSecond = 120
         if supportsHDR {
             view.colorspace = CGColorSpace(name: CGColorSpace.extendedLinearDisplayP3)
+            view.layer?.preferredDynamicRange = .high
         }
 
         self.commandQueue.addResidencySet(view.residencySet)

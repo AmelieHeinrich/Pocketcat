@@ -27,7 +27,7 @@ struct vs_out {
 
 struct fs_out {
     uint2  tri_instance_id [[color(0)]];
-    float3 motion_vector   [[color(1)]];
+    float4 motion_vector   [[color(1)]];
 };
 
 using mesh_output = mesh<vs_out, void, 64, 128, topology::triangle>;
@@ -141,7 +141,7 @@ fs_out visibility_fs_ms(vs_out in [[stage_in]],
     alpha_test(in, scene);
     fs_out out;
     out.tri_instance_id = uint2((in.meshlet_index << 8) | (prim_id & 0xFF), in.instance_id);
-    out.motion_vector   = compute_motion_vector(in);
+    out.motion_vector   = float4(compute_motion_vector(in), 1.0f);
     return out;
 }
 
@@ -152,6 +152,6 @@ fs_out visibility_fs_vs(vs_out in [[stage_in]],
     alpha_test(in, scene);
     fs_out out;
     out.tri_instance_id = uint2(0x80000000u | prim_id, in.instance_id);
-    out.motion_vector   = compute_motion_vector(in);
+    out.motion_vector   = float4(compute_motion_vector(in), 1.0f);
     return out;
 }

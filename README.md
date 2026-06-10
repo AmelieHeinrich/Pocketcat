@@ -38,7 +38,7 @@ All of these features are complete on the raytracing part and will be ready once
 - Clustered light culling
 - Volumetric clouds
 - Auto-exposure
-- ReSTIR DI/GI
+- ReSTIR DI/pathtracing
 - MetalFX frame interpolation
 - Motion blur and DOF
 - Wavefront pathtracing

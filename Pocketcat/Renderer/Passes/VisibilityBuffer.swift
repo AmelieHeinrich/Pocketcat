@@ -24,7 +24,7 @@ class VisibilityBufferPass: Pass {
         pipelineDesc.name = "Visibility (VS)"
         pipelineDesc.vertexFunction = "visibility_vs"
         pipelineDesc.fragmentFunction = "visibility_fs_vs"
-        pipelineDesc.pixelFormats = [.rg32Uint, .rg16Float]
+        pipelineDesc.pixelFormats = [.rg32Uint, .rgba16Float]
         pipelineDesc.depthEnabled = true
         pipelineDesc.depthFormat = .depth32Float
         pipelineDesc.depthCompareOp = .less
@@ -36,7 +36,7 @@ class VisibilityBufferPass: Pass {
         meshPipelineDesc.objectFunction = "visibility_os"
         meshPipelineDesc.meshFunction = "visibility_ms"
         meshPipelineDesc.fragmentFunction = "visibility_fs_ms"
-        meshPipelineDesc.pixelFormats = [.rg32Uint, .rg16Float]
+        meshPipelineDesc.pixelFormats = [.rg32Uint, .rgba16Float]
         meshPipelineDesc.depthEnabled = true
         meshPipelineDesc.depthFormat = .depth32Float
         meshPipelineDesc.depthCompareOp = .less

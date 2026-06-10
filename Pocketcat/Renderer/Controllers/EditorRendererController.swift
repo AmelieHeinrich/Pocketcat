@@ -27,7 +27,18 @@ class EditorRendererController: RendererController {
         lastFrameTime = now
 
         let upscalerType = registry.enum("Upscaler.Type", as: UpscalerType.self, default: .Temporal)
-        camera.applyJitter = (upscalerType == .Temporal)
+        camera.applyJitter = (upscalerType == .Temporal || upscalerType == .TemporalDenoised)
+
+        // The temporal denoised upscaler consumes RTGI/RTReflections as the diffuse/specular
+        // albedo, so all RT effects must be enabled at Native tracing resolution to exist and
+        // match the denoiser's input resolution.
+        if upscalerType == .TemporalDenoised {
+            registry.set(bool: "RTAO.Enabled", true)
+            registry.set(bool: "RTGI.Enabled", true)
+            registry.set(bool: "RTReflections.Enabled", true)
+            registry.set(pickerIndex: "RTGI.TracingResolution", TracingResolution.Native.rawValue)
+            registry.set(pickerIndex: "RTReflections.TracingResolution", TracingResolution.Native.rawValue)
+        }
 
         camera.update(dt: dt)
         context.camera = camera.makeCameraData()

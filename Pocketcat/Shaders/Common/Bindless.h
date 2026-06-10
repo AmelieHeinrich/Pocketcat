@@ -132,6 +132,14 @@ struct point_light
     float4 color_and_intensity;   // xyz = color, w = intensity
 };
 
+struct emissive_light
+{
+    float4 position_and_radius;   // xyz = world centroid, w = sphere radius
+    uint   material_index;        // index into scene.materials for texture sampling
+    float  intensity;             // scale multiplier
+    float2 uv;                    // representative UV into the emissive atlas for this light's color
+};
+
 struct scene_data
 {
     const device material* materials;
@@ -154,6 +162,10 @@ struct scene_data
     uint _pad_lights2;
     sun_light sun;
     texturecube<float> sky_cubemap;
+
+    const device emissive_light* emissive_lights;
+    uint emissive_light_count;
+    uint _pad_emissive;
 };
 
 struct triangle {
