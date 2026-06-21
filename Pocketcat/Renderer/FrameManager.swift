@@ -258,11 +258,11 @@ class FrameManager {
 
             // Commit
             cmdBuffer.end()
+            RendererData.cmdQueue.waitForDrawable(drawable)
             cmdBuffer.commit()
 
             RendererData.cmdQueue.signalEvent(RendererData.gpuTimeline.event, value: frameIndex + 1)
-            RendererData.cmdQueue.waitForEvent(
-                RendererData.gpuTimeline.event, value: frameIndex + 1)
+            RendererData.cmdQueue.waitForEvent(RendererData.gpuTimeline.event, value: frameIndex + 1)
 
             // GPU work for this frame is now done — resolve counter heap timestamps
             let gpuTimings = resolveCounterHeap(
@@ -273,7 +273,6 @@ class FrameManager {
 
             frameIndex += 1
 
-            RendererData.cmdQueue.waitForDrawable(drawable)
             RendererData.cmdQueue.signalDrawable(drawable)
             drawable.present()
 
